@@ -31,7 +31,6 @@
 	"scripts": {
 		"dev": "nodemon --exec tsx src/server.ts",
 		"check": "yarn tsc --noEmit",
-		"lint-all": "yarn exec biome lint --write",
 		"build": "yarn tsc",
 		"prod": "yarn run build && node dist/server.js"
 	}

@@ -1,6 +1,5 @@
 [Dd]esktop.ini
 .env
-*.http
 
 # Logs
 logs
