@@ -1,30 +1,21 @@
-// 3 hours just to write this little.
-
 import User from "./user.model.js";
 import { getMissingFields } from "../../util/util.js";
-import type { HydratedDocument } from "mongoose";
+import type { HydratedDocument, Types } from "mongoose";
 import type { IUser, CreateUserInput, CreateUserResponse } from "./user.type.js";
+import jwt from "jsonwebtoken";
+import { LoginError } from "../../util/error.js";
 
 const getAllUsers = async () => {
-	try {
-		return await User.find().sort({"createdAt": -1});
-	} catch (e) {
-		throw e;
-	}
+	return await User.find().sort({ "createdAt": -1 });
 };
 
-const createUser = async ({
-	username,
-	password,
-	email,
-	displayName,
-	tagline
-}: CreateUserInput): Promise<CreateUserResponse> => {
-	const requiredFields = {username, password, email, displayName};
-	const missingFieldsStr = getMissingFields(requiredFields, true);
+const createUser = async (createUserInput: CreateUserInput): Promise<CreateUserResponse> => {
+	const { username, password, email, displayName, tagline } = createUserInput;
+	const requiredFields = { username, password, email, displayName };
+	const missingFields: string = getMissingFields(requiredFields, true);
 
-	if (missingFieldsStr)
-		throw new Error(`Missing required field(s): ${missingFieldsStr}`)
+	if (missingFields)
+		throw new Error(`Missing required field(s): ${missingFields}`);
 
 	const newUser: HydratedDocument<IUser> = new User({
 		username, password, email,
@@ -38,12 +29,35 @@ const createUser = async ({
 	};
 };
 
-const deleteAllUsers = async () => {
+const deleteAllUsers = async (): Promise<number> => {
 	return (await User.deleteMany()).deletedCount;
-}
+};
+
+const verifyUser = async (username: string, password: string): Promise<Types.ObjectId | null> => {
+	const user = await User.findOne({ username: username });
+	if (!user)
+		return null;
+	if (!(await user.comparePassword(password)))
+		return null;
+	return user._id;
+};
+
+const loginUser = async (username: string, password: string): Promise<string> => {
+	const user_id = await verifyUser(username, password);
+
+	if (!user_id)
+		throw new LoginError("Invalid username or password");
+
+	return jwt.sign(
+		{ _id: user_id },
+		String(process.env.JWT_SECRET),
+		{ expiresIn: "2H" }
+	);;
+};
 
 export {
 	getAllUsers,
 	deleteAllUsers,
-	createUser
-}
+	createUser,
+	loginUser
+};

@@ -17,6 +17,7 @@
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"noImplicitAny": true,
+		"strictNullChecks": true,
 		/* If transpiling with TypeScript: */
 		"module": "nodenext",
 		"outDir": "dist",

@@ -41,7 +41,6 @@ const UserSchema = new mongoose.Schema<IUser>({
 		type: String,
 		required: [true, "Password is required."],
 		minLength: [8, "Password must be at least 8 characters long."],
-		select: false
 	},
 	email: {
 		type: String,
@@ -50,7 +49,6 @@ const UserSchema = new mongoose.Schema<IUser>({
 		unique: true,
 		lowercase: true,
 		validate: [validator.isEmail, "Email address is not valid."],
-		select: false
 	},
 	gameId: {
 		type: GameIdSchema,

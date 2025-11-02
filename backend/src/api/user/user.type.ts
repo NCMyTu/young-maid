@@ -12,22 +12,15 @@ interface IUser extends Document{
 	email: string,
 	gameId: IGameId,
 	createdAt: Date,
-	updatedAt: Date,
-	// comparePassword(passwordToTest: string): Promise<boolean>
+	updatedAt: Date
+	comparePassword(passwordToTest: string): Promise<boolean>
 }
 
-type CreateUserInput = {
-	username: string,
-	password: string,
-	email: string,
-	displayName: string,
-	tagline: string
+interface CreateUserInput extends Pick<IUser, "username" | "password" | "email"> {
+	displayName: string;
+	tagline: string;
 }
 
-type CreateUserResponse = {
-	_id: Types.ObjectId,
-	gameId: IGameId,
-	createdAt: Date
-}
+interface CreateUserResponse extends Pick<IUser, "_id" | "gameId" | "createdAt"> {}
 
 export type { IGameId, IUser, CreateUserInput, CreateUserResponse };

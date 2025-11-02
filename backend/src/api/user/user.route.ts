@@ -1,6 +1,6 @@
 import express from "express";
 import {
-	loginUser,
+	loginUserController,
 	createUserController,
 	resetPasswordRequest,
 	updateUser,
@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.get("/", getAllUsersController);
 router.post("/", createUserController);
-router.post("/login", loginUser);
+router.post("/login", loginUserController);
 router.post("/forget-password", resetPasswordRequest);
 router.post("/update", updateUser);
 router.delete("/", deleteAllUsersController);

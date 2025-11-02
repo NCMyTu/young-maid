@@ -1,5 +1,6 @@
-import { createUser, getAllUsers, deleteAllUsers } from "./user.service.js";
-import { type Request, type Response } from "express";
+import { LoginError } from "../../util/error.js";
+import { createUser, getAllUsers, deleteAllUsers, loginUser } from "./user.service.js";
+import type { Request, Response } from "express";
 
 const getAllUsersController = async (_: Request, res: Response) => {
 	//  TODO:
@@ -25,9 +26,27 @@ const createUserController = async (req: Request, res: Response) => {
 	}
 };
 
-async function loginUser(_: Request, res: Response) {
-	res.status(200).json("hi from log in");
-}
+const deleteAllUsersController = async (_: Request, res: Response) => {
+	try {
+		const deletedCount = await deleteAllUsers();
+		res.status(200).json({ message: `deleted ${deletedCount} users` });
+	} catch (e) {
+		const msg = e instanceof Error ? e.message : "An unknown error occurred";
+		res.status(500).json({ message: msg });
+	}
+};
+
+const loginUserController = async (req: Request, res: Response) => {
+	try {
+		const loginToken = await loginUser(req.body.username, req.body.password);
+		res.status(200).json({ loginToken });
+	} catch (e) {
+		if (e instanceof LoginError)
+			res.status(400).json({ message: "Invalid username or password" });
+		else
+			res.status(500).json({ message: "Unexpected error" });
+	}
+};
 
 async function resetPasswordRequest(_: Request, res: Response) {
 	res.status(200).json("hi from forget password");
@@ -37,18 +56,8 @@ async function updateUser(_: Request, res: Response) {
 	res.status(200).json("hi from update");
 }
 
-const deleteAllUsersController = async (_: Request, res: Response) => {
-	try {
-		const deletedCount = await deleteAllUsers();
-		res.status(200).json({message: `deleted ${deletedCount} users`});
-	} catch (e) {
-		const msg = e instanceof Error ? e.message : "An unknown error occurred";
-		res.status(500).json({message: msg});
-	}
-};
-
 export {
-	loginUser,
+	loginUserController,
 	createUserController,
 	resetPasswordRequest,
 	updateUser,
