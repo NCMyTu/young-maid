@@ -1,4 +1,4 @@
-class LoginError extends Error {
+class SigninError extends Error {
 	constructor(message: string) {
 		super(message);
 		this.name = "LoginError";
@@ -6,4 +6,4 @@ class LoginError extends Error {
 	}
 }
 
-export { LoginError };
+export { SigninError };

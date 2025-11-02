@@ -1,5 +1,5 @@
-import { LoginError } from "../../util/error.js";
-import { createUser, getAllUsers, deleteAllUsers, loginUser } from "./user.service.js";
+import { SigninError } from "../../util/error.js";
+import { createUser, getAllUsers, deleteAllUsers, signinUser } from "./user.service.js";
 import type { Request, Response } from "express";
 
 const getAllUsersController = async (_: Request, res: Response) => {
@@ -36,12 +36,12 @@ const deleteAllUsersController = async (_: Request, res: Response) => {
 	}
 };
 
-const loginUserController = async (req: Request, res: Response) => {
+const signinUserController = async (req: Request, res: Response) => {
 	try {
-		const loginToken = await loginUser(req.body.username, req.body.password);
+		const loginToken = await signinUser(req.body.username, req.body.password);
 		res.status(200).json({ loginToken });
 	} catch (e) {
-		if (e instanceof LoginError)
+		if (e instanceof SigninError)
 			res.status(400).json({ message: "Invalid username or password" });
 		else
 			res.status(500).json({ message: "Unexpected error" });
@@ -57,7 +57,7 @@ async function updateUser(_: Request, res: Response) {
 }
 
 export {
-	loginUserController,
+	signinUserController,
 	createUserController,
 	resetPasswordRequest,
 	updateUser,

@@ -3,7 +3,7 @@ import { getMissingFields } from "../../util/util.js";
 import type { HydratedDocument, Types } from "mongoose";
 import type { IUser, CreateUserInput, CreateUserResponse } from "./user.type.js";
 import jwt from "jsonwebtoken";
-import { LoginError } from "../../util/error.js";
+import { SigninError } from "../../util/error.js";
 
 const getAllUsers = async () => {
 	return await User.find().sort({ "createdAt": -1 });
@@ -42,22 +42,27 @@ const verifyUser = async (username: string, password: string): Promise<Types.Obj
 	return user._id;
 };
 
-const loginUser = async (username: string, password: string): Promise<string> => {
+const signinUser = async (username: string, password: string): Promise<string> => {
+	const jwt_secret = process.env.JWT_SECRET;
+	if (!jwt_secret)
+		throw new Error("Cannot get JWT_SECRET");
+
 	const user_id = await verifyUser(username, password);
 
 	if (!user_id)
-		throw new LoginError("Invalid username or password");
+		throw new SigninError("Invalid username or password");
 
 	return jwt.sign(
 		{ _id: user_id },
-		String(process.env.JWT_SECRET),
-		{ expiresIn: "2H" }
-	);;
+		jwt_secret,
+		{ expiresIn: "1H" }
+	);
 };
 
 export {
 	getAllUsers,
 	deleteAllUsers,
 	createUser,
-	loginUser
+	signinUser,
+	verifyUser
 };

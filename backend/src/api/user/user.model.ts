@@ -5,7 +5,6 @@ import { type IGameId, type IUser } from "./user.type.js";
 
 // TODO:
 // test all fields with whitespace and whitespace only
-const SALT_ROUNDS = 11;
 const MONGOOSE_DUPLICATE_KEY_ERR_CODE = 11000;
 
 const GameIdSchema = new mongoose.Schema<IGameId>({
@@ -67,7 +66,7 @@ UserSchema.pre<IUser>("save", async function (next) {
 		return next();
 
 	try {
-		const salt = await bcrypt.genSalt(SALT_ROUNDS);
+		const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUND) || 11);
 		this.password = await bcrypt.hash(this.password, salt);
 		next();
 	} catch (e) {
