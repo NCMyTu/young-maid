@@ -7,7 +7,7 @@ import {
 	getAllUsersController,
 	deleteAllUsersController
 } from "./user.controller.js";
-import { authorizeUser } from "../../middleware/auth.middleware.js";
+import { authenticateUser } from "../../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ router.post("/signin", signinUserController);
 router.post("/signup", createUserController);
 router.post("/forget-password", resetPasswordRequest);
 // Protected
-router.use(authorizeUser);
+router.use(authenticateUser);
 router.get("/", getAllUsersController);
 router.post("/update", updateUser);
 router.delete("/", deleteAllUsersController);

@@ -5,7 +5,7 @@ interface UserRequest extends Request {
 	userToken?: string | JwtPayload;
 }
 
-const authorizeUser = async (req: UserRequest, res: Response, next: NextFunction) => {
+const authenticateUser = async (req: UserRequest, res: Response, next: NextFunction) => {
 	// Expects "Bearer <token>"
 	const token = req.headers.authorization?.split(" ")[1];
 	if (!token) 
@@ -26,4 +26,4 @@ const authorizeUser = async (req: UserRequest, res: Response, next: NextFunction
 	}
 };
 
-export { authorizeUser };
+export { authenticateUser };
