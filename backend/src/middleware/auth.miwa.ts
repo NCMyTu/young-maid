@@ -1,8 +1,13 @@
 import type { Response, Request, NextFunction } from "express";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 
+interface UserJwtPayload extends JwtPayload {
+	_id: string,
+	role: string
+}
+
 interface UserRequest extends Request {
-	userToken?: string | JwtPayload;
+	userToken?: UserJwtPayload;
 }
 
 const getJwtSecret = (): string => {
@@ -14,18 +19,19 @@ const getJwtSecret = (): string => {
 
 const authenticateUser = (req: UserRequest, res: Response, next: NextFunction) => {
 	// Expects "Bearer <token>"
-	const token = req.headers.authorization?.split(" ")[1];
-	if (!token) 
+	const authHeader = req.headers.authorization;
+	const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined;
+	if (!token)
 		return res.status(401).json({ message: "Authorization token is required" });
 
 	try {
 		// Verify token
-		const decoded = jwt.verify(token, getJwtSecret());
+		const decoded = jwt.verify(token, getJwtSecret()) as UserJwtPayload;
 		// Attach userToken to request
 		req.userToken = decoded;
 		next();
 	} catch (_) {
-		return res.status(403).json({ message: "Invalid or expired token" });
+		return res.status(401).json({ message: "Invalid or expired token" });
 	}
 };
 
@@ -36,8 +42,7 @@ const authorizeUser = (roles: string[]) => {
 			return next();
 		}
 
-		// Uhh...
-		const userRole = (req.userToken as any).role;
+		const userRole = req.userToken?.role;
 
 		if (!userRole)
 			return res.status(403).json({ message: "User role must be in token" });
