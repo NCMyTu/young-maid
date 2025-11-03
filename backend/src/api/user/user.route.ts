@@ -7,7 +7,7 @@ import {
 	getAllUsersController,
 	deleteAllUsersController
 } from "./user.controller.js";
-import { authenticateUser } from "../../middleware/auth.middleware.js";
+import { authenticateUser, authorizeUser } from "../../middleware/auth.miwa.js";
 
 const router = express.Router();
 
@@ -16,9 +16,10 @@ router.post("/signin", signinUserController);
 router.post("/signup", createUserController);
 router.post("/forget-password", resetPasswordRequest);
 // Protected
+// TODO: remove access when user is deleted and token is still in use.
 router.use(authenticateUser);
-router.get("/", getAllUsersController);
-router.post("/update", updateUser);
+router.get("/", authorizeUser([]), getAllUsersController);
+router.post("/", updateUser);
 router.delete("/", deleteAllUsersController);
 
 export default router;

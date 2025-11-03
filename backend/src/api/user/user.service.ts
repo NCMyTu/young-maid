@@ -1,6 +1,6 @@
 import User from "./user.model.js";
 import { getMissingFields } from "../../util/util.js";
-import type { HydratedDocument, Types } from "mongoose";
+import type { HydratedDocument } from "mongoose";
 import type { IUser, CreateUserInput, CreateUserResponse } from "./user.type.js";
 import jwt from "jsonwebtoken";
 import { SigninError } from "../../util/error.js";
@@ -25,6 +25,7 @@ const createUser = async (createUserInput: CreateUserInput): Promise<CreateUserR
 	return {
 		_id: savedUser._id,
 		gameId: savedUser.gameId,
+		role: savedUser.role,
 		createdAt: savedUser.createdAt
 	};
 };
@@ -33,13 +34,13 @@ const deleteAllUsers = async (): Promise<number> => {
 	return (await User.deleteMany()).deletedCount;
 };
 
-const verifyUser = async (username: string, password: string): Promise<Types.ObjectId | null> => {
+const verifyUser = async (username: string, password: string): Promise<HydratedDocument<IUser> | null> => {
 	const user = await User.findOne({ username: username });
 	if (!user)
 		return null;
 	if (!(await user.comparePassword(password)))
 		return null;
-	return user._id;
+	return user;
 };
 
 const signinUser = async (username: string, password: string): Promise<string> => {
@@ -47,13 +48,13 @@ const signinUser = async (username: string, password: string): Promise<string> =
 	if (!jwt_secret)
 		throw new Error("Cannot get JWT_SECRET");
 
-	const user_id = await verifyUser(username, password);
+	const user = await verifyUser(username, password);
 
-	if (!user_id)
+	if (!user)
 		throw new SigninError("Invalid username or password");
 
 	return jwt.sign(
-		{ _id: user_id },
+		{ _id: user.id, role: user.role },
 		jwt_secret,
 		{ expiresIn: "1H" }
 	);

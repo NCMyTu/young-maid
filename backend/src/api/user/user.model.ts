@@ -49,6 +49,10 @@ const UserSchema = new mongoose.Schema<IUser>({
 		lowercase: true,
 		validate: [validator.isEmail, "Email address is not valid."],
 	},
+	role: {
+		type: String,
+		default: "user",
+	},
 	gameId: {
 		type: GameIdSchema,
 		required: true

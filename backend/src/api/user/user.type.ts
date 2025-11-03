@@ -5,11 +5,12 @@ interface IGameId {
 	tagline: string
 }
 
-interface IUser extends Document{
+interface IUser extends Document {
 	_id: Types.ObjectId,
 	username: string,
 	password: string,
 	email: string,
+	role: "user" | "admin",
 	gameId: IGameId,
 	createdAt: Date,
 	updatedAt: Date
@@ -21,6 +22,6 @@ interface CreateUserInput extends Pick<IUser, "username" | "password" | "email">
 	tagline: string;
 }
 
-interface CreateUserResponse extends Pick<IUser, "_id" | "gameId" | "createdAt"> {}
+interface CreateUserResponse extends Pick<IUser, "_id" | "gameId" | "role" | "createdAt"> { }
 
 export type { IGameId, IUser, CreateUserInput, CreateUserResponse };
