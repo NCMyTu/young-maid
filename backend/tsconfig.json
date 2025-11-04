@@ -12,6 +12,7 @@
 		"verbatimModuleSyntax": true,
 		/* Strictness */
 		"strict": true,
+		"noUncheckedSideEffectImports": true,
 		"noUncheckedIndexedAccess": true,
 		"noImplicitOverride": true,
 		"noUnusedLocals": true,

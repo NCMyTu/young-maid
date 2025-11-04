@@ -13,7 +13,7 @@ const GameIdSchema = new mongoose.Schema<IGameId>({
 		required: true,
 		trim: true,
 		minLength: [3, "Display name must be at least 3 characters long."],
-		maxLength: [35, "Display name must be less than 35 characters"]
+		maxLength: [35, "Display name must be less than 35 characters."]
 	},
 	tagline: {
 		type: String,
@@ -22,6 +22,7 @@ const GameIdSchema = new mongoose.Schema<IGameId>({
 		trim: true,
 		uppercase: true,
 		validate: [(s: string) => validator.isAlphanumeric(s, "en-US"), "Tagline must be A-Z, 0-9."],
+		minLength: [2, "Tagline must be at least 2 characters long."],
 		maxLength: [6, "Tagline must be less than 6 characters."]
 	}},
 	{_id: false}
@@ -39,14 +40,13 @@ const UserSchema = new mongoose.Schema<IUser>({
 	password: {
 		type: String,
 		required: [true, "Password is required."],
-		minLength: [8, "Password must be at least 8 characters long."],
+		minLength: [6, "Password must be at least 6 characters long."],
 	},
 	email: {
 		type: String,
 		required: [true, "Email is required."],
 		trim: true,
 		unique: true,
-		lowercase: true,
 		validate: [validator.isEmail, "Email address is not valid."],
 	},
 	role: {
@@ -62,7 +62,7 @@ const UserSchema = new mongoose.Schema<IUser>({
 
 UserSchema.index(
 	{"gameId.displayName": 1, "gameId.tagline": 1},
-	{unique: true}
+	{ unique: true, name: "idx_u_displayName_tagline "}
 );
 
 UserSchema.pre<IUser>("save", async function (next) {
