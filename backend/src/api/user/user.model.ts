@@ -7,13 +7,20 @@ import { type IGameId, type IUser } from "./user.type.js";
 // test all fields with whitespace and whitespace only
 const MONGOOSE_DUPLICATE_KEY_ERR_CODE = 11000;
 
+const USERNAME_MIN_LENGTH = 6;
+const PASSWORD_MIN_LENGTH = 6;
+const DISPLAY_NAME_MIN_LENGTH = 3;
+const DISPLAY_NAME_MAX_LENGTH = 35;
+const TAGLINE_MIN_LENGTH = 2;
+const TAGLINE_MAX_LENGTH = 6;
+
 const GameIdSchema = new mongoose.Schema<IGameId>({
 	displayName: {
 		type: String,
 		required: true,
 		trim: true,
-		minLength: [3, "Display name must be at least 3 characters long."],
-		maxLength: [35, "Display name must be less than 35 characters."]
+		minLength: [DISPLAY_NAME_MIN_LENGTH, `Display name must be at least ${DISPLAY_NAME_MIN_LENGTH} characters long.`],
+		maxLength: [DISPLAY_NAME_MAX_LENGTH, `Display name must be less than ${DISPLAY_NAME_MAX_LENGTH} characters.`]
 	},
 	tagline: {
 		type: String,
@@ -22,8 +29,8 @@ const GameIdSchema = new mongoose.Schema<IGameId>({
 		trim: true,
 		uppercase: true,
 		validate: [(s: string) => validator.isAlphanumeric(s, "en-US"), "Tagline must be A-Z, 0-9."],
-		minLength: [2, "Tagline must be at least 2 characters long."],
-		maxLength: [6, "Tagline must be less than 6 characters."]
+		minLength: [TAGLINE_MIN_LENGTH, `Tagline must be at least ${TAGLINE_MIN_LENGTH} characters long.`],
+		maxLength: [TAGLINE_MAX_LENGTH, `Tagline must be less than ${TAGLINE_MAX_LENGTH} characters.`]
 	}},
 	{_id: false}
 );
@@ -34,13 +41,13 @@ const UserSchema = new mongoose.Schema<IUser>({
 		required: [true, "Username is required."],
 		trim: true,
 		unique: true,
-		minLength: [6, "Username must be at least 6 characters long."],
-		match: [/^\S+$/, 'Username cannot contain spaces.']
+		minLength: [USERNAME_MIN_LENGTH, `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`],
+		match: [/^\S+$/, 'Username cannot contain whitespace characters.']
 	},
 	password: {
 		type: String,
 		required: [true, "Password is required."],
-		minLength: [6, "Password must be at least 6 characters long."],
+		minLength: [PASSWORD_MIN_LENGTH, `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`],
 	},
 	email: {
 		type: String,
@@ -51,6 +58,7 @@ const UserSchema = new mongoose.Schema<IUser>({
 	},
 	role: {
 		type: String,
+		enum: ["user, admin"],
 		default: "user",
 	},
 	gameId: {
@@ -62,7 +70,7 @@ const UserSchema = new mongoose.Schema<IUser>({
 
 UserSchema.index(
 	{"gameId.displayName": 1, "gameId.tagline": 1},
-	{ unique: true, name: "idx_u_displayName_tagline "}
+	{ unique: true, name: "idx_u_displayName_tagline"}
 );
 
 UserSchema.pre<IUser>("save", async function (next) {
@@ -70,7 +78,7 @@ UserSchema.pre<IUser>("save", async function (next) {
 		return next();
 
 	try {
-		const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUND) || 11);
+		const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS) || 11);
 		this.password = await bcrypt.hash(this.password, salt);
 		next();
 	} catch (e) {
