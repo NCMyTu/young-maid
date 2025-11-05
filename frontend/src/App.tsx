@@ -1,4 +1,4 @@
-import SignUp from "./component/SigninPage/SigninPage";
+import SignUp from "./component/SignUpPage/SignUpPage.tsx";
 
 function App() {
 	return (

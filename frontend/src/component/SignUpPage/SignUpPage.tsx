@@ -1,7 +1,7 @@
 import React from "react";
-import "./SigninPage.css";
-import FormInput from "../FormInput/FormInput";
-import type { IFormInputProps } from "../FormInput/FormInput.type";
+import "./SignUpPage.css";
+import FormInput from "../FormInput/FormInput.tsx";
+import type { IFormInputProps } from "../FormInput/FormInput.type.ts";
 import {
 	displayNameValidationRules,
 	emailValidationRules,
@@ -43,7 +43,7 @@ function SignUp(): React.JSX.Element {
 	return (
 		<div className="signup-box">
 			<h2>Create a new account</h2>
-			<form id="signin">
+			<form id="signup">
 				{generateFormInputFields(inputFieldInfo)}
 				<input type="submit" value="Sign Up" />
 			</form>
