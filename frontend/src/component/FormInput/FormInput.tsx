@@ -35,6 +35,7 @@ function FormInput({
 	labelText,
 	inputId,
 	inputType,
+	inputRef, // This ref is used to get the input value out. I know it's ugly.
 	validationRules
 }: IFormInputProps): React.JSX.Element {
 	const warningRef = useRef<HTMLParagraphElement>(null);
@@ -43,6 +44,7 @@ function FormInput({
 		<div className={divClassName}>
 			<label className="form-label" id={`label-${inputId}`} htmlFor={inputId}>{labelText}</label>
 			<input
+				ref={inputRef}
 				className="form-input"
 				type={inputType}
 				id={inputId}
