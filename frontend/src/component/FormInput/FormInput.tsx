@@ -1,51 +1,55 @@
-import type { IValidationFuncResult } from "../SigninPage/helper.tsx";
-import React from "react";
-import { toggleElement } from "../SigninPage/helper.tsx";
+import React, { useRef } from "react";
+import type { ValidationRule, IFormInputProps } from "./FormInput.type.ts";
 
-interface IFormInputProps {
-	divClassName: string,
-	labelText: string,
-	inputId: string,
-	inputType: string,
-	warningStyle: string | undefined,
-	inputRef: React.RefObject<HTMLInputElement | null>,
+/**
+ * Handles input validation for an input field and display a corresponding warning <p>.
+ *
+ * Stops after the first failed validation, so the order of validation rules matters.
+ */
+const handleOnInput = (
+	e: React.FormEvent<HTMLInputElement>,
 	warningRef: React.RefObject<HTMLParagraphElement | null>,
-	validationStrategy: (input: string) => IValidationFuncResult
-}
+	validationRules: ValidationRule[]
+) => {
+	const inputValue = e.currentTarget.value;
+	const warningElement = warningRef.current;
+
+	if (!warningElement)
+		return;
+
+	for (const { validateFunc, message } of validationRules)
+		if (!validateFunc(inputValue)) {
+			warningElement.style.display = "block";
+			warningElement.textContent = message;
+			// warningElement.classList.remove("hidden");
+			return;
+		}
+
+	warningElement.style.display = "none";
+	warningElement.textContent = "";
+	// warningElement.classList.add("hidden");
+};
 
 function FormInput({
 	divClassName,
 	labelText,
 	inputId,
 	inputType,
-	warningStyle,
-	inputRef,
-	warningRef,
-	validationStrategy
+	validationRules
 }: IFormInputProps): React.JSX.Element {
+	const warningRef = useRef<HTMLParagraphElement>(null);
+
 	return (
 		<div className={divClassName}>
-			<label id={`label-${inputId}`} htmlFor={inputId}>{labelText}</label>
+			<label className="form-label" id={`label-${inputId}`} htmlFor={inputId}>{labelText}</label>
 			<input
+				className="form-input"
 				type={inputType}
 				id={inputId}
 				name={inputId}
-				ref={inputRef}
-				onInput={(
-					e: React.FormEvent<HTMLInputElement>
-				): void => {
-					const inputValue = e.currentTarget.value;
-					const result = validationStrategy(inputValue);
-
-					if (!warningRef.current) return;
-
-					if (result.ok)
-						toggleElement(warningRef.current, "off");
-					else
-						toggleElement(warningRef.current, "on", result.message);
-				}}
+				onInput={(e) => handleOnInput(e, warningRef, validationRules)}
 			/>
-			<p ref={warningRef} className={warningStyle}></p>
+			<p className={`form-warning`} ref={warningRef}></p>
 		</div>
 	)
 }

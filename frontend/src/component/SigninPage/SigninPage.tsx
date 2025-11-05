@@ -1,87 +1,50 @@
-import { useRef } from "react";
-import styles from "./SigninPage.module.css";
-import { validateDisplayName, validateEmail, validateTagline, validateUsername, validatePassword } from "./validation-strategy.tsx";
-import { type IValidationFuncResult } from "./helper.tsx";
-import FormInput from "../FormInput/FormInput";
 import React from "react";
 import "./SigninPage.css";
+import FormInput from "../FormInput/FormInput";
+import type { IFormInputProps } from "../FormInput/FormInput.type";
+import {
+	displayNameValidationRules,
+	emailValidationRules,
+	passwordValidationRules,
+	taglineValidationRules,
+	usernameValidationRules
+} from "./validation-rule.ts";
 
 // TODO:
 // maybe implement a bloom filter.
+// add a "repeat password" field
 
-interface IInputRefs {
-	username: React.RefObject<HTMLInputElement | null>;
-	email: React.RefObject<HTMLInputElement | null>;
-	password: React.RefObject<HTMLInputElement | null>;
-	displayName: React.RefObject<HTMLInputElement | null>;
-	tagline: React.RefObject<HTMLInputElement | null>;
-}
+const inputFieldInfo: IFormInputProps[] = [
+	{ divClassName: "signin-input", inputId: "username", labelText: "Username", inputType: "text", validationRules: usernameValidationRules },
+	{ divClassName: "signin-input", inputId: "password", labelText: "Password", inputType: "password", validationRules: passwordValidationRules },
+	{ divClassName: "signin-input", inputId: "email", labelText: "Email", inputType: "text", validationRules: emailValidationRules },
+	{ divClassName: "signin-input", inputId: "display-name", labelText: "Display Name", inputType: "text", validationRules: displayNameValidationRules },
+	{ divClassName: "signin-input", inputId: "tagline", labelText: "Tagline #", inputType: "text", validationRules: taglineValidationRules }
+];
 
-interface IWarningRefs {
-	username: React.RefObject<HTMLParagraphElement | null>;
-	password: React.RefObject<HTMLParagraphElement | null>;
-	email: React.RefObject<HTMLParagraphElement | null>;
-	displayName: React.RefObject<HTMLParagraphElement | null>;
-	tagline: React.RefObject<HTMLParagraphElement | null>;
-}
+const generateFormInputFields = (fieldInfo: IFormInputProps[]) => (
+	<>
+		{fieldInfo.map(({
+			divClassName, inputId, labelText, inputType, validationRules
+		}) => (
+			<FormInput
+				key={inputId}
+				divClassName={divClassName}
+				inputId={inputId}
+				labelText={labelText}
+				inputType={inputType}
+				validationRules={validationRules}
+			/>
+		))}
+	</>
+);
 
-interface IInput {
-	inputId: keyof IInputRefs,
-	labelText: string,
-	inputType: string,
-	validationStrat: (input: string) => IValidationFuncResult
-}
-
-const generateFormInputFields = (
-	inputRefs: IInputRefs, warningRefs: IWarningRefs, inputFields: IInput[]
-): React.JSX.Element[] => {
-	return inputFields.map((
-		{ inputId, labelText, inputType, validationStrat }
-	) => (
-		<FormInput
-			key={inputId}
-			divClassName="signin-input"
-			labelText={labelText}
-			inputId={inputId}
-			inputType={inputType}
-			warningStyle={styles.warning}
-			inputRef={inputRefs[inputId]}
-			warningRef={warningRefs[inputId]}
-			validationStrategy={validationStrat}
-		/>
-	))
-};
-
-function SignUp() {
-	const inputRefs: IInputRefs = {
-		username: useRef(null),
-		email: useRef(null),
-		password: useRef(null),
-		displayName: useRef(null),
-		tagline: useRef(null),
-	}
-
-	const warningRefs: IWarningRefs = {
-		username: useRef(null),
-		password: useRef(null),
-		email: useRef(null),
-		displayName: useRef(null),
-		tagline: useRef(null),
-	};
-
-	const inputFields: IInput[] = [
-		{ inputId: "username", labelText: "Username", inputType: "text", validationStrat: validateUsername },
-		{ inputId: "password", labelText: "Password", inputType: "password", validationStrat: validatePassword },
-		{ inputId: "email", labelText: "Email", inputType: "text", validationStrat: validateEmail },
-		{ inputId: "displayName", labelText: "Display Name", inputType: "text", validationStrat: validateDisplayName },
-		{ inputId: "tagline", labelText: "Tagline #", inputType: "text", validationStrat: validateTagline },
-	];
-
+function SignUp(): React.JSX.Element {
 	return (
 		<div className="signup-box">
 			<h2>Create a new account</h2>
 			<form id="signin">
-				{generateFormInputFields(inputRefs, warningRefs, inputFields)}
+				{generateFormInputFields(inputFieldInfo)}
 				<input type="submit" value="Sign Up" />
 			</form>
 		</div>
