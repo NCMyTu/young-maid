@@ -21,7 +21,9 @@ const createUser = async (createUserInput: CreateUserInput): Promise<CreateUserR
 		username, password, email,
 		gameId: { displayName, tagline }
 	});
+
 	const savedUser = await newUser.save();
+
 	return {
 		_id: savedUser._id,
 		gameId: savedUser.gameId,

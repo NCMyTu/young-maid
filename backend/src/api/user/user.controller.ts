@@ -16,8 +16,7 @@ const getAllUsersController = async (_: Request, res: Response): Promise<void> =
 
 const createUserController = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const {username, password, email, gameId} = req.body;
-		const {displayName, tagline} = gameId;
+		const { username, password, email, displayName, tagline } = req.body;
 		const user = await createUser({username, password, email, displayName, tagline});
 		res.status(201).json({message: "User created successfully.", user});
 	} catch (e) {

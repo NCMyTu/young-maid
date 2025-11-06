@@ -47,19 +47,19 @@ const UserSchema = new mongoose.Schema<IUser>({
 	password: {
 		type: String,
 		required: [true, "Password is required."],
-		minLength: [PASSWORD_MIN_LENGTH, `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`],
+		minLength: [PASSWORD_MIN_LENGTH, `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`]
 	},
 	email: {
 		type: String,
 		required: [true, "Email is required."],
 		trim: true,
 		unique: true,
-		validate: [validator.isEmail, "Email address is not valid."],
+		validate: [validator.isEmail, "Email address is not valid."]
 	},
 	role: {
 		type: String,
-		enum: ["user, admin"],
-		default: "user",
+		enum: ["user", "admin"],
+		default: "user"
 	},
 	gameId: {
 		type: GameIdSchema,

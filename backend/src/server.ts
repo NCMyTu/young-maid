@@ -2,11 +2,14 @@ import dotenv from "dotenv";
 import express from "express";
 import userRouter from "./api/user/user.route.js";
 import { connectDB } from "./config/db.config.js";
+import cors from "cors";
+import corsOptions from "./config/cors-options.js";
 
 dotenv.config();
 
 const app = express();
 
+app.use(cors(corsOptions));
 app.use(express.json({ limit: "20mb" }));
 
 app.use("/api/users", userRouter);
