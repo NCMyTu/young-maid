@@ -8,11 +8,12 @@ import {
 	passwordValidationRules,
 	taglineValidationRules,
 	usernameValidationRules
-} from "./validation-rule.ts";
+} from "./ValidationRules.ts";
 
 // TODO:
 // maybe implement a bloom filter.
 // add a "repeat password" field
+// check for warning before submitting
 
 const generateFormInputFields = (fieldInfo: IFormInputProps[]) => (
 	<>
@@ -45,22 +46,45 @@ function SignUp(): React.JSX.Element {
 
 	// Change this if you want to add another input field.
 	const inputFieldInfo: IFormInputProps[] = [
-		{ divClassName: "signin-input", inputId: "username", labelText: "Username", inputType: "text", validationRules: usernameValidationRules, inputRef: refs.username },
-		{ divClassName: "signin-input", inputId: "password", labelText: "Password", inputType: "password", validationRules: passwordValidationRules, inputRef: refs.password },
-		{ divClassName: "signin-input", inputId: "email", labelText: "Email", inputType: "text", validationRules: emailValidationRules, inputRef: refs.email },
-		{ divClassName: "signin-input", inputId: "display-name", labelText: "Display Name", inputType: "text", validationRules: displayNameValidationRules, inputRef: refs.displayName },
-		{ divClassName: "signin-input", inputId: "tagline", labelText: "Tagline #", inputType: "text", validationRules: taglineValidationRules, inputRef: refs.tagline }
+		{ divClassName: "signup-input", inputId: "username", labelText: "Username", inputType: "text", validationRules: usernameValidationRules, inputRef: refs.username },
+		{ divClassName: "signup-input", inputId: "password", labelText: "Password", inputType: "password", validationRules: passwordValidationRules, inputRef: refs.password },
+		{ divClassName: "signup-input", inputId: "email", labelText: "Email", inputType: "text", validationRules: emailValidationRules, inputRef: refs.email },
+		{ divClassName: "signup-input", inputId: "display-name", labelText: "Display Name", inputType: "text", validationRules: displayNameValidationRules, inputRef: refs.displayName },
+		{ divClassName: "signup-input", inputId: "tagline", labelText: "Tagline #", inputType: "text", validationRules: taglineValidationRules, inputRef: refs.tagline }
 	];
 
-	const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log({
+
+		const userData = {
 			username: refs.username.current?.value,
 			password: refs.password.current?.value,
 			email: refs.email.current?.value,
 			displayName: refs.displayName.current?.value,
 			tagline: refs.tagline.current?.value,
-		});
+		};
+
+		try {
+			const res = await fetch("http://localhost:19722/api/users/signup", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(userData),
+			});
+
+			const result = await res.json();
+
+			if (!res.ok) {
+				// TODO: add a warn <p> right before the submit button.
+				alert(`Error: ${res.status} ${result.message}`);
+				return;
+			}
+
+			alert(`User created: ${JSON.stringify(result.user)}`);
+		} catch (e) {
+			alert(`Request failed: ${e}`);
+		}
 	};
 
 	return (

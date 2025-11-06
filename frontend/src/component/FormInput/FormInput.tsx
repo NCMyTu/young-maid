@@ -51,7 +51,7 @@ function FormInput({
 				name={inputId}
 				onInput={(e) => handleOnInput(e, warningRef, validationRules)}
 			/>
-			<p className={`form-warning`} ref={warningRef}></p>
+			<p className={`form-input-warning`} ref={warningRef}></p>
 		</div>
 	)
 }
