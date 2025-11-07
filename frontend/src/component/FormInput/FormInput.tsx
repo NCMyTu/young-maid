@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import type { ValidationRule, IFormInputProps } from "./FormInput.type.ts";
+import styles from "./FormInput.module.css";
 
 /**
  * Handles input validation for an input field and display a corresponding warning <p>.
@@ -19,15 +20,13 @@ const handleOnInput = (
 
 	for (const { validateFunc, message } of validationRules)
 		if (!validateFunc(inputValue)) {
-			warningElement.style.display = "block";
+			warningElement.style.visibility = "visible";
 			warningElement.textContent = message;
-			// warningElement.classList.remove("hidden");
 			return;
 		}
 
-	warningElement.style.display = "none";
-	warningElement.textContent = "";
-	// warningElement.classList.add("hidden");
+	warningElement.style.visibility = "hidden";
+	warningElement.textContent = "JUST F#$@*&^ STOP SHRINKING";
 };
 
 function FormInput({
@@ -41,17 +40,18 @@ function FormInput({
 	const warningRef = useRef<HTMLParagraphElement>(null);
 
 	return (
-		<div className={divClassName}>
-			<label className="form-label" id={`label-${inputId}`} htmlFor={inputId}>{labelText}</label>
+		<div className={`${divClassName} ${styles.div}`}>
+			<label className={`form-label ${styles.label}`} htmlFor={inputId}>{labelText}</label>
 			<input
 				ref={inputRef}
-				className="form-input"
+				className={`form-input ${styles.input}`}
 				type={inputType}
 				id={inputId}
 				name={inputId}
 				onInput={(e) => handleOnInput(e, warningRef, validationRules)}
+				required
 			/>
-			<p className={`form-input-warning`} ref={warningRef}></p>
+			<p className={`form-warning ${styles.warning}`} ref={warningRef}>This is a warning</p>
 		</div>
 	)
 }

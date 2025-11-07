@@ -1,0 +1,38 @@
+.div {
+	font-family: "Arial", sans-serif;
+	/* background-color: #d4d3d3;
+	border: 2px solid purple; */
+	display: flex;
+	flex-direction: column;
+	width: fit-content;
+	margin-bottom: 10px;
+}
+
+.label {
+	margin: 0 0 4px 5px;
+	font-weight: bold;
+	font-size: 15px;
+	letter-spacing: 0.3px;
+	color: hsla(220, 89%, 46%, 0.721)
+}
+
+.input {
+	border-radius: 2px;
+	border: 1px solid #555;
+	width: 330px;
+	padding: 5px 5px;
+	font-size: 17px;
+	transition: border-color 0.7s ease;
+}
+
+.input:focus {
+	outline: none;
+	border: 1px solid hsl(230, 100%, 45%);
+}
+
+.warning {
+	color: hsl(5, 100%, 45%) !important;
+	margin: 4px 0 0 5px;
+	font-size: 13px;
+	visibility: hidden
+}

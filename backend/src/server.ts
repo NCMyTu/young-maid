@@ -9,13 +9,15 @@ dotenv.config();
 
 const app = express();
 
+// Setup
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "20mb" }));
 
+// Routes
 app.use("/api/users", userRouter);
 
+// Start server
 const PORT = Number(process.env.PORT) || 5001;
-
 connectDB()
 	.then(() =>
 		app.listen(PORT, () =>
