@@ -11,9 +11,10 @@ import {
 } from "./ValidationRules.ts";
 
 // TODO:
-// maybe implement a bloom filter.
+// implement a bloom filter on backend and send it here.
 // add a "repeat password" field
 // check for warning before submitting
+// Display "YM" when tagline is empty
 
 const generateFormInputFields = (fieldInfo: IFormInputProps[]) => (
 	<>
@@ -32,8 +33,6 @@ const generateFormInputFields = (fieldInfo: IFormInputProps[]) => (
 		))}
 	</>
 );
-
-
 
 function SignUp(): React.JSX.Element {
 	const refs = {
@@ -90,9 +89,9 @@ function SignUp(): React.JSX.Element {
 	return (
 		<div className="signup-box">
 			<h2>Create a new account</h2>
-			<form id="signup" onSubmit={handleOnSubmit}>
+			<form onSubmit={handleOnSubmit}>
 				{generateFormInputFields(inputFieldInfo)}
-				<input type="submit" value="Sign Up" />
+				<button type="submit">Sign Up</button>
 			</form>
 		</div>
 	);

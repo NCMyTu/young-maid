@@ -40,7 +40,7 @@ function FormInput({
 	const warningRef = useRef<HTMLParagraphElement>(null);
 
 	return (
-		<div className={`${divClassName} ${styles.div}`}>
+		<div className={`form-input ${divClassName} ${styles.div}`}>
 			<label className={`form-label ${styles.label}`} htmlFor={inputId}>{labelText}</label>
 			<input
 				ref={inputRef}
