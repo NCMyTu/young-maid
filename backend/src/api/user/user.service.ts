@@ -25,7 +25,7 @@ const createUser = async (createUserInput: CreateUserInput): Promise<CreateUserR
 	const savedUser = await newUser.save();
 
 	return {
-		_id: savedUser._id,
+		id: savedUser.id,
 		gameId: savedUser.gameId,
 		role: savedUser.role,
 		createdAt: savedUser.createdAt
@@ -46,19 +46,21 @@ const verifyUser = async (username: string, password: string): Promise<HydratedD
 };
 
 const signinUser = async (username: string, password: string): Promise<string> => {
+	const user = await verifyUser(username, password);
+	if (!user)
+		throw new SigninError("Invalid username or password");
+	return generateJwt(user.id, user.role, 60 * 60);
+};
+
+const generateJwt = (userId: string, userRole: string, durationInSeconds: number): string => {
 	const jwt_secret = process.env.JWT_SECRET;
 	if (!jwt_secret)
 		throw new Error("Cannot get JWT_SECRET");
 
-	const user = await verifyUser(username, password);
-
-	if (!user)
-		throw new SigninError("Invalid username or password");
-
 	return jwt.sign(
-		{ _id: user.id, role: user.role },
+		{ id: userId, role: userRole },
 		jwt_secret,
-		{ expiresIn: "1H" }
+		{ expiresIn: `${durationInSeconds}s` }
 	);
 };
 

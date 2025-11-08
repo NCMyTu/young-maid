@@ -7,6 +7,7 @@ interface IGameId {
 
 interface IUser extends Document {
 	_id: Types.ObjectId,
+	id: string,
 	username: string,
 	password: string,
 	email: string,
@@ -22,6 +23,6 @@ interface CreateUserInput extends Pick<IUser, "username" | "password" | "email">
 	tagline: string;
 }
 
-interface CreateUserResponse extends Pick<IUser, "_id" | "gameId" | "role" | "createdAt"> { }
+interface CreateUserResponse extends Pick<IUser, "id" | "gameId" | "role" | "createdAt"> { }
 
 export type { IGameId, IUser, CreateUserInput, CreateUserResponse };

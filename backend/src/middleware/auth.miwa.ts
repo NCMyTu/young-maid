@@ -2,7 +2,7 @@ import type { Response, Request, NextFunction } from "express";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 
 interface UserJwtPayload extends JwtPayload {
-	_id: string,
+	id: string,
 	role: string
 }
 
@@ -25,33 +25,29 @@ const authenticateUser = (req: UserRequest, res: Response, next: NextFunction) =
 		return res.status(401).json({ message: "Authorization token is required" });
 
 	try {
-		// Verify token
-		const decoded = jwt.verify(token, getJwtSecret()) as UserJwtPayload;
-		// Attach userToken to request
-		req.userToken = decoded;
+		const decoded = jwt.verify(token, getJwtSecret());
+		req.userToken = decoded as UserJwtPayload;
 		next();
-	} catch (_) {
+	} catch {
 		return res.status(401).json({ message: "Invalid or expired token" });
 	}
 };
 
 const authorizeUser = (roles: string[]) => {
 	return (req: UserRequest, res: Response, next: NextFunction) => {
-		if (roles.length === 0) {
-			console.warn("Roles array is empty. If you want all users to access this endpoint, add \"all\" to suppress this warning");
-			return next();
-		}
+		if (roles.length === 0)
+			throw new Error("\"roles\" must not be empty. Add \"all\" to explicitly allow all users");
 
 		const userRole = req.userToken?.role;
 
 		if (!userRole)
-			return res.status(403).json({ message: "User role must be in token" });
+			return res.status(403).json({ message: "User role not found in token" });
 
 		if (roles.includes("all"))
 			return next()
 
 		if (!roles.includes(userRole))
-			return res.status(403).json({ message: "Insufficient Permission" });
+			return res.status(403).json({ message: "Insufficient permission" });
 
 		next();
 	};
