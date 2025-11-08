@@ -8,6 +8,7 @@ import { type IGameId, type IUser } from "./user.type.js";
 const MONGOOSE_DUPLICATE_KEY_ERR_CODE = 11000;
 
 const USERNAME_MIN_LENGTH = 6;
+const USERNAME_MAX_LENGTH = 330;
 const PASSWORD_MIN_LENGTH = 6;
 const DISPLAY_NAME_MIN_LENGTH = 3;
 const DISPLAY_NAME_MAX_LENGTH = 35;
@@ -42,6 +43,7 @@ const UserSchema = new mongoose.Schema<IUser>({
 		trim: true,
 		unique: true,
 		minLength: [USERNAME_MIN_LENGTH, `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`],
+		maxLength: [USERNAME_MAX_LENGTH, `Username must be less than ${USERNAME_MAX_LENGTH} characters.`],
 		match: [/^\S+$/, 'Username cannot contain whitespace characters.']
 	},
 	password: {
