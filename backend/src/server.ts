@@ -4,6 +4,7 @@ import userRouter from "./api/user/user.route.js";
 import { connectDB } from "./config/db.config.js";
 import cors from "cors";
 import corsOptions from "./config/cors-options.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ const app = express();
 // Setup
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "20mb" }));
-
+app.use(cookieParser());
 // Routes
 app.use("/api/users", userRouter);
 

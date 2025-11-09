@@ -19,8 +19,10 @@ const getJwtSecret = (): string => {
 
 const authenticateUser = (req: UserRequest, res: Response, next: NextFunction) => {
 	// Expects "Bearer <token>"
-	const authHeader = req.headers.authorization;
-	const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined;
+	// const authHeader = req.headers.authorization;
+	// const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined;
+	const token = req.cookies?.token;
+
 	if (!token)
 		return res.status(401).json({ message: "Authorization token is required" });
 

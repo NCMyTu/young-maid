@@ -38,6 +38,11 @@ const deleteAllUsersController = async (_: Request, res: Response): Promise<void
 const signinUserController = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const loginToken = await signinUser(req.body.username, req.body.password);
+		res.cookie("token", loginToken, {
+			httpOnly: true,
+			sameSite: 'strict',
+			maxAge: 1000 * 60 * 60
+		});
 		res.status(200).json({ message: "Signin successful", loginToken });
 	} catch (e) {
 		if (e instanceof SigninError)
