@@ -1,4 +1,4 @@
-.signup-box {
+.signin-box {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -14,18 +14,19 @@
 	transform: translate(-50%, -50%);
 }
 
-.signup-box h2 {
+.signin-box h2 {
 	width: fit-content;
 	margin: 0 auto 20px auto;
 	font-size: 50px;
 	font-weight: lighter;
+	font-family: "Arial", sans-serif;
 }
 
-.signup-box .form-input input {
+.signin-box .form-input input {
 	width: 330px;
 }
 
-.signup-box form button[type="submit"] {
+.signin-box form button[type="submit"] {
 	display: block;
 	margin: 7px auto;
 	font-size: 20px;
@@ -38,22 +39,18 @@
 	transition: all 0.3s ease;
 }
 
-.signup-box input#tagline {
-	text-transform: uppercase;
-}
-
-.signup-box form button[type="submit"]:hover {
+.signin-box form button[type="submit"]:hover {
 	background-color: hsl(220, 88%, 55%);
 }
 
-.signup-box p.signin-text {
+.signin-box p.signup-text {
 	font-family: "Arial", sans-serif;
 }
 
-.signup-box p.signin-text a {
+.signin-box p.signup-text a {
 	text-decoration: none;
 }
 
-.signup-box p.signin-text a:visited {
+.signin-box p.signup-text a:visited {
 	color: inherit;
 }

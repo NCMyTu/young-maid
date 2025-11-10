@@ -40,7 +40,7 @@ function SignUp(): React.JSX.Element {
 		password: useRef<HTMLInputElement>(null),
 		email: useRef<HTMLInputElement>(null),
 		displayName: useRef<HTMLInputElement>(null),
-		tagline: useRef<HTMLInputElement>(null),
+		tagline: useRef<HTMLInputElement>(null)
 	};
 
 	// Change this if you want to add another input field.
@@ -60,7 +60,7 @@ function SignUp(): React.JSX.Element {
 			password: refs.password.current?.value,
 			email: refs.email.current?.value,
 			displayName: refs.displayName.current?.value,
-			tagline: refs.tagline.current?.value,
+			tagline: refs.tagline.current?.value
 		};
 
 		try {
@@ -69,7 +69,8 @@ function SignUp(): React.JSX.Element {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(userData),
+				credentials: "include",
+				body: JSON.stringify(userData)
 			});
 
 			const result = await res.json();
@@ -93,6 +94,11 @@ function SignUp(): React.JSX.Element {
 				{generateFormInputFields(inputFieldInfo)}
 				<button type="submit">Sign Up</button>
 			</form>
+
+			<p className="signin-text">
+				Already have an account?{" "}
+				<a href="/signin">Sign in</a>
+			</p>
 		</div>
 	);
 }
