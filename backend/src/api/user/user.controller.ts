@@ -1,5 +1,5 @@
 import { SigninError } from "../../util/error.js";
-import { createUser, getAllUsers, deleteAllUsers, signinUser } from "./user.service.js";
+import { createUser, getAllUsers, deleteAllUsers, signinUser, verifyUserJwtToken } from "./user.service.js";
 import type { Request, Response } from "express";
 
 const getAllUsersController = async (_: Request, res: Response): Promise<void> => {
@@ -36,35 +36,55 @@ const deleteAllUsersController = async (_: Request, res: Response): Promise<void
 };
 
 const signinUserController = async (req: Request, res: Response): Promise<void> => {
+	const durationInSeconds = 60 * 60;
+
 	try {
-		const loginToken = await signinUser(req.body.username, req.body.password);
+		const loginToken = await signinUser(req.body.username, req.body.password, durationInSeconds);
 		res.cookie("token", loginToken, {
 			httpOnly: true,
 			sameSite: 'strict',
-			maxAge: 1000 * 60 * 60
+			secure: false, // true if over https
+			maxAge: 1000 * durationInSeconds
 		});
 		res.status(200).json({ message: "Signin successful", loginToken });
 	} catch (e) {
 		if (e instanceof SigninError)
-			res.status(400).json({ message: "Invalid username or password" });
+			res.status(401).json({ message: "Incorrect username or password" });
 		else
 			res.status(500).json({ message: "Unexpected error" });
 	}
 };
 
-async function resetPasswordRequest(_: Request, res: Response): Promise<void> {
+async function resetPasswordController(_: Request, res: Response): Promise<void> {
 	res.status(200).json("hi from forget password");
 }
 
-async function updateUser(_: Request, res: Response): Promise<void> {
+async function updateUserController(_: Request, res: Response): Promise<void> {
 	res.status(200).json("hi from update");
+}
+
+function verifyTokenController(req: Request, res: Response): void {
+	const token = req.cookies.token;
+
+	if (!token) {
+		res.status(401).json({ message: "Not authenticated" });
+		return;
+	}
+
+	try {
+		verifyUserJwtToken(token);
+		res.status(200).json({ message: "OK" });
+	} catch {
+		res.status(401).json({ message: "Invalid or expired token" });
+	}
 }
 
 export {
 	signinUserController,
 	createUserController,
-	resetPasswordRequest,
-	updateUser,
+	resetPasswordController,
+	updateUserController,
 	getAllUsersController,
-	deleteAllUsersController
+	deleteAllUsersController,
+	verifyTokenController
 };

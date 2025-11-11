@@ -1,34 +1,20 @@
 import type { Response, Request, NextFunction } from "express";
-import jwt, { type JwtPayload } from "jsonwebtoken";
-
-interface UserJwtPayload extends JwtPayload {
-	id: string,
-	role: string
-}
+import { verifyUserJwtToken } from "../api/user/user.service.js";
+import type { UserJwtPayload } from "../api/user/user.type.js";
 
 interface UserRequest extends Request {
-	userToken?: UserJwtPayload;
-}
-
-const getJwtSecret = (): string => {
-	const jwt_secret = process.env.JWT_SECRET;
-	if (!jwt_secret)
-		throw new Error("Cannot get JWT_SECRET");
-	return jwt_secret
+	user?: UserJwtPayload;
 }
 
 const authenticateUser = (req: UserRequest, res: Response, next: NextFunction) => {
-	// Expects "Bearer <token>"
-	// const authHeader = req.headers.authorization;
-	// const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : undefined;
-	const token = req.cookies?.token;
+	const token = req.cookies.token;
 
 	if (!token)
 		return res.status(401).json({ message: "Authorization token is required" });
 
 	try {
-		const decoded = jwt.verify(token, getJwtSecret());
-		req.userToken = decoded as UserJwtPayload;
+		const decoded = verifyUserJwtToken(token);
+		req.user = decoded;
 		next();
 	} catch {
 		return res.status(401).json({ message: "Invalid or expired token" });
@@ -40,7 +26,7 @@ const authorizeUser = (roles: string[]) => {
 		if (roles.length === 0)
 			throw new Error("\"roles\" must not be empty. Add \"all\" to explicitly allow all users");
 
-		const userRole = req.userToken?.role;
+		const userRole = req.user?.role;
 
 		if (!userRole)
 			return res.status(403).json({ message: "User role not found in token" });

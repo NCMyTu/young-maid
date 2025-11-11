@@ -1,7 +1,7 @@
 import User from "./user.model.js";
 import { getMissingFields } from "../../util/util.js";
 import type { HydratedDocument } from "mongoose";
-import type { IUser, CreateUserInput, CreateUserResponse } from "./user.type.js";
+import type { IUser, CreateUserInput, CreateUserResponse, UserJwtPayload } from "./user.type.js";
 import jwt from "jsonwebtoken";
 import { SigninError } from "../../util/error.js";
 
@@ -45,14 +45,14 @@ const verifyUser = async (username: string, password: string): Promise<HydratedD
 	return user;
 };
 
-const signinUser = async (username: string, password: string): Promise<string> => {
+const signinUser = async (username: string, password: string, durationInSeconds: number): Promise<string> => {
 	const user = await verifyUser(username, password);
 	if (!user)
 		throw new SigninError("Invalid username or password");
-	return generateJwt(user.id, user.role, 60 * 60);
+	return generateUserJwtToken(user.id, user.role, durationInSeconds);
 };
 
-const generateJwt = (userId: string, userRole: string, durationInSeconds: number): string => {
+const generateUserJwtToken = (userId: string, userRole: string, durationInSeconds: number): string => {
 	const jwt_secret = process.env.JWT_SECRET;
 	if (!jwt_secret)
 		throw new Error("Cannot get JWT_SECRET");
@@ -64,10 +64,20 @@ const generateJwt = (userId: string, userRole: string, durationInSeconds: number
 	);
 };
 
+const verifyUserJwtToken = (token: any): UserJwtPayload => {
+	const jwt_secret = process.env.JWT_SECRET;
+
+	if (!jwt_secret)
+		throw new Error("Cannot get JWT_SECRET");
+
+	return jwt.verify(token, jwt_secret) as UserJwtPayload;
+};
+
 export {
 	getAllUsers,
 	deleteAllUsers,
 	createUser,
 	signinUser,
-	verifyUser
+	verifyUser,
+	verifyUserJwtToken
 };

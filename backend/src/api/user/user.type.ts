@@ -1,3 +1,5 @@
+import type { Request } from "express";
+import type { JwtPayload } from "jsonwebtoken";
 import { Document, Types } from "mongoose";
 
 interface IGameId {
@@ -25,4 +27,15 @@ interface CreateUserInput extends Pick<IUser, "username" | "password" | "email">
 
 interface CreateUserResponse extends Pick<IUser, "id" | "gameId" | "role" | "createdAt"> { }
 
-export type { IGameId, IUser, CreateUserInput, CreateUserResponse };
+interface UserJwtPayload extends JwtPayload {
+	id: string,
+	role: string
+}
+
+export type {
+	IGameId,
+	IUser,
+	CreateUserInput,
+	CreateUserResponse,
+	UserJwtPayload
+};
