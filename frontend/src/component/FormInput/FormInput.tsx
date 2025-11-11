@@ -35,9 +35,11 @@ function FormInput({
 	inputId,
 	inputType,
 	inputRef, // This ref is used to get the input value out. I know it's ugly.
+	warningRef,
 	validationRules
 }: IFormInputProps): React.JSX.Element {
-	const warningRef = useRef<HTMLParagraphElement>(null);
+	const tempRef = useRef<HTMLParagraphElement>(null);
+	const localWarningRef = warningRef ?? tempRef;
 
 	return (
 		<div className={`form-input ${divClassName} ${styles.div}`}>
@@ -48,10 +50,16 @@ function FormInput({
 				type={inputType}
 				id={inputId}
 				name={inputId}
-				onInput={(e) => handleOnInput(e, warningRef, validationRules)}
+				onInput={(e) => handleOnInput(e, localWarningRef, validationRules)}
 				required
 			/>
-			<p className={`form-warning ${styles.warning}`} ref={warningRef}>This is a warning</p>
+			<p
+				className={`form-warning ${styles.warning}`}
+				ref={localWarningRef}
+				aria-live="polite"
+			>
+				This is a warning
+			</p>
 		</div>
 	)
 }

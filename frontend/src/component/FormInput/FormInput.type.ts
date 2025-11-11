@@ -9,6 +9,7 @@ interface IFormInputProps {
 	inputId: string,
 	inputType: string,
 	inputRef?: React.RefObject<HTMLInputElement | null>,
+	warningRef?: React.RefObject<HTMLParagraphElement | null>,
 	validationRules: ValidationRule[]
 }
 
