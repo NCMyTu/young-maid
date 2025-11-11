@@ -1,39 +1,28 @@
 import React, { useRef } from "react";
 import "./SignInPage.css";
-import FormInput from "../FormInput/FormInput.tsx";
 import type { IFormInputProps } from "../FormInput/FormInput.type.ts";
+import { Link, useNavigate } from "react-router";
+import generateFormInputFields from "../FormInput/FormInput.helper.tsx";
 
-const generateFormInputFields = (fieldInfo: IFormInputProps[]) => (
-	<>
-		{fieldInfo.map(({
-			divClassName, inputId, labelText, inputType, validationRules, inputRef
-		}) => (
-			<FormInput
-				key={inputId}
-				inputRef={inputRef}
-				divClassName={divClassName}
-				inputId={inputId}
-				labelText={labelText}
-				inputType={inputType}
-				validationRules={validationRules}
-			/>
-		))}
-	</>
-);
+function SignInPage(): React.JSX.Element {
+	const navigate = useNavigate();
 
-function SignIn(): React.JSX.Element {
 	const refs = {
 		username: useRef<HTMLInputElement>(null),
 		password: useRef<HTMLInputElement>(null)
 	};
+	const warningRef = useRef<HTMLParagraphElement>(null);
 
 	const inputFieldInfo: IFormInputProps[] = [
 		{ divClassName: "signin-input", inputId: "username", labelText: "Username", inputType: "text", validationRules: [], inputRef: refs.username },
-		{ divClassName: "signin-input", inputId: "password", labelText: "Password", inputType: "password", validationRules: [], inputRef: refs.password }
+		{ divClassName: "signin-input", inputId: "password", labelText: "Password", inputType: "password", validationRules: [], inputRef: refs.password, warningRef: warningRef }
 	];
 
 	const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+
+		if (!warningRef.current)
+			return;
 
 		const userData = {
 			username: refs.username.current?.value,
@@ -41,7 +30,7 @@ function SignIn(): React.JSX.Element {
 		};
 
 		try {
-			const res = await fetch("http://localhost:19722/api/users/signin", {
+			const res = await fetch("http://localhost:19722/api/users/auth/signin", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -50,17 +39,21 @@ function SignIn(): React.JSX.Element {
 				body: JSON.stringify(userData)
 			});
 
-			const result = await res.json();
-
 			if (!res.ok) {
-				// TODO: add a warn <p> right before the submit button.
-				alert(`Error: ${res.status} ${result.message}`);
+				if (res.status === 401) { // Peekaboo! Magin number!
+					warningRef.current.textContent = "Incorrect username or password";
+					warningRef.current.style.visibility = "visible";
+				}
+				else
+					throw new Error();
+
 				return;
 			}
 
-			alert(`Signed in`);
-		} catch (e) {
-			alert(`Request failed: ${e}`);
+			navigate("/");
+		} catch {
+			warningRef.current.textContent = "Something's wrong. Try again later.";
+			warningRef.current.style.visibility = "visible";
 		}
 	};
 
@@ -74,10 +67,10 @@ function SignIn(): React.JSX.Element {
 
 			<p className="signup-text">
 				Don't have an account?{" "}
-				<a href="/signup">Create one</a>
+				<Link to="/signup">Create one</Link>
 			</p>
 		</div>
 	);
 }
 
-export default SignIn;
+export default SignInPage;

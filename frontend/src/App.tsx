@@ -1,13 +1,8 @@
 import "./App.css";
-import SignUp from "./component/SignUpPage/SignUpPage.tsx";
-import SignIn from "./component/SignInPage/SignInPage.tsx";
+import { Outlet } from "react-router";
 
 function App() {
-	return (
-		<>
-			<SignUp />
-		</>
-	);
+	return <Outlet />;
 }
 
 export default App;

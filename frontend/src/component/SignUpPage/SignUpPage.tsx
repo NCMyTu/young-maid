@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import "./SignUpPage.css";
-import FormInput from "../FormInput/FormInput.tsx";
 import type { IFormInputProps } from "../FormInput/FormInput.type.ts";
 import {
 	displayNameValidationRules,
@@ -9,30 +8,14 @@ import {
 	taglineValidationRules,
 	usernameValidationRules
 } from "./ValidationRules.ts";
+import generateFormInputFields from "../FormInput/FormInput.helper.tsx";
+import { Link } from "react-router";
 
 // TODO:
 // implement a bloom filter on backend and send it here.
 // add a "repeat password" field
 // check for warning before submitting
 // Display "YM" when tagline is empty
-
-const generateFormInputFields = (fieldInfo: IFormInputProps[]) => (
-	<>
-		{fieldInfo.map(({
-			divClassName, inputId, labelText, inputType, validationRules, inputRef
-		}) => (
-			<FormInput
-				key={inputId}
-				inputRef={inputRef}
-				divClassName={divClassName}
-				inputId={inputId}
-				labelText={labelText}
-				inputType={inputType}
-				validationRules={validationRules}
-			/>
-		))}
-	</>
-);
 
 function SignUp(): React.JSX.Element {
 	const refs = {
@@ -97,7 +80,7 @@ function SignUp(): React.JSX.Element {
 
 			<p className="signin-text">
 				Already have an account?{" "}
-				<a href="/signin">Sign in</a>
+				<Link to="/">Sign in</Link>
 			</p>
 		</div>
 	);
