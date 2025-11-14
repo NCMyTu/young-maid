@@ -47,10 +47,8 @@
 	font-family: "Arial", sans-serif;
 }
 
-.signin-box p.signup-text a {
-	text-decoration: none;
-}
-
+.signin-box p.signup-text a,
 .signin-box p.signup-text a:visited {
-	color: inherit;
+	text-decoration: none;
+	color: hsla(220, 89%, 46%, 0.85);
 }
