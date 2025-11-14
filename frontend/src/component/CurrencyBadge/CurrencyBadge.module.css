@@ -1,0 +1,35 @@
+.currencyBadge {
+	--icon-size: 32px;
+
+	width: 165px;
+	height: var(--icon-size);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	border: 1px solid black;
+	border-radius: 5px;
+	/* background-color: hsl(210, 97%, 88%); */
+}
+
+.currencyIcon,
+.currencyAddIcon {
+	width: var(--icon-size);
+	height: var(--icon-size);
+	box-sizing: border-box;
+}
+
+.currencyIcon {
+	padding-left: 3px;
+}
+
+.currencyAddIcon {
+	padding: 5px;
+}
+
+.currencyAmount {
+	font-family: "Roboto", sans-serif;
+	font-size: 15px;
+	flex: 1;
+	text-align: center;
+}

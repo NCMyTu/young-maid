@@ -2,6 +2,7 @@ import "./App.css";
 import { createBrowserRouter, Outlet, RouterProvider, redirect } from "react-router";
 import SignUpPage from "./page/SignUp/SignUp.tsx";
 import SignInPage from "./page/SignIn/SignIn.tsx";
+import DiamondBadge from "./component/CurrencyBadge/DiamonBadge.tsx";
 
 const requireAuth = async () => {
 	try {
@@ -34,16 +35,19 @@ const router = createBrowserRouter([
 	}
 ]);
 
-function MainPage() {
+function MainPage(): React.JSX.Element {
 	return (
 		<>
-		<div>This is the main page</div>
-		<Outlet />
+			<div>This is the main page</div>
+			<DiamondBadge
+				amount={222222222}
+			/>
+			<Outlet />
 		</>
 	);
 }
 
-function App() {
+function App(): React.JSX.Element {
 	return <RouterProvider router={router} />;
 }
 
