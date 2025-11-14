@@ -1,9 +1,9 @@
 import User from "./user.model.js";
-import { getMissingFields } from "../../util/util.js";
+import { getMissingFields } from "@/util/util.js";
 import type { HydratedDocument } from "mongoose";
 import type { IUser, CreateUserInput, CreateUserResponse, UserJwtPayload } from "./user.type.js";
 import jwt from "jsonwebtoken";
-import { SigninError } from "../../util/error.js";
+import { SigninError } from "@/util/error.js";
 
 const getAllUsers = async () => {
 	return await User.find().sort({ "createdAt": -1 });

@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import "./SignInPage.css";
-import type { IFormInputProps } from "../FormInput/FormInput.type.ts";
 import { Link, useNavigate } from "react-router";
-import generateFormInputFields from "../FormInput/FormInput.helper.tsx";
+import "./SignIn.css";
+import type { IFormInputProps } from "@/component/FormInput/FormInput.type.ts";
+import generateFormInputFields from "@/component/FormInput/FormInput.helper.tsx";
 
 function SignInPage(): React.JSX.Element {
 	const navigate = useNavigate();

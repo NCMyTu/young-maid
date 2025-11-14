@@ -1,7 +1,7 @@
 import "./App.css";
 import { createBrowserRouter, Outlet, RouterProvider, redirect } from "react-router";
-import SignUpPage from "./component/SignUpPage/SignUpPage.tsx";
-import SignInPage from "./component/SignInPage/SignInPage.tsx";
+import SignUpPage from "./page/SignUp/SignUp.tsx";
+import SignInPage from "./page/SignIn/SignIn.tsx";
 
 const requireAuth = async () => {
 	try {

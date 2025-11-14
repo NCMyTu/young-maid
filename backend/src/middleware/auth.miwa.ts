@@ -1,6 +1,6 @@
 import type { Response, Request, NextFunction } from "express";
-import { verifyUserJwtToken } from "../api/user/user.service.js";
-import type { UserJwtPayload } from "../api/user/user.type.js";
+import { verifyUserJwtToken } from "@/api/user/user.service.js";
+import type { UserJwtPayload } from "@/api/user/user.type.js";
 
 interface UserRequest extends Request {
 	user?: UserJwtPayload;

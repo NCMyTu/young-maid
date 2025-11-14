@@ -1,4 +1,4 @@
-import { SigninError } from "../../util/error.js";
+import { SigninError } from "@/util/error.js";
 import { createUser, getAllUsers, deleteAllUsers, signinUser, verifyUserJwtToken } from "./user.service.js";
 import type { Request, Response } from "express";
 
@@ -36,7 +36,7 @@ const deleteAllUsersController = async (_: Request, res: Response): Promise<void
 };
 
 const signinUserController = async (req: Request, res: Response): Promise<void> => {
-	const durationInSeconds = 60 * 60;
+	const durationInSeconds = 5;
 
 	try {
 		const loginToken = await signinUser(req.body.username, req.body.password, durationInSeconds);

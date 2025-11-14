@@ -24,6 +24,13 @@
 		"outDir": "dist",
 		"sourceMap": true,
 		/* If your code doesn't run in the DOM: */
-		"lib": ["ES2023"]
+		"lib": ["ES2023"],
+
+		"baseUrl": ".",
+		"paths": {
+			"@/*": [
+				"src/*"
+			]
+		}
 	}
 }

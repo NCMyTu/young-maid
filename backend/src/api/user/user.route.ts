@@ -8,7 +8,7 @@ import {
 	deleteAllUsersController,
 	verifyTokenController
 } from "./user.controller.js";
-import { authenticateUser, authorizeUser } from "../../middleware/auth.miwa.js";
+import { authenticateUser, authorizeUser } from "@/middleware/auth.miwa.js";
 import type { Response, Request } from "express";
 
 const router = express.Router();

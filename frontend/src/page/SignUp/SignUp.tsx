@@ -1,14 +1,14 @@
 import React, { useRef } from "react";
-import "./SignUpPage.css";
-import type { IFormInputProps } from "../FormInput/FormInput.type.ts";
+import "./SignUp.css";
+import type { IFormInputProps } from "@/component/FormInput/FormInput.type.ts";
 import {
 	displayNameValidationRules,
 	emailValidationRules,
 	passwordValidationRules,
 	taglineValidationRules,
 	usernameValidationRules
-} from "./ValidationRules.ts";
-import generateFormInputFields from "../FormInput/FormInput.helper.tsx";
+} from "./validation-rules.ts";
+import generateFormInputFields from "@/component/FormInput/FormInput.helper.tsx";
 import { Link } from "react-router";
 
 // TODO:

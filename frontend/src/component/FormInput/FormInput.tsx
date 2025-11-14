@@ -35,7 +35,7 @@ function FormInput({
 	inputId,
 	inputType,
 	inputRef, // This ref is used to get the input value out. I know it's ugly.
-	warningRef,
+	warningRef, // Same as above.
 	validationRules
 }: IFormInputProps): React.JSX.Element {
 	const tempRef = useRef<HTMLParagraphElement>(null);
