@@ -1,4 +1,4 @@
-interface ICurrencyBadgeProps {
+interface IResourceBadgeProps {
 	amount: number,
 	maxAmount?: number,
 	iconSrc: string,
@@ -7,5 +7,5 @@ interface ICurrencyBadgeProps {
 }
 
 export type {
-	ICurrencyBadgeProps
+	IResourceBadgeProps
 };

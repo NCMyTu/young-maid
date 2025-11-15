@@ -1,0 +1,5 @@
+.div {
+	display: flex;
+	gap: 7px;
+	border: 1px solid blue
+}
