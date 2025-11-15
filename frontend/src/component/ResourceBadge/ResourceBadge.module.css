@@ -32,4 +32,6 @@
 	font-size: 15px;
 	flex: 1;
 	text-align: center;
+	cursor: default;
+	user-select: none;
 }
