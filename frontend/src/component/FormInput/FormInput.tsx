@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import type { ValidationRule, IFormInputProps } from "./FormInput.type.ts";
+import type { ValidationRule, IFormInputProps } from "./FormInput.type";
 import styles from "./FormInput.module.css";
 
 /**

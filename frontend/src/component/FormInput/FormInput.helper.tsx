@@ -1,5 +1,5 @@
-import type { IFormInputProps } from "./FormInput.type.ts";
-import FormInput from "./FormInput.tsx";
+import type { IFormInputProps } from "./FormInput.type";
+import FormInput from "./FormInput";
 
 const generateFormInputFields = (fieldInfo: IFormInputProps[]) => (
 	<>

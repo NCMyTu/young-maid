@@ -1,5 +1,5 @@
-import { cannotContainSpace, checkLength, isEmail, isAlphanumeric } from "./helper.ts";
-import { type ValidationRule } from "@/component/FormInput/FormInput.type.ts";
+import { cannotContainSpace, checkLength, isEmail, isAlphanumeric } from "./helper";
+import { type ValidationRule } from "@/component/FormInput/FormInput.type";
 
 const USERNAME_MIN_LENGTH = 6;
 const USERNAME_MAX_LENGTH = 330;

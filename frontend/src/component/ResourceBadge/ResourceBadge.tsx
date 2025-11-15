@@ -17,12 +17,12 @@ function ResourceBadge({
 
 	return (
 		<div
-			className={`currency-badge ${resourceName}-badge ${styles.currencyBadge}`}
+			className={`resource-badge-${resourceName} ${styles.div}`}
 			onClick={handleOnClick}
 		>
-			<img className={`currency-icon ${styles.currencyIcon}`} src={iconSrc} />
-			<p className={`currency-amount ${styles.currencyAmount}`}>{resourceText}</p>
-			<img className={`currentcy-add-icon ${styles.currencyAddIcon}`} src={addIcon} />
+			<img className={`${styles.icon}`} src={iconSrc} />
+			<p className={`resource-badge-amount ${styles.amount}`}>{resourceText}</p>
+			<img className={`${styles.add}`} src={addIcon} />
 		</div>
 	);
 }

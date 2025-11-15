@@ -1,4 +1,4 @@
-.currencyBadge {
+.div {
 	--icon-size: 32px;
 
 	width: 165px;
@@ -12,22 +12,25 @@
 	/* background-color: hsl(210, 97%, 88%); */
 }
 
-.currencyIcon,
-.currencyAddIcon {
+.div:hover {
+	background-color: hsl(212, 100%, 69%);
+}
+
+.icon, .add {
 	width: var(--icon-size);
 	height: var(--icon-size);
 	box-sizing: border-box;
 }
 
-.currencyIcon {
+.icon {
 	padding-left: 3px;
 }
 
-.currencyAddIcon {
+.add {
 	padding: 5px;
 }
 
-.currencyAmount {
+.amount {
 	font-family: "Roboto", sans-serif;
 	font-size: 15px;
 	flex: 1;
