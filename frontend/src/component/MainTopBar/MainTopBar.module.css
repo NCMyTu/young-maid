@@ -1,0 +1,33 @@
+.div {
+	--button-size: 38px;
+
+	border-bottom: 1px solid black;
+	margin: 0;
+	min-height: 8vh;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 3px;
+	padding-right: 3vh;
+	box-sizing: content-box;
+}
+
+.playerInfo {
+	border: 1px solid black;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.avatar {
+	width: 32px;
+	height: 32px;
+	border: 1px solid black;
+}
+
+.buttonGroup {
+	height: fit-content;
+	border: 1px solid brown;
+	display: flex;
+	gap: 7px;
+}

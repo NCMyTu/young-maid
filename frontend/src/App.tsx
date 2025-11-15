@@ -1,8 +1,9 @@
 import "./App.css";
 import { createBrowserRouter, Outlet, RouterProvider, redirect } from "react-router";
-import SignUpPage from "./page/SignUp/SignUp.tsx";
-import SignInPage from "./page/SignIn/SignIn.tsx";
-import DiamondBadge from "./component/CurrencyBadge/DiamonBadge.tsx";
+import SignUpPage from "@/page/SignUp/SignUp";
+import SignInPage from "@/page/SignIn/SignIn";
+import SecondaryTopBar from "@/component/SecondaryTopBar/SecondaryTopBar";
+import MainTopBar from "@/component/MainTopBar/MainTopBar";
 
 const requireAuth = async () => {
 	try {
@@ -38,10 +39,9 @@ const router = createBrowserRouter([
 function MainPage(): React.JSX.Element {
 	return (
 		<>
+			<MainTopBar />
 			<div>This is the main page</div>
-			<DiamondBadge
-				amount={222222222}
-			/>
+			<SecondaryTopBar />
 			<Outlet />
 		</>
 	);
