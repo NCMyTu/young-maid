@@ -4,12 +4,12 @@ import type { IResourceBadgeProps } from "./ResourceBadge.type";
 import goldIcon from "/asset/icon/gold.svg";
 
 function GoldBadge({
-	amount,
-	addIconSrc
-}: Pick<IResourceBadgeProps, "amount" | "addIconSrc">): React.JSX.Element {
+	amount, maxAmount, addIconSrc
+}: Pick<IResourceBadgeProps, "amount" | "addIconSrc" | "maxAmount">): React.JSX.Element {
 	return (
 		<ResourceBadge
 			amount={amount}
+			maxAmount={maxAmount}
 			iconSrc={goldIcon}
 			resourceName="gold"
 			addIconSrc={addIconSrc}

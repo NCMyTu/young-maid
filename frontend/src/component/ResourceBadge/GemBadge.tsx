@@ -4,12 +4,12 @@ import type { IResourceBadgeProps } from "./ResourceBadge.type";
 import gemIcon from "/asset/icon/gem.svg";
 
 function GemBadge({
-	amount,
-	addIconSrc
-}: Pick<IResourceBadgeProps, "amount" | "addIconSrc">): React.JSX.Element {
+	amount, maxAmount, addIconSrc
+	}: Pick<IResourceBadgeProps, "amount" | "addIconSrc" | "maxAmount">): React.JSX.Element {
 	return (
 		<ResourceBadge
 			amount={amount}
+			maxAmount={maxAmount}
 			iconSrc={gemIcon}
 			resourceName="gem"
 			addIconSrc={addIconSrc}

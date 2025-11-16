@@ -1,0 +1,12 @@
+.div {
+	min-height: 8vh;
+	max-height: 10vh;
+
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.7vh 0.7vw;
+	box-sizing: border-box;
+
+	border-bottom: 1px solid black;
+}

@@ -1,3 +1,11 @@
+:root {
+	font-family: "Arial", sans-serif;
+	font-size: 16px;
+
+	--back-button-size: 6vh;
+	--back-button-border-radius: 7px;
+}
+
 body {
 	margin: 0;
 }

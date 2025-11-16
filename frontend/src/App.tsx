@@ -1,9 +1,13 @@
 import "./App.css";
-import { createBrowserRouter, Outlet, RouterProvider, redirect } from "react-router";
+import { createBrowserRouter, Outlet, RouterProvider, redirect, useRouteError, isRouteErrorResponse } from "react-router";
 import SignUpPage from "@/page/SignUp/SignUp";
 import SignInPage from "@/page/SignIn/SignIn";
-import SecondaryTopBar from "@/component/SecondaryTopBar/SecondaryTopBar";
-import MainTopBar from "@/component/MainTopBar/MainTopBar";
+import TopBar from "@/component/TopBar/TopBar";
+import ResourceBadges from "@/component/TopBar/Group/ResourceBadges";
+import BackButtonAndScreenName from "@/component/TopBar/Group/BackButtonAndScreenName";
+import FriendModalButton from "./component/ModalButton/FriendModalButton";
+import SettingModalButton from "./component/ModalButton/SettingModalButton";
+import MailModalButton from "./component/ModalButton/MailModalButton";
 
 const requireAuth = async () => {
 	try {
@@ -19,12 +23,31 @@ const requireAuth = async () => {
 	}
 };
 
+function RootErrorBoundary() {
+	const error = useRouteError();
+
+	if (isRouteErrorResponse(error))
+		return (
+			<div>
+				<h1>{error.status} – {error.statusText}</h1>
+				<p>{error.data?.message}</p>
+			</div>
+		);
+
+	return (
+		<div>
+			<h1>Something went wrong</h1>
+			<pre>{String(error)}</pre>
+		</div>
+	);
+}
+
 const router = createBrowserRouter([
 	{
 		path: "/",
 		Component: MainPage,
 		loader: requireAuth,
-		errorElement: <h1>This is an error element</h1>
+		errorElement: <RootErrorBoundary />
 	},
 	{
 		path: "/signin",
@@ -37,11 +60,21 @@ const router = createBrowserRouter([
 ]);
 
 function MainPage(): React.JSX.Element {
+	// TODO: Extract hardcoded size values from css files into variabless in App.css
 	return (
 		<>
-			<MainTopBar />
+			<TopBar>
+				<BackButtonAndScreenName screenName="shop" />
+				<ResourceBadges />
+			</TopBar>
 			<div>This is the main page</div>
-			<SecondaryTopBar />
+			<TopBar>
+				<BackButtonAndScreenName screenName="shop" />
+				<ResourceBadges />
+				<FriendModalButton />
+				<SettingModalButton />
+				<MailModalButton />
+			</TopBar>
 			<Outlet />
 		</>
 	);
