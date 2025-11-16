@@ -1,18 +1,17 @@
 .div {
 	display: flex;
 	align-items: center;
-	gap: 0.7vw;
+	gap: var(--top-bar-group-gap);
 	border: 1px solid black;
 }
 
 .button {
 	width: calc(1.5 * var(--back-button-size));
 	height: var(--back-button-size);
+	background-color: hsl(212, 100%, 69%);
 	padding: 0;
 	border: 0;
-	background-color: hsl(212, 100%, 69%);
 	border-radius: var(--back-button-border-radius);
-
 	transition: background-color 0.3s ease;
 }
 
@@ -26,7 +25,7 @@
 }
 
 .p {
-	font-size: 1.8rem;
+	font-size: var(--screen-name-font-size);
 	text-transform: uppercase;
 	margin: 0;
 	cursor: default;

@@ -1,16 +1,13 @@
 .div {
-	--icon-size: 32px;
-
-	width: 165px;
-	height: var(--icon-size);
+	width: var(--resource-badge-width);
+	height: var(--resource-badge-height);
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	border: 1px solid black;
-	border-radius: 5px;
+	border-radius: var(--border-radius);
 	transition: background-color 0.3s ease;
-	/* background-color: hsl(210, 97%, 88%); */
+	border: 1px solid black;
 }
 
 .div:hover {
@@ -18,26 +15,24 @@
 }
 
 .icon, .add {
-	width: var(--icon-size);
-	height: var(--icon-size);
+	width: var(--resource-badge-icon-size);
+	height: var(--resource-badge-icon-size);
 	box-sizing: border-box;
 }
 
-.icon {
-	padding-left: 3px;
-}
-
 .add {
-	padding: 5px;
+	width: var(--resource-badge-add-size);
+	height: var(--resource-badge-add-size);
+	box-sizing: border-box;
 }
 
 .amount {
-	font-family: "Roboto", sans-serif;
-	font-size: 15px;
-	flex: 1;
+	font-family: var(--resource-badge-amount-font-family);
+	font-size: var(--resource-badge-amount-font-size);
 	text-align: center;
 	cursor: default;
 	user-select: none;
+	margin: var(--resource-badge-amount-margin);
 
 	overflow: hidden;
 	text-overflow: ellipsis;

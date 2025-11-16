@@ -2,8 +2,45 @@
 	font-family: "Arial", sans-serif;
 	font-size: 16px;
 
-	--back-button-size: 6vh;
+	/*
+	TODO:
+	finish extracting from sign in and sign up page
+	extract colors
+	*/
+
+	/* Global variables */
+	--border-radius: 5px;
+
+	/* Component specific variables */
+	--form-input-margin: 0 0 5px 0;
+	--form-input-label-margin: 0 0 4px 5px;
+	--form-input-label-font-size: 15px;
+	--form-input-label-letter-spacing: 0.3px;
+	--form-input-input-max-width: 330px;
+	--form-input-input-font-size: 17px;
+	--form-input-input-padding: 5px 7px;
+	--form-input-warning-font-size: 13px;
+	--form-input-warning-margin: 4px 5px 0 5px;
+
+	--resource-badge-width: 160px;
+	--resource-badge-height: 32px;
+	--resource-badge-icon-size: 32px;
+	--resource-badge-add-size: calc(0.8 * var(--resource-badge-icon-size));
+	--resource-badge-amount-font-family: "Roboto", sans-serif;
+	--resource-badge-amount-font-size: 15px;
+	--resource-badge-amount-margin: 0 5px;
+
+	--top-bar-min-height: 8vh;
+	--top-bar-max-height: 10vh;
+	--top-bar-group-gap: 7px;
+	--top-bar-padding: 0 0.7vw;
+
+	--back-button-size: 36px;
 	--back-button-border-radius: 7px;
+
+	--screen-name-font-size: 1.75rem;
+
+	--model-button-size: 32px;
 }
 
 body {

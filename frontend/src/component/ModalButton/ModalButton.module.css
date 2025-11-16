@@ -1,11 +1,11 @@
 .button {
-	width: 32px;
-	height: 32px;
-	border: 1px solid black;
-	border-radius: 5px;
+	width: var(--model-button-size);
+	height: var(--model-button-size);
+	border-radius: var(--border-radius);
 	background-color: white;
 	box-sizing: content-box;
 	padding: 0;
+	border: 1px solid black;
 }
 
 .button:hover {
@@ -13,6 +13,6 @@
 }
 
 .icon {
-	width: 32px;
-	height: 32px;
+	width: var(--model-button-size);
+	height: var(--model-button-size);
 }

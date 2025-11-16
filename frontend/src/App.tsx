@@ -60,7 +60,6 @@ const router = createBrowserRouter([
 ]);
 
 function MainPage(): React.JSX.Element {
-	// TODO: Extract hardcoded size values from css files into variabless in App.css
 	return (
 		<>
 			<TopBar>

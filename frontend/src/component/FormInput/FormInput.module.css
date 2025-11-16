@@ -1,28 +1,25 @@
 .div {
-	font-family: "Arial", sans-serif;
-	/* background-color: #d4d3d3;
-	border: 2px solid purple; */
 	display: flex;
 	flex-direction: column;
 	width: fit-content;
-	margin-bottom: 5px;
+	margin: var(--form-input-margin)
 }
 
 .label {
-	margin: 0 0 4px 5px;
+	margin: var(--form-input-label-margin);
+	font-size: var(--form-input-label-font-size);
 	font-weight: bold;
-	font-size: 15px;
-	letter-spacing: 0.3px;
+	letter-spacing: var(--form-input-label-letter-spacing);
 	color: hsla(220, 89%, 46%, 0.721);
 }
 
 .input {
 	width: 100%;
-	max-width: 330px;
-	padding: 5px 7px;
-	font-size: 17px;
+	max-width: var(--form-input-input-max-width);
+	padding: var(--form-input-input-padding);
+	border-radius: var(--border-radius);
 	border: 1px solid black;
-	border-radius: 4px;
+	font-size: var(--form-input-input-font-size);
 	transition: all 0.3s ease;
 }
 
@@ -34,7 +31,7 @@
 
 .warning {
 	color: hsl(5, 100%, 45%) !important;
-	margin: 4px 0 0 5px;
-	font-size: 13px;
+	margin: var(--form-input-warning-margin);
+	font-size: var(--form-input-warning-font-size);
 	visibility: hidden;
 }

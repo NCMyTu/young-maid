@@ -1,11 +1,11 @@
 .div {
-	min-height: 8vh;
-	max-height: 10vh;
+	min-height: var(--top-bar-min-height);
+	max-height: var(--top-bar-max-height);
 
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 0.7vh 0.7vw;
+	padding: var(--top-bar-padding);
 	box-sizing: border-box;
 
 	border-bottom: 1px solid black;
