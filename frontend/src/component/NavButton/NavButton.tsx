@@ -1,16 +1,15 @@
 import React from "react";
-import styles from "./ModalButton.module.css";
-import type { IModalButtonProps } from "./ModalButton.type";
+import styles from "./NavButton.module.css";
+import type { INavButtonProps } from "./NavButton.type";
 
 const handleOnClick = (_: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 	// TODO: implement modal popup
 	alert("TODO: implement modal popup when clicking this button");
 };
 
-/* Open a modal when clicked */
-function ModalButton({
+function NavButton({
 	buttonName, iconSrc
-}: IModalButtonProps): React.JSX.Element {
+}: INavButtonProps): React.JSX.Element {
 	return (
 		<button className={`modal-button-${buttonName} ${styles.button}`} onClick={handleOnClick}>
 			<img className={`${styles.icon}`} src={iconSrc}></img>
@@ -18,4 +17,4 @@ function ModalButton({
 	);
 }
 
-export default ModalButton;
+export default NavButton;

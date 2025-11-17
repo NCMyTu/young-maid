@@ -1,8 +1,8 @@
-interface IModalButtonProps {
+interface INavButtonProps {
 	buttonName: string,
 	iconSrc: string,
 }
 
 export type {
-	IModalButtonProps
+	INavButtonProps
 };

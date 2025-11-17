@@ -5,9 +5,6 @@ import SignInPage from "@/page/SignIn/SignIn";
 import TopBar from "@/component/TopBar/TopBar";
 import ResourceBadges from "@/component/TopBar/Group/ResourceBadges";
 import BackButtonAndScreenName from "@/component/TopBar/Group/BackButtonAndScreenName";
-import FriendModalButton from "./component/ModalButton/FriendModalButton";
-import SettingModalButton from "./component/ModalButton/SettingModalButton";
-import MailModalButton from "./component/ModalButton/MailModalButton";
 
 const requireAuth = async () => {
 	try {
@@ -68,11 +65,7 @@ function MainPage(): React.JSX.Element {
 			</TopBar>
 			<div>This is the main page</div>
 			<TopBar>
-				<BackButtonAndScreenName screenName="shop" />
-				<ResourceBadges />
-				<FriendModalButton />
-				<SettingModalButton />
-				<MailModalButton />
+				
 			</TopBar>
 			<Outlet />
 		</>
