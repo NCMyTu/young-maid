@@ -4,10 +4,10 @@
 	align-items: center;
 	justify-content: center;
 	width: fit-content;
-	border: 1px solid black;
-	border-radius: 5px;
-	background-color: white;
-	padding: 20px;
+	border: var(--auth-form-border);
+	border-radius: var(--border-radius);
+	background-color: var(--auth-form-background-color);
+	padding: var(--auth-form-padding);
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -16,42 +16,38 @@
 
 .signup-box h2 {
 	width: fit-content;
-	margin: 0 auto 20px auto;
-	font-size: 50px;
-	font-weight: lighter;
+	margin: var(--auth-form-title-margin);
+	font-size: var(--auth-form-title-font-size);
+	font-weight: var(--auth-form-title-font-weight);
 }
 
 .signup-box .form-input input {
-	width: 330px;
+	width: var(--auth-form-input-width);
 }
 
 .signup-box form button[type="submit"] {
 	display: block;
-	margin: 7px auto;
-	font-size: 20px;
-	cursor: pointer;
-	background-color: hsla(220, 88%, 50%, 0.721);
-	color: white;
-	padding: 5px 45px;
-	border-radius: 5px;
+	margin: var(--auth-form-submit-button-margin);
+	font-size: var(--auth-form-submit-button-font-size);
+	cursor: var(--auth-form-submit-button-cursor);
+	background-color: var(--auth-form-submit-button-background-color);
+	color: var(--auth-form-submit-button-color);
+	padding: var(--auth-form-submit-button-padding);
+	border-radius: var(--border-radius);
 	border: none;
 	transition: all 0.3s ease;
+}
+
+.signup-box form button[type="submit"]:hover {
+	background-color: var(--auth-form-submit-button-hover-background-color);
 }
 
 .signup-box input#tagline {
 	text-transform: uppercase;
 }
 
-.signup-box form button[type="submit"]:hover {
-	background-color: hsl(220, 88%, 55%);
-}
-
-.signup-box p.signin-text {
-	font-family: "Arial", sans-serif;
-}
-
 .signup-box p.signin-text a,
 .signup-box p.signin-text a:visited {
 	text-decoration: none;
-	color: hsla(220, 89%, 46%, 0.85);
+	color: var(--auth-form-nav-link-color);
 }

@@ -1,5 +1,7 @@
 :root {
-	/* TODO: extract values from SignIn.css and SignUp.css */
+	/* TODO: use a monospace font */
+	/* font-family: Ginto, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; */
+
 	/* Global */
 	--border-radius: 5px;
 	--font-family: "Arial", sans-serif;
@@ -30,6 +32,23 @@
 	--form-input-warning-font-size: 13px;
 	--form-input-warning-color: var(--color-error);
 	--form-input-warning-margin: 4px 5px 0 5px;
+
+	--auth-form-padding: 20px;
+	--auth-form-background-color: var(--color-primary-10);
+	--auth-form-border: 1px solid black;
+	--auth-form-input-width: 330px;
+	--auth-form-title-margin: 0 auto 20px;
+	--auth-form-title-font-size: 50px;
+	--auth-form-title-font-weight: lighter;
+	--auth-form-submit-button-font-size: 1.5rem;
+	--auth-form-submit-button-margin: 7px auto;
+	--auth-form-submit-button-cursor: pointer;
+	--auth-form-submit-button-padding: 5px 45px;
+	/* TODO: these colors suck */
+	--auth-form-submit-button-color: white;
+	--auth-form-submit-button-background-color: hsla(220, 88%, 50%, 0.721);
+	--auth-form-submit-button-hover-background-color: hsl(220, 88%, 55%);
+	--auth-form-nav-link-color: hsla(220, 89%, 46%, 0.85);
 
 	--resource-badge-width: 160px;
 	--resource-badge-height: 32px;
