@@ -5,13 +5,13 @@
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
+	background-color: var(--resource-badge-background-color);
 	border-radius: var(--border-radius);
 	transition: background-color 0.3s ease;
-	border: 1px solid black;
 }
 
 .div:hover {
-	background-color: hsl(212, 100%, 69%);
+	background-color: var(--resource-badge-hover-background-color);
 }
 
 .icon, .add {

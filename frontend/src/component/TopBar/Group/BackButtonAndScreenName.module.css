@@ -2,32 +2,31 @@
 	display: flex;
 	align-items: center;
 	gap: var(--top-bar-group-gap);
-	border: 1px solid black;
 }
 
 .button {
 	width: calc(1.5 * var(--back-button-size));
 	height: var(--back-button-size);
-	background-color: hsl(212, 100%, 69%);
 	padding: 0;
 	border: 0;
+	background-color: var(--back-button-background-color);
 	border-radius: var(--back-button-border-radius);
 	transition: background-color 0.3s ease;
 }
 
 .button:hover {
-	background-color: hsl(212, 100%, 49%);
+	background-color: var(--back-button-hover-background-color);
 }
 
 .icon {
-	width: calc(var(--back-button-size) - var(--back-button-border-radius) * 1.2);
-	height: calc(var(--back-button-size) - var(--back-button-border-radius) * 1.2);
+	width: calc(var(--back-button-size) - var(--back-button-border-radius) * 1);
+	height: calc(var(--back-button-size) - var(--back-button-border-radius) * 1);
 }
 
 .p {
 	font-size: var(--screen-name-font-size);
 	text-transform: uppercase;
-	margin: 0;
+	margin: 0 0 0 0.5vw;
 	cursor: default;
 	user-select: none;
 }

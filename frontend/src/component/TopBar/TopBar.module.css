@@ -1,12 +1,11 @@
 .div {
 	min-height: var(--top-bar-min-height);
 	max-height: var(--top-bar-max-height);
-
+	background-color: var(--top-bar-background-color);
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding: var(--top-bar-padding);
 	box-sizing: border-box;
-
 	border-bottom: 1px solid black;
 }

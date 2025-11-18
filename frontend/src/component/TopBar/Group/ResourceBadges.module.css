@@ -1,5 +1,4 @@
 .div {
 	display: flex;
 	gap: var(--top-bar-group-gap);
-	border: 1px solid blue
 }

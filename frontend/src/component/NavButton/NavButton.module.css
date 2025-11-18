@@ -1,18 +1,18 @@
 .button {
-	width: var(--model-button-size);
-	height: var(--model-button-size);
+	width: var(--nav-button-size);
+	height: var(--nav-button-size);
 	border-radius: var(--border-radius);
-	background-color: white;
+	background-color: var(--nav-button-background-color);
 	box-sizing: content-box;
 	padding: 0;
 	border: 1px solid black;
 }
 
 .button:hover {
-	background-color: hsl(212, 100%, 69%);
+	background-color: var(--nav-button-hover-background-color);
 }
 
 .icon {
-	width: var(--model-button-size);
-	height: var(--model-button-size);
+	width: var(--nav-button-size);
+	height: var(--nav-button-size);
 }

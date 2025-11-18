@@ -10,7 +10,7 @@
 	font-size: var(--form-input-label-font-size);
 	font-weight: bold;
 	letter-spacing: var(--form-input-label-letter-spacing);
-	color: hsla(220, 89%, 46%, 0.721);
+	color: var(--form-input-label-color);
 }
 
 .input {
@@ -25,12 +25,12 @@
 
 .input:focus {
 	outline: none;
-	border-color: hsl(230, 100%, 50%);
-	box-shadow: 0 0 0 3px hsl(230, 100%, 85%);
+	border-color: var(--form-input-input-focus-border-color);
+	box-shadow: var(--form-input-input-focus-box-shadow);
 }
 
 .warning {
-	color: hsl(5, 100%, 45%) !important;
+	color: var(--form-input-warning-color) !important;
 	margin: var(--form-input-warning-margin);
 	font-size: var(--form-input-warning-font-size);
 	visibility: hidden;
