@@ -14,7 +14,6 @@ const cannotContainSpace = (s: string): boolean => cannotContain(s, /\s/);
 
 // These 2 are just wrappers but this keeps them consistent with the other functions.
 const isEmail = (s: string): boolean => validator.isEmail(s);
-
 const isAlphanumeric = (s: string): boolean => validator.isAlphanumeric(s, "en-US");
 
 export {

@@ -9,7 +9,7 @@ function ResourceBadges(): React.JSX.Element {
 			<GemBadge amount={2222222222222222222222222222222222222222222222222222222222} />
 			<GoldBadge amount={123132} maxAmount={10} />
 		</div>
-	)
+	);
 }
 
 export default ResourceBadges;

@@ -1,0 +1,25 @@
+.div {
+	border: 5px solid red;
+	display: grid;
+	grid-template-rows: auto 1fr;
+	grid-template-columns: 15vw auto;
+	grid-template-areas:
+		"topBar topBar"
+		"leftBar itemSection";
+	height: 100vh;
+}
+
+.div .topBar {
+	grid-area: topBar;
+	background-color: violet;
+}
+
+.div .leftBar {
+	grid-area: leftBar;
+	background-color: beige;
+}
+
+.div .itemSection {
+	grid-area: itemSection;
+	background-color: mediumseagreen;
+}

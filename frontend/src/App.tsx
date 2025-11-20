@@ -1,13 +1,11 @@
 import "./App.css";
-import { createBrowserRouter, Outlet, RouterProvider, redirect, useRouteError, isRouteErrorResponse } from "react-router";
-import SignUpPage from "@/page/SignUp/SignUp";
-import SignInPage from "@/page/SignIn/SignIn";
-import TopBar from "@/component/TopBar/TopBar";
-import ResourceBadges from "@/component/TopBar/Group/ResourceBadges";
-import BackButtonAndScreenName from "@/component/TopBar/Group/BackButtonAndScreenName";
-import FriendButton from "./component/NavButton/FriendButton";
-import MailButton from "./component/NavButton/MailButton";
-import SettingButton from "./component/NavButton/SettingButton";
+import { createBrowserRouter, RouterProvider, redirect, useRouteError, isRouteErrorResponse } from "react-router";
+import SignUpPage from "@/page/SignUpPage/SignUpPage";
+import SignInPage from "@/page/SignInPage/SignInPage";
+import ShopPage from "@/page/ShopPage/ShopPage";
+
+// TODO:
+// replace manual className construction with clsx
 
 const requireAuth = async () => {
 	try {
@@ -45,7 +43,7 @@ function RootErrorBoundary() {
 const router = createBrowserRouter([
 	{
 		path: "/",
-		Component: MainPage,
+		Component: ShopPage,
 		loader: requireAuth,
 		errorElement: <RootErrorBoundary />
 	},
@@ -58,24 +56,6 @@ const router = createBrowserRouter([
 		Component: SignUpPage
 	}
 ]);
-
-function MainPage(): React.JSX.Element {
-	return (
-		<>
-			<TopBar>
-				<BackButtonAndScreenName screenName="shop" />
-				<ResourceBadges />
-			</TopBar>
-			<div>This is the main page</div>
-			<TopBar>
-				<FriendButton />
-				<MailButton />
-				<SettingButton />
-			</TopBar>
-			<Outlet />
-		</>
-	);
-}
 
 function App(): React.JSX.Element {
 	return <RouterProvider router={router} />;

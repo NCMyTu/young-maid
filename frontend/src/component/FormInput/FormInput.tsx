@@ -61,7 +61,7 @@ function FormInput({
 				This is a warning
 			</p>
 		</div>
-	)
+	);
 }
 
 export default FormInput;

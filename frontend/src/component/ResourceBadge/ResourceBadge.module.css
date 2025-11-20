@@ -14,19 +14,20 @@
 	background-color: var(--resource-badge-hover-background-color);
 }
 
-.icon, .add {
+.div .icon,
+.div .add {
 	width: var(--resource-badge-icon-size);
 	height: var(--resource-badge-icon-size);
 	box-sizing: border-box;
 }
 
-.add {
+.div .add {
 	width: var(--resource-badge-add-size);
 	height: var(--resource-badge-add-size);
 	box-sizing: border-box;
 }
 
-.amount {
+.div .amount {
 	font-family: var(--resource-badge-amount-font-family);
 	font-size: var(--resource-badge-amount-font-size);
 	text-align: center;

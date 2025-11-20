@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
-import "./SignUp.css";
+import { Link } from "react-router";
+import "./SignUpPage.css";
 import type { IFormInputProps } from "@/component/FormInput/FormInput.type";
 import {
 	displayNameValidationRules,
@@ -9,7 +10,6 @@ import {
 	usernameValidationRules
 } from "./validation-rules";
 import generateFormInputFields from "@/component/FormInput/FormInput.helper";
-import { Link } from "react-router";
 
 // TODO:
 // implement a bloom filter on backend and send it here.
@@ -17,7 +17,7 @@ import { Link } from "react-router";
 // check for warning before submitting
 // Display "YM" when tagline is empty
 
-function SignUp(): React.JSX.Element {
+function SignUpPage(): React.JSX.Element {
 	const refs = {
 		username: useRef<HTMLInputElement>(null),
 		password: useRef<HTMLInputElement>(null),
@@ -47,7 +47,7 @@ function SignUp(): React.JSX.Element {
 		};
 
 		try {
-			const res = await fetch("http://localhost:19722/api/users/signup", {
+			const res = await fetch("http://localhost:19722/api/users/auth/signup", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -61,6 +61,7 @@ function SignUp(): React.JSX.Element {
 			if (!res.ok) {
 				// TODO: add a warn <p> right before the submit button.
 				alert(`Error: ${res.status} ${result.message}`);
+				console.log(`Error: ${res.status} ${result.message}`);
 				return;
 			}
 
@@ -86,4 +87,4 @@ function SignUp(): React.JSX.Element {
 	);
 }
 
-export default SignUp;
+export default SignUpPage;

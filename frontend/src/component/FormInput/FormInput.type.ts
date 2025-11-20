@@ -1,8 +1,3 @@
-type ValidationRule = {
-	validateFunc: (s: string) => boolean,
-	message: string
-};
-
 interface IFormInputProps {
 	divClassName: string,
 	labelText: string,
@@ -12,6 +7,11 @@ interface IFormInputProps {
 	warningRef?: React.RefObject<HTMLParagraphElement | null>,
 	validationRules: ValidationRule[]
 }
+
+type ValidationRule = {
+	validateFunc: (s: string) => boolean,
+	message: string
+};
 
 export type {
 	IFormInputProps,

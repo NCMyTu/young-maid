@@ -5,7 +5,7 @@
 	margin: var(--form-input-margin)
 }
 
-.label {
+.div .label {
 	margin: var(--form-input-label-margin);
 	font-size: var(--form-input-label-font-size);
 	font-weight: bold;
@@ -13,7 +13,7 @@
 	color: var(--form-input-label-color);
 }
 
-.input {
+.div .input {
 	width: 100%;
 	max-width: var(--form-input-input-max-width);
 	padding: var(--form-input-input-padding);
@@ -23,13 +23,13 @@
 	transition: all 0.3s ease;
 }
 
-.input:focus {
+.div .input:focus {
 	outline: none;
 	border-color: var(--form-input-input-focus-border-color);
 	box-shadow: var(--form-input-input-focus-box-shadow);
 }
 
-.warning {
+.div .warning {
 	color: var(--form-input-warning-color) !important;
 	margin: var(--form-input-warning-margin);
 	font-size: var(--form-input-warning-font-size);

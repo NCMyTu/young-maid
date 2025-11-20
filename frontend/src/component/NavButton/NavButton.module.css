@@ -12,7 +12,7 @@
 	background-color: var(--nav-button-hover-background-color);
 }
 
-.icon {
+.button .icon {
 	width: var(--nav-button-size);
 	height: var(--nav-button-size);
 }
