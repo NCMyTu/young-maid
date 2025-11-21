@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { Link } from "react-router";
 import "./SignUpPage.css";
+import clsx from "clsx";
 import type { IFormInputProps } from "@/component/FormInput/FormInput.type";
 import {
 	displayNameValidationRules,
@@ -72,14 +73,14 @@ function SignUpPage(): React.JSX.Element {
 	};
 
 	return (
-		<div className="signup-box">
+		<div className={clsx("signup-box")}>
 			<h2>Create a new account</h2>
 			<form onSubmit={handleOnSubmit}>
 				{generateFormInputFields(inputFieldInfo)}
 				<button type="submit">Sign Up</button>
 			</form>
 
-			<p className="signin-text">
+			<p className={clsx("signin-text")}>
 				Already have an account?{" "}
 				<Link to="/">Sign in</Link>
 			</p>

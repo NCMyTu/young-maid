@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import clsx from "clsx";
 import type { ValidationRule, IFormInputProps } from "./FormInput.type";
 import styles from "./FormInput.module.css";
 
@@ -42,11 +43,16 @@ function FormInput({
 	const localWarningRef = warningRef ?? tempRef;
 
 	return (
-		<div className={`form-input ${divClassName} ${styles.div}`}>
-			<label className={`form-label ${styles.label}`} htmlFor={inputId}>{labelText}</label>
+		<div className={clsx("form-input", styles.div, divClassName)}>
+			<label
+				className={clsx("form-label", styles.label)}
+				htmlFor={inputId}
+			>
+				{labelText}
+			</label>
 			<input
 				ref={inputRef}
-				className={`form-input ${styles.input}`}
+				className={clsx("form-input", styles.input)}
 				type={inputType}
 				id={inputId}
 				name={inputId}
@@ -54,7 +60,7 @@ function FormInput({
 				required
 			/>
 			<p
-				className={`form-warning ${styles.warning}`}
+				className={clsx("form-warning", styles.warning)}
 				ref={localWarningRef}
 				aria-live="polite"
 			>

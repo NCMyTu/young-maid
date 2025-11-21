@@ -1,5 +1,7 @@
-import type { IResourceBadgeProps } from "./ResourceBadge.type";
+import React from "react";
 import styles from "./ResourceBadge.module.css";
+import clsx from "clsx";
+import type { IResourceBadgeProps } from "./ResourceBadge.type";
 import defaultAddIcon from "/asset/icon/plus.svg";
 
 const handleOnClick = (_: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -17,12 +19,12 @@ function ResourceBadge({
 
 	return (
 		<div
-			className={`resource-badge-${resourceName} ${styles.div}`}
+			className={clsx(`resource-badge-${resourceName}`, styles.div)}
 			onClick={handleOnClick}
 		>
-			<img className={`${styles.icon}`} src={iconSrc} />
-			<p className={`resource-badge-amount ${styles.amount}`}>{resourceText}</p>
-			<img className={`${styles.add}`} src={addIcon} />
+			<img className={clsx(styles.icon)} src={iconSrc} />
+			<p className={clsx("resource-badge-amount", styles.amount)}>{resourceText}</p>
+			<img className={clsx(styles.add)} src={addIcon} />
 		</div>
 	);
 }

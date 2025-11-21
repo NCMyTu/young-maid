@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 import styles from "./NavButton.module.css";
 import type { INavButtonProps } from "./NavButton.type";
 
@@ -11,8 +12,11 @@ function NavButton({
 	buttonName, iconSrc
 }: INavButtonProps): React.JSX.Element {
 	return (
-		<button className={`modal-button-${buttonName} ${styles.button}`} onClick={handleOnClick}>
-			<img className={`${styles.icon}`} src={iconSrc}></img>
+		<button
+			className={clsx(`nav-button-${buttonName}`, styles.button)}
+			onClick={handleOnClick}
+		>
+			<img className={clsx(styles.icon)} src={iconSrc} />
 		</button>
 	);
 }

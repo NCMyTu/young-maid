@@ -9,7 +9,7 @@ import SettingButton from "@/component/NavButton/SettingButton";
 function ShopPage(): React.JSX.Element {
 	return (
 		<div className={clsx(styles.div)}>
-			<TopBar className={styles.topBar}>
+			<TopBar className={clsx(styles.topBar)}>
 				<BackButtonAndScreenName screenName="shop" />
 				<ResourceBadges />
 				<SettingButton />

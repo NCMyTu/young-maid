@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router";
 import "./SignInPage.css";
+import clsx from "clsx";
 import type { IFormInputProps } from "@/component/FormInput/FormInput.type";
 import generateFormInputFields from "@/component/FormInput/FormInput.helper";
 
@@ -58,14 +59,14 @@ function SignInPage(): React.JSX.Element {
 	};
 
 	return (
-		<div className="signin-box">
+		<div className={clsx("signin-box")}>
 			<h2>Sign in</h2>
 			<form onSubmit={handleOnSubmit}>
 				{generateFormInputFields(inputFieldInfo)}
 				<button type="submit">Sign In</button>
 			</form>
 
-			<p className="signup-text">
+			<p className={clsx("signup-text")}>
 				Don't have an account?{" "}
 				<Link to="/signup">Create one</Link>
 			</p>
