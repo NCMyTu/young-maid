@@ -1,0 +1,23 @@
+.div {
+	height: var(--shop-category-height);
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	gap: var(--shop-category-gap);
+	padding: var(--shop-category-padding);
+	border: var(--shop-category-border);
+	border-radius: var(--border-radius);
+}
+
+.icon {
+	height: var(--shop-category-icon-size);
+	aspect-ratio: 1 / 1;
+	object-fit: fill;
+}
+
+.text {
+	margin: 0;
+	cursor: default;
+	user-select: none;
+}

@@ -1,0 +1,66 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	width: var(--shop-item-width);
+	aspect-ratio: var(--shop-item-aspect-ratio);
+	background-color: var(--shop-item-background-color);
+	border-radius: var(--border-radius);
+	user-select: none;
+	cursor: default;
+}
+
+.container .icon {
+	width: var(--shop-item-icon-width);
+	aspect-ratio: var(--shop-item-icon-aspect-ratio);
+	margin: var(--shop-item-icon-margin);
+	border: 1px solid red;
+}
+
+.container .name {
+	text-align: center;
+	margin: var(--shop-item-name-margin);
+	white-space: nowrap;
+	overflow: hidden;
+	position: relative;
+}
+
+.container .name span{
+	display: inline-block;
+	animation: scrollText 7s linear infinite;
+}
+
+@keyframes scrollText {
+	20% {
+		transform: translateX(0);
+	}
+
+	70% {
+		transform: translateX(-100%);
+	}
+
+	100% {
+		transform: translateX(-100%);
+	}
+}
+
+.container .priceContainer {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: var(--shop-item-price-gap);
+	border: 1px solid black;
+}
+
+.container .priceContainer .currencyIcon {
+	width: var(--shop-item-price-icon-size);
+	aspect-ratio: var(--shop-item-price-icon-aspect-ratio);
+	border: 1px solid red;
+}
+
+.container .priceContainer .price {
+	margin: var(--shop-item-price-text-margin);
+	height: fit-content;
+	border: 1px solid black;
+}

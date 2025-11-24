@@ -1,25 +1,38 @@
-.div {
-	border: 5px solid red;
+.container {
+	height: 100vh;
 	display: grid;
 	grid-template-rows: auto 1fr;
-	grid-template-columns: 15vw auto;
+	grid-template-columns: var(--shop-page-left-bar-width) var(--shop-page-item-section-width);
 	grid-template-areas:
-		"topBar topBar"
-		"leftBar itemSection";
-	height: 100vh;
+	"topBar topBar"
+	"leftBar itemSection";
 }
 
-.div .topBar {
+.container .topBar {
 	grid-area: topBar;
-	background-color: violet;
 }
 
-.div .leftBar {
+.container .leftBar {
 	grid-area: leftBar;
-	background-color: beige;
+	background-color: var(--shop-page-left-bar-background-color);
+	display: flex;
+	flex-direction: column;
+	gap: var(--shop-page-left-bar-gap);
+	padding: var(--shop-page-left-bar-padding);
+
+	overflow-y: scroll;
+	scrollbar-width: none;
 }
 
-.div .itemSection {
-	grid-area: itemSection;
-	background-color: mediumseagreen;
+.container .itemSection {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--shop-page-item-section-gap);
+	padding: var(--shop-page-item-section-padding);
+
+	overflow-y: scroll;
+	scrollbar-width: none;
 }

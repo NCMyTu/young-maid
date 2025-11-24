@@ -77,6 +77,35 @@
 	--nav-button-background-color: var(--color-primary-30);
 	--nav-button-hover-background-color: var(--color-primary-40);
 
+	--shop-category-height: 10vh;
+	--shop-category-gap: 9%;
+	--shop-category-padding: 0 5% 0 7%;
+	--shop-category-border: 3px solid blueviolet;
+	--shop-category-icon-size: 70%;
+	--shop-category-text-margin: 0;
+
+	--shop-item-width: 15vw;
+	--shop-item-aspect-ratio: 1 / 1.42;
+	--shop-item-background-color: var(--color-primary-30);
+	--shop-item-icon-width: 50%;
+	--shop-item-icon-aspect-ratio: 1 / 1;
+	--shop-item-icon-margin: 0 auto;
+	--shop-item-name-margin: 0;
+	--shop-item-price-gap: 10px;
+	--shop-item-price-icon-size: 30px;
+	--shop-item-price-icon-aspect-ratio: 1 / 1;
+	--shop-item-price-text-margin: 0;
+
+	/* Page specific */
+	--shop-page-left-bar-width: 17vw;
+	--shop-page-item-section-width: 83vw;
+	--shop-page-left-bar-background-color: beige;
+	--shop-page-left-bar-gap: 1.5vh;
+	--shop-page-left-bar-padding: 5vh 0;
+	--shop-page-item-section-gap: 3%;
+	--shop-page-item-section-padding: 3%;
+
+	/*  */
 	font-family: var(--font-family);
 	font-size: var(--font-size);
 	color: var(--color-text-10);

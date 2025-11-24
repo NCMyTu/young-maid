@@ -5,7 +5,7 @@ import SignInPage from "@/page/SignInPage/SignInPage";
 import ShopPage from "@/page/ShopPage/ShopPage";
 
 // TODO:
-// replace manual className construction with clsx
+// cancel pending request when there's a new request
 
 const requireAuth = async () => {
 	try {

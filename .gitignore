@@ -1,6 +1,7 @@
 [Dd]esktop.ini
 .env
 *.http
+*.bat
 
 # Logs
 logs
