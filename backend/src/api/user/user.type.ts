@@ -9,13 +9,14 @@ interface IGameId {
 interface IUser extends Document {
 	_id: Types.ObjectId,
 	id: string,
+	createdAt: Date,
+	updatedAt: Date,
+
 	username: string,
 	password: string,
 	email: string,
 	role: "user" | "admin",
 	gameId: IGameId,
-	createdAt: Date,
-	updatedAt: Date
 	comparePassword(passwordToTest: string): Promise<boolean>
 }
 

@@ -1,10 +1,11 @@
 import dotenv from "dotenv";
 import express from "express";
-import userRouter from "./api/user/user.route.js";
 import { connectDB } from "./config/db.config.js";
 import cors from "cors";
 import corsOptions from "./config/cors-options.js";
 import cookieParser from "cookie-parser";
+import userRouter from "./api/user/user.route.js";
+import itemRouter from "./api/item/item.route.js";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json({ limit: "20mb" }));
 app.use(cookieParser());
 // Routes
 app.use("/api/users", userRouter);
+app.use("/api/items", itemRouter);
 
 // Start server
 const PORT = Number(process.env.PORT) || 5001;

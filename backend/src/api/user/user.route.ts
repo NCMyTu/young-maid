@@ -34,7 +34,7 @@ router.delete("/", authenticateUser, deleteAllUsersController);
 
 // Catch-all route
 router.all(/(.*)/, (_: Request, res: Response) => {
-	res.status(404).json({ message: "Route not found", });
+	res.status(404).json({ message: "Route not found" });
 });
 
 export default router;

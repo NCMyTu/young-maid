@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ShopPage.module.css";
 import clsx from "clsx";
 import TopBar from "@/component/TopBar/TopBar";
@@ -17,13 +17,43 @@ const generateShopCategories = (n: number): React.JSX.Element[] => Array.from({ 
 	<ShopCategory key={i} name={`shop-category-${i}`} iconSrc={itemIcon} />
 ));
 
-const generateShopItems = (n: number): React.JSX.Element[] => Array.from({ length: n }, (_, i) => (
-	<ShopItem key={i} name={`This is gold no ${i} which is bought by gem`} price={5000} iconSrc={goldIcon} currencySrc={gemIcon} />
-));
+const generateShopItems = (shopItems: any[]): React.JSX.Element[] => {
+	return shopItems.map((item, i) => (
+		<ShopItem
+			key={i}
+			name={item.name}
+			price={item.price}
+			iconSrc={item.icon}
+			currencySrc={item.currency === "gold" ? goldIcon : gemIcon}
+		/>
+	));
+}
+
+const shopCategories = generateShopCategories(10);
 
 function ShopPage(): React.JSX.Element {
-	const shopCategories: React.JSX.Element[] = generateShopCategories(20);
-	const shopItems: React.JSX.Element[] = generateShopItems(20);
+	const [shopItems, setShopItems] = useState([]);
+
+	useEffect(() => {
+		async function fetchShopItems() {
+			const res = await fetch("http://localhost:19722/api/items/shop", {
+				method: "GET",
+				credentials: "include"
+			});
+
+			if (!res.ok)
+				return [];
+
+			const data = await res.json();
+			console.log(data.items);
+			return data.items;
+		}
+
+		(async () => {
+			const items = await fetchShopItems();
+			setShopItems(items);
+		})();
+	}, []);
 
 	return (
 		<div className={clsx(styles.container)}>
@@ -38,7 +68,7 @@ function ShopPage(): React.JSX.Element {
 			</div>
 
 			<div className={clsx("item-section", styles.itemSection)}>
-				{shopItems}
+				{generateShopItems(shopItems)}
 			</div>
 		</div>
 	);
