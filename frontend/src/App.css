@@ -89,9 +89,10 @@
 	--shop-item-background-color: var(--color-primary-30);
 	--shop-item-icon-width: 50%;
 	--shop-item-icon-aspect-ratio: 1 / 1;
-	--shop-item-icon-margin: 0 auto;
-	--shop-item-name-margin: 0;
-	--shop-item-price-gap: 10px;
+	--shop-item-icon-margin: 15% auto 0;
+	--shop-item-name-margin: 10% 0 10%;
+	--shop-item-price-container-margin: auto auto 20%;
+	--shop-item-price-gap: 15px;
 	--shop-item-price-icon-size: 30px;
 	--shop-item-price-icon-aspect-ratio: 1 / 1;
 	--shop-item-price-text-margin: 0;

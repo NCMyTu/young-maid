@@ -19,7 +19,7 @@ function ResourceBadge({
 
 	return (
 		<div
-			className={clsx(`resource-badge-${resourceName}`, styles.div)}
+			className={clsx(`resource-badge-${resourceName}`, styles.container)}
 			onClick={handleOnClick}
 		>
 			<img className={clsx(styles.icon)} src={iconSrc} />

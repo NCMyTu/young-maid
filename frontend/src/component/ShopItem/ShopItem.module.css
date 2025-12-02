@@ -27,7 +27,7 @@
 
 .container .name span{
 	display: inline-block;
-	animation: scrollText 7s linear infinite;
+	/* animation: scrollText 7s linear infinite; */
 }
 
 @keyframes scrollText {
@@ -45,12 +45,15 @@
 }
 
 .container .priceContainer {
+	box-sizing: border-box;
+	width: 100%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 	gap: var(--shop-item-price-gap);
 	border: 1px solid black;
+	margin: var(--shop-item-price-container-margin);
 }
 
 .container .priceContainer .currencyIcon {
@@ -63,4 +66,6 @@
 	margin: var(--shop-item-price-text-margin);
 	height: fit-content;
 	border: 1px solid black;
+	overflow: hidden;
+	text-overflow: clip;
 }

@@ -43,7 +43,7 @@ function FormInput({
 	const localWarningRef = warningRef ?? tempRef;
 
 	return (
-		<div className={clsx("form-input", styles.div, divClassName)}>
+		<div className={clsx("form-input", styles.container, divClassName)}>
 			<label
 				className={clsx("form-label", styles.label)}
 				htmlFor={inputId}
