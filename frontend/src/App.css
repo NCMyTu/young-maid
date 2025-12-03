@@ -1,5 +1,6 @@
 :root {
 	/* TODO: use a monospace font */
+	/* TODO: extract border radius */
 	/* font-family: Ginto, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; */
 
 	/* Global */
@@ -8,6 +9,7 @@
 	--font-size: 16px;
 
 	/* Colors */
+	--color-transparent: rgba(0, 0, 0, 0);
 	--color-primary-10: hsl(210, 100%, 95%);
 	--color-primary-20: hsl(209, 100%, 92%);
 	--color-primary-30: hsl(207, 100%, 85%);
@@ -27,6 +29,7 @@
 	--form-input-input-max-width: 330px;
 	--form-input-input-font-size: 17px;
 	--form-input-input-padding: 5px 7px;
+	--form-input-input-border-radius: var(--border-radius);
 	--form-input-input-focus-border-color: var(--color-primary-50);
 	--form-input-input-focus-box-shadow: 0 0 0 3px var(--color-primary-30);
 	--form-input-warning-font-size: 13px;
@@ -50,9 +53,32 @@
 	--auth-form-submit-button-hover-background-color: hsl(220, 88%, 55%);
 	--auth-form-nav-link-color: hsla(220, 89%, 46%, 0.85);
 
+	--modal-overlay-z-index: 20000;
+	--modal-overlay-background-color: rgba(0, 0, 0, 0.52);
+	--modal-min-width: 30vw;
+	--modal-min-height: 30vh;
+	--modal-max-width: 80vw;
+	--modal-max-height: 80vh;
+	--modal-title-font-size: 1.4rem;
+	--modal-top-bar-background-color: var(--color-primary-40);
+	--modal-top-bar-min-height: 5vh;
+	--modal-close-button-height: 6vh;
+	--modal-close-button-img-size: 65%;
+	--modal-content-background-color: var(--color-primary-20);
+	--modal-action-container-height: 7vh;
+	--modal-action-container-background-color: var(--color-primary-30);
+	--modal-action-container-padding: 0 10px;
+	--modal-action-container-gap: 1rem;
+	--modal-action-button-padding: 5px 30px;
+	--modal-action-button-font-size: 1rem;
+	--modal-action-button-border-radius: var(--border-radius);
+	--modal-action-button-background-color: hsl(0, 0%, 70%);
+	--modal-action-button-hover-background-color: hsl(0, 0%, 55%);
+
 	--resource-badge-width: 160px;
 	--resource-badge-height: 32px;
 	--resource-badge-icon-size: 32px;
+	--resource-badge-border-radius: var(--border-radius);
 	--resource-badge-add-size: calc(0.8 * var(--resource-badge-icon-size));
 	--resource-badge-background-color: var(--color-primary-30);
 	--resource-badge-hover-background-color: var(--color-primary-40);
@@ -74,6 +100,7 @@
 	--screen-name-font-size: 1.7rem;
 
 	--nav-button-size: 32px;
+	--nav-button-border-radius: var(--border-radius);
 	--nav-button-background-color: var(--color-primary-30);
 	--nav-button-hover-background-color: var(--color-primary-40);
 
@@ -81,11 +108,13 @@
 	--shop-category-gap: 9%;
 	--shop-category-padding: 0 5% 0 7%;
 	--shop-category-border: 3px solid blueviolet;
+	--shop-category-border-radius: var(--border-radius);
 	--shop-category-icon-size: 70%;
 	--shop-category-text-margin: 0;
 
 	--shop-item-width: 15vw;
 	--shop-item-aspect-ratio: 1 / 1.42;
+	--shop-item-border-radius: var(--border-radius);
 	--shop-item-background-color: var(--color-primary-30);
 	--shop-item-icon-width: 50%;
 	--shop-item-icon-aspect-ratio: 1 / 1;
@@ -106,7 +135,13 @@
 	--shop-page-item-section-gap: 3%;
 	--shop-page-item-section-padding: 3%;
 
-	/*  */
+	--sign-in-page-border-radius: var(--border-radius);
+	--sign-in-page-submit-button-border-radius: var(--border-radius);
+
+	--sign-up-page-border-radius: var(--border-radius);
+	--sign-up-page-submit-button-border-radius: var(--border-radius);
+
+	/* --------------- */
 	font-family: var(--font-family);
 	font-size: var(--font-size);
 	color: var(--color-text-10);

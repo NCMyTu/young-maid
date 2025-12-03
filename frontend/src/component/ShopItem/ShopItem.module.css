@@ -5,7 +5,7 @@
 	width: var(--shop-item-width);
 	aspect-ratio: var(--shop-item-aspect-ratio);
 	background-color: var(--shop-item-background-color);
-	border-radius: var(--border-radius);
+	border-radius: var(--shop-item-border-radius);
 	user-select: none;
 	cursor: default;
 }

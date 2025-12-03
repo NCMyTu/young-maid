@@ -5,7 +5,7 @@
 	justify-content: center;
 	width: fit-content;
 	border: var(--auth-form-border);
-	border-radius: var(--border-radius);
+	border-radius: var(--sign-in-page-border-radius);
 	background-color: var(--auth-form-background-color);
 	padding: var(--auth-form-padding);
 	position: absolute;
@@ -33,7 +33,7 @@
 	background-color: var(--auth-form-submit-button-background-color);
 	color: var(--auth-form-submit-button-color);
 	padding: var(--auth-form-submit-button-padding);
-	border-radius: var(--border-radius);
+	border-radius: var(--sign-in-page-submit-button-border-radius);
 	border: none;
 	transition: all 0.3s ease;
 }

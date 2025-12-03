@@ -1,7 +1,7 @@
 .button {
 	width: var(--nav-button-size);
 	height: var(--nav-button-size);
-	border-radius: var(--border-radius);
+	border-radius: var(--nav-button-border-radius);
 	background-color: var(--nav-button-background-color);
 	box-sizing: content-box;
 	padding: 0;

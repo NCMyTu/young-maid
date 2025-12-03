@@ -17,7 +17,7 @@
 	width: 100%;
 	max-width: var(--form-input-input-max-width);
 	padding: var(--form-input-input-padding);
-	border-radius: var(--border-radius);
+	border-radius: var(--form-input-input-border-radius);
 	border: 1px solid black;
 	font-size: var(--form-input-input-font-size);
 	transition: all 0.3s ease;
