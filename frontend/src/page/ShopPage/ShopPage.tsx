@@ -46,7 +46,6 @@ function ShopPage(): React.JSX.Element {
 				return [];
 
 			const data = await res.json();
-			console.log(data.items);
 			return data.items;
 		}
 
