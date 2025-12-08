@@ -6,6 +6,8 @@ import ShopPage from "@/page/ShopPage/ShopPage";
 
 // TODO:
 // cancel pending request when there's a new request
+// TODO:
+// destroy other modals when a modal is showing
 
 const requireAuth = async () => {
 	try {

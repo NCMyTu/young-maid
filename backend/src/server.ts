@@ -11,6 +11,8 @@ dotenv.config();
 
 const app = express();
 
+// TODO: implement rate limit
+
 // Setup
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "20mb" }));
