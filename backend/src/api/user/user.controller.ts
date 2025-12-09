@@ -39,14 +39,23 @@ const signinUserController = async (req: Request, res: Response): Promise<void> 
 	const durationInSeconds = 60 * 5;
 
 	try {
-		const loginToken = await signinUser(req.body.username, req.body.password, durationInSeconds);
-		res.cookie("token", loginToken, {
+		const userData = await signinUser(req.body.username, req.body.password, durationInSeconds);
+
+		res.cookie("token", userData.jwt, {
 			httpOnly: true,
 			sameSite: 'strict',
-			secure: false, // true if over https
+			secure: false, // TODO: true if over https
 			maxAge: 1000 * durationInSeconds
 		});
-		res.status(200).json({ message: "Signin successful", loginToken });
+
+		res.status(200).json({
+			message: "Signin successful",
+			jwt: userData.jwt,
+			id: userData.id,
+			displayName: userData.displayName,
+			tagline: userData.tagline,
+			role: userData.role
+		});
 	} catch (e) {
 		if (e instanceof SigninError)
 			res.status(401).json({ message: "Incorrect username or password" });

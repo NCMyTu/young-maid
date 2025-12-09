@@ -45,11 +45,29 @@ const verifyUser = async (username: string, password: string): Promise<HydratedD
 	return user;
 };
 
-const signinUser = async (username: string, password: string, durationInSeconds: number): Promise<string> => {
+const signinUser = async (
+	username: string,
+	password: string,
+	durationInSeconds: number = 60 * 5
+): Promise<{
+	jwt: string,
+	id: string,
+	displayName: string,
+	tagline: string,
+	role: string
+}> => {
 	const user = await verifyUser(username, password);
+
 	if (!user)
 		throw new SigninError("Invalid username or password");
-	return generateUserJwtToken(user.id, user.role, durationInSeconds);
+
+	return {
+		jwt: generateUserJwtToken(user.id, user.role, durationInSeconds),
+		id: user.id,
+		displayName: user.gameId.displayName,
+		tagline: user.gameId.tagline,
+		role: user.role
+	};
 };
 
 const generateUserJwtToken = (userId: string, userRole: string, durationInSeconds: number): string => {
