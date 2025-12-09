@@ -4,9 +4,19 @@ import "./SignInPage.css";
 import clsx from "clsx";
 import type { IFormInputProps } from "@/component/FormInput/FormInput.type";
 import generateFormInputFields from "@/component/FormInput/FormInput.helper";
+import useUser from "@/lib/store/user/user";
+import { useShallow } from "zustand/shallow";
+
+interface UserResponse extends Response {
+	id: string,
+	displayName: string,
+	tagline: string,
+	role: string
+};
 
 function SignInPage(): React.JSX.Element {
 	const navigate = useNavigate();
+	const setUser = useUser((state) => state.set);
 
 	const refs = {
 		username: useRef<HTMLInputElement>(null),
@@ -31,14 +41,14 @@ function SignInPage(): React.JSX.Element {
 		};
 
 		try {
-			const res = await fetch("http://localhost:19722/api/users/auth/signin", {
+			let res = await fetch("http://localhost:19722/api/users/auth/signin", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				credentials: "include",
 				body: JSON.stringify(userData)
-			});
+			}) as UserResponse;
 
 			if (!res.ok) {
 				if (res.status === 401) { // Peekaboo! Magin number!
@@ -50,6 +60,11 @@ function SignInPage(): React.JSX.Element {
 
 				return;
 			}
+
+			res = await res.json();
+
+			const { id, displayName, tagline, role } = res;
+			setUser({ id, displayName, tagline, role });
 
 			navigate("/");
 		} catch {

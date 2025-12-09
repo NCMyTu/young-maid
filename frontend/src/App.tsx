@@ -16,6 +16,9 @@ const requireAuth = async () => {
 			credentials: "include"
 		});
 
+		const resJson = await res.json();
+		console.log(resJson);
+
 		if (!res.ok)
 			return redirect("/signin");
 	} catch {

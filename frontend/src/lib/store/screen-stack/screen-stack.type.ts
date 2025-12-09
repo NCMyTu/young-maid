@@ -2,6 +2,7 @@ type Screen = "home" | "shop";
 
 interface ScreenStackState {
 	stack: Screen[],
+
 	push: (screen: Screen) => void,
 	pop: () => void,
 	top: () => Screen,
