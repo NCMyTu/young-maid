@@ -26,7 +26,7 @@ const useScreenStack = create<ScreenStackState>()((set, get) => ({
 
 	current: (): Screen => get().top(),
 
-	reset: (): void => set(() => ({ stack: [DEFAULT_SCREEN] })),
+	clear: (): void => set(() => ({ stack: [DEFAULT_SCREEN] })),
 }));
 
 export default useScreenStack;

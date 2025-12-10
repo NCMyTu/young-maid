@@ -1,4 +1,4 @@
-type Screen = "home" | "shop";
+type Screen = "home" | "shop" | "admin";
 
 interface ScreenStackState {
 	stack: Screen[],
@@ -7,7 +7,7 @@ interface ScreenStackState {
 	pop: () => void,
 	top: () => Screen,
 	current: () => Screen,
-	reset: () => void
+	clear: () => void
 }
 
 export type {

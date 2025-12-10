@@ -4,7 +4,7 @@ import type { UserState } from "./user.type";
 const DEFAULT_ID = "";
 const DEFAULT_DISPLAY_NAME = "Guest";
 const DEFAULT_TAGLINE = "GUEST";
-const DEFAULT_ROLE = "user";
+const DEFAULT_ROLE = "";
 
 const useUser = create<UserState>()((set) => ({
 	id: DEFAULT_ID,
@@ -12,14 +12,16 @@ const useUser = create<UserState>()((set) => ({
 	tagline: DEFAULT_TAGLINE,
 	role: DEFAULT_ROLE,
 
-	set: ({ id, displayName, tagline, role }): void =>
+	set: (user) => set(() => ({ ...user })),
+
+	clear: (): void =>
 		set(() =>
 		({
-			id: id,
-			displayName: displayName,
-			tagline: tagline,
-			role: role
-		})),
+			id: DEFAULT_ID,
+			displayName: DEFAULT_DISPLAY_NAME,
+			tagline: DEFAULT_TAGLINE,
+			role: DEFAULT_ROLE,
+	})),
 }));
 
 export default useUser;

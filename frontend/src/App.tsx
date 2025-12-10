@@ -2,7 +2,7 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider, redirect, useRouteError, isRouteErrorResponse } from "react-router";
 import SignUpPage from "@/page/SignUpPage/SignUpPage";
 import SignInPage from "@/page/SignInPage/SignInPage";
-import MainPage from "@/page/MainPage/MainPage";
+import RootPage from "@/page/RootPage/RootPage";
 
 // TODO:
 // cancel pending request when there's a new request
@@ -48,7 +48,7 @@ function RootErrorBoundary() {
 const router = createBrowserRouter([
 	{
 		path: "/",
-		Component: MainPage,
+		Component: RootPage,
 		loader: requireAuth,
 		errorElement: <RootErrorBoundary />
 	},

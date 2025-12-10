@@ -5,7 +5,6 @@ import clsx from "clsx";
 import type { IFormInputProps } from "@/component/FormInput/FormInput.type";
 import generateFormInputFields from "@/component/FormInput/FormInput.helper";
 import useUser from "@/lib/store/user/user";
-import { useShallow } from "zustand/shallow";
 
 interface UserResponse extends Response {
 	id: string,
