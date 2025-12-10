@@ -6,7 +6,8 @@ import {
 	updateUserController,
 	getAllUsersController,
 	deleteAllUsersController,
-	verifyTokenController
+	verifyTokenController,
+	signoutController
 } from "./user.controller.js";
 import { authenticateUser, authorizeUser } from "@/middleware/auth.miwa.js";
 import type { Response, Request } from "express";
@@ -25,7 +26,7 @@ router.post("/auth/signin", signinUserController);
 router.post("/auth/signup", createUserController);
 router.post("/auth/forget-password", resetPasswordController); // ***
 router.get("/auth/verify", verifyTokenController);
-router.get("/auth/signout", () => {}); // ***
+router.post("/auth/signout", signoutController);
 
 // Protected routes
 router.get("/", authenticateUser, authorizeUser(["all"]), getAllUsersController);

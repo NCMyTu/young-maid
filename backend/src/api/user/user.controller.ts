@@ -43,7 +43,7 @@ const signinUserController = async (req: Request, res: Response): Promise<void> 
 
 		res.cookie("token", userData.jwt, {
 			httpOnly: true,
-			sameSite: 'strict',
+			sameSite: "strict",
 			secure: false, // TODO: true if over https
 			maxAge: 1000 * durationInSeconds
 		});
@@ -88,6 +88,16 @@ function verifyTokenController(req: Request, res: Response): void {
 	}
 }
 
+function signoutController(_: Request, res: Response): void {
+	res.cookie("token", "", {
+		httpOnly: true,
+		sameSite: "strict",
+		secure: false, // TODO: true if over https
+		expires: new Date(0)
+	});
+	res.sendStatus(200);
+}
+
 export {
 	signinUserController,
 	createUserController,
@@ -95,5 +105,6 @@ export {
 	updateUserController,
 	getAllUsersController,
 	deleteAllUsersController,
-	verifyTokenController
+	verifyTokenController,
+	signoutController
 };
