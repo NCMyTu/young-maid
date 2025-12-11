@@ -91,11 +91,31 @@ const verifyUserJwtToken = (token: any): UserJwtPayload => {
 	return jwt.verify(token, jwt_secret) as UserJwtPayload;
 };
 
+const getUserInfo = async (userId: string): Promise<{
+	id: string,
+	displayName: string,
+	tagline: string,
+	role: string
+} | null> => {
+	const user = await User.findById(userId, "id username gameId role");
+
+	if (!user)
+		return null;
+
+	return {
+		id: user.id,
+		displayName: user.gameId.displayName,
+		tagline: user.gameId.tagline,
+		role: user.role
+	};
+}
+
 export {
 	getAllUsers,
 	deleteAllUsers,
 	createUser,
 	signinUser,
 	verifyUser,
-	verifyUserJwtToken
+	verifyUserJwtToken,
+	getUserInfo
 };

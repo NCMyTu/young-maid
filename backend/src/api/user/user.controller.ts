@@ -1,5 +1,12 @@
 import { SigninError } from "@/util/error.js";
-import { createUser, getAllUsers, deleteAllUsers, signinUser, verifyUserJwtToken } from "./user.service.js";
+import {
+	createUser,
+	getAllUsers,
+	deleteAllUsers,
+	signinUser,
+	verifyUserJwtToken,
+	getUserInfo
+} from "./user.service.js";
 import type { Request, Response } from "express";
 
 const getAllUsersController = async (_: Request, res: Response): Promise<void> => {
@@ -72,7 +79,7 @@ async function updateUserController(_: Request, res: Response): Promise<void> {
 	res.status(200).json("hi from update");
 }
 
-function verifyTokenController(req: Request, res: Response): void {
+async function verifyTokenController(req: Request, res: Response): Promise<void> {
 	const token = req.cookies.token;
 
 	if (!token) {
@@ -81,8 +88,13 @@ function verifyTokenController(req: Request, res: Response): void {
 	}
 
 	try {
-		verifyUserJwtToken(token);
-		res.status(200).json({ message: "OK" });
+		const { id, role: roleFromToken } = verifyUserJwtToken(token);
+		const user = await getUserInfo(id);
+
+		if (!user || user.role !== roleFromToken)
+			throw new Error("Role may be updated and got stale");
+
+		res.status(200).json({ message: "OK" , user});
 	} catch {
 		res.status(401).json({ message: "Invalid or expired token" });
 	}

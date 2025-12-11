@@ -1,7 +1,7 @@
 class SigninError extends Error {
 	constructor(message: string) {
 		super(message);
-		this.name = "LoginError";
+		this.name = "SigninError";
 		Error.captureStackTrace?.(this, this.constructor);
 	}
 }
