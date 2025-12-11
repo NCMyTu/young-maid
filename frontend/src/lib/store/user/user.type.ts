@@ -6,7 +6,7 @@ interface UserData {
 }
 
 interface UserState extends UserData {
-	set: (user: UserData) => void,
+	setUser: (user: UserData) => void,
 	clear: () => void
 }
 

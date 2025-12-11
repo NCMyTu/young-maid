@@ -38,10 +38,10 @@ function HomePage(): React.JSX.Element {
 	return (
 		<>
 			<p style={{ margin: "10px auto", width: "fit-content", fontSize: "2rem" }}>HOME</p>
-			<p>user id: {user.id}</p>
-			<p>user displayName: {user.displayName}</p>
-			<p>user tagline: {user.tagline}</p>
-			<p>user role: {user.role}</p>
+			<p>id: {user.id}</p>
+			<p>displayName: {user.displayName}</p>
+			<p>tagline: {user.tagline}</p>
+			<p>role: {user.role}</p>
 			<button onClick={signout}>
 				Sign out
 			</button>

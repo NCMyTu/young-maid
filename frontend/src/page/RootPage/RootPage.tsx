@@ -1,14 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useScreenStack from "@/lib/store/screen-stack/screen-stack";
 import HomePage from "@/page/HomePage/HomePage";
 import ShopPage from "@/page/ShopPage/ShopPage";
 import AdminPage from "@/page/AdminPage/AdminPage";
+import useUser from "@/lib/store/user/user";
 
 function RootPage(): React.JSX.Element {
-	const currentScreen = useScreenStack((state) => state.current());
+	const setUser = useUser((state) => state.setUser);
+	const clear = useUser((state) => state.clear);
 
-	// const stack = useScreenStack((state) => state.stack);
-	// console.log("stack:", stack);
+	useEffect(() => {
+		(async () => {
+			try {
+				const res = await fetch("http://localhost:19722/api/users/auth/verify", {
+					credentials: "include",
+				});
+
+				if (!res.ok)
+					throw new Error("Session expired");
+
+				const data = await res.json();
+
+				if (data?.user)
+					setUser(data.user);
+				else
+					throw new Error("Backend didn't include user info or somehow json failed")
+			} catch (e) {
+				clear();
+			}
+		})();
+	}, []);
+
+	const currentScreen = useScreenStack((state) => state.current());
 
 	const screenToRender = (() => {
 		switch (currentScreen) {

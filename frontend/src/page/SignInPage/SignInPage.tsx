@@ -15,7 +15,7 @@ interface UserResponse extends Response {
 
 function SignInPage(): React.JSX.Element {
 	const navigate = useNavigate();
-	const setUser = useUser((state) => state.set);
+	const setUser = useUser((state) => state.setUser);
 
 	const refs = {
 		username: useRef<HTMLInputElement>(null),

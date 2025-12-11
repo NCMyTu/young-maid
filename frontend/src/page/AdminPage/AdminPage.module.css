@@ -1,0 +1,38 @@
+.container {
+	height: 100vh;
+	display: grid;
+	grid-template-rows: auto 1fr;
+	grid-template-columns: var(--shop-page-left-bar-width) var(--shop-page-item-section-width);
+	grid-template-areas:
+		"topBar topBar"
+		"leftBar contentSection";
+}
+
+.container .topBar {
+	grid-area: topBar;
+}
+
+.container .leftBar {
+	grid-area: leftBar;
+	background-color: var(--shop-page-left-bar-background-color);
+	display: flex;
+	flex-direction: column;
+	gap: var(--shop-page-left-bar-gap);
+	padding: var(--shop-page-left-bar-padding);
+
+	overflow-y: scroll;
+	scrollbar-width: none;
+}
+
+.container .contentSection {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: var(--shop-page-item-section-gap);
+	padding: var(--shop-page-item-section-padding);
+
+	overflow-y: scroll;
+	scrollbar-width: none;
+}
