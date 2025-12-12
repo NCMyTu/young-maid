@@ -40,6 +40,11 @@ const ShopItemSchema = new mongoose.Schema<IShopItem>({
 	price: {
 		type: Number,
 		required: [true, "Item price is required."]
+	},
+	status: {
+		type: String,
+		enum: ["available", "unavailable"],
+		default: "available"
 	}
 },
 	{ timestamps: true }

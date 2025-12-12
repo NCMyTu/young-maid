@@ -21,7 +21,8 @@ interface IShopItem extends Document {
 
 	baseItem: Types.ObjectId | IItem,
 	currency: "gem" | "gold",
-	price: number
+	price: number,
+	status: "unavailable" | "available"
 }
 
 interface IInventoryItem extends Document {
