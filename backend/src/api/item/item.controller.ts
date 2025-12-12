@@ -2,30 +2,11 @@ import type { Request, Response } from "express";
 import type { HydratedDocument } from "mongoose";
 import Item, { ShopItem } from "@/api/item/item.model.js";
 import type { IItem, IShopItem } from "./item.type.js";
+import { getShopItems } from "./item.service.js";
 
-const getAllShopItemsController = async (_: Request, res: Response): Promise<void> => {
+const getShopItemsController = async (_: Request, res: Response): Promise<void> => {
 	try {
-		const preprocessedItems = await ShopItem
-			.find()
-			.sort({ "createdAt": -1 })
-			.populate<{ baseItem: IItem }>("baseItem");
-
-		if (!preprocessedItems)
-			throw new Error("No items found");
-
-		const items = preprocessedItems.map(item => {
-			return {
-				id: item.id,
-				name: item.baseItem.name,
-				type: item.baseItem.type,
-				description: item.baseItem.description,
-				icon: item.baseItem.icon,
-				currency: item.currency,
-				price: item.price,
-				createdAt: item.createdAt,
-				updatedAd: item.updatedAt
-			};
-		});
+		const items = await getShopItems({ status: "available" });
 		res.status(200).json({ items });
 	} catch (e) {
 		const msg = e instanceof Error ? e.message : "Unexpected error";
@@ -33,7 +14,18 @@ const getAllShopItemsController = async (_: Request, res: Response): Promise<voi
 	}
 }
 
-const createShopItemController = async (req: Request, res: Response): Promise<void> => {
+const getShopItemsAdminController = async (_: Request, res: Response): Promise<void> => {
+	try {
+		const items = await getShopItems();
+		console.log(items)
+		res.status(200).json({ items });
+	} catch (e) {
+		const msg = e instanceof Error ? e.message : "Unexpected error";
+		res.status(500).json({ message: msg });
+	}
+}
+
+const createShopItemAdminController = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { name, type, description, icon, currency, price } = req.body;
 		const newItem: HydratedDocument<IItem> = new Item({ name, type, description, icon });
@@ -55,6 +47,7 @@ const createShopItemController = async (req: Request, res: Response): Promise<vo
 };
 
 export {
-	createShopItemController,
-	getAllShopItemsController
+	createShopItemAdminController,
+	getShopItemsController,
+	getShopItemsAdminController
 };

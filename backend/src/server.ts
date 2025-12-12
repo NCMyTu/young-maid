@@ -4,8 +4,11 @@ import { connectDB } from "./config/db.config.js";
 import cors from "cors";
 import corsOptions from "./config/cors-options.js";
 import cookieParser from "cookie-parser";
-import userRouter from "./api/user/user.route.js";
-import itemRouter from "./api/item/item.route.js";
+import { router as userRouter } from "@/api/user/user.route.js";
+import {
+	router as itemRouter,
+	adminRouter as itemAdminRouter
+} from "@/api/item/item.route.js";
 
 dotenv.config();
 
@@ -20,6 +23,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/users", userRouter);
 app.use("/api/items", itemRouter);
+app.use("/admin/api/items", itemAdminRouter);
 
 // Start server
 const PORT = Number(process.env.PORT) || 5001;

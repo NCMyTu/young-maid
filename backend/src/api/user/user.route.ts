@@ -10,9 +10,7 @@ import {
 	signoutController
 } from "./user.controller.js";
 import { authenticateUser, authorizeUser } from "@/middleware/auth.miwa.js";
-import type { Response, Request } from "express";
-
-const router = express.Router();
+import type { Response } from "express";
 
 // *** = to be implemented
 // TODO: remove access when user is deleted and token is still in use.
@@ -21,21 +19,22 @@ const router = express.Router();
 // Don't use router.use(<middleware>) since it applies to all routes that follow.
 // Instead attach middlewares explicitly in each router.<method>.
 
-// Public routes
+const router = express.Router();
+
 router.post("/auth/signin", signinUserController);
 router.post("/auth/signup", createUserController);
 router.post("/auth/forget-password", resetPasswordController); // ***
 router.get("/auth/verify", verifyTokenController);
 router.post("/auth/signout", signoutController);
 
-// Protected routes
-router.get("/", authenticateUser, authorizeUser(["all"]), getAllUsersController);
+router.get("/", authenticateUser, authorizeUser(["admin"]), getAllUsersController);
 router.post("/", authenticateUser, updateUserController); // ***
 router.delete("/", authenticateUser, deleteAllUsersController);
 
-// Catch-all route
-router.all(/(.*)/, (_: Request, res: Response) => {
+router.all(/(.*)/, (_, res: Response) => {
 	res.status(404).json({ message: "Route not found" });
 });
 
-export default router;
+export {
+	router
+};
