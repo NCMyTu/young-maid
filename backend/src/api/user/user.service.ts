@@ -1,32 +1,32 @@
-import User from "./user.model.js";
 import { getMissingFields } from "@/util/util.js";
 import type { HydratedDocument } from "mongoose";
-import type { IUser, CreateUserInput, CreateUserResponse, UserJwtPayload } from "./user.type.js";
+import type { UserRole, DbUser, CreateUserInput, CreateUserResult, SigninUserResult, UserJwtPayload } from "./user.type.js";
+import User from "./user.model.js";
 import jwt from "jsonwebtoken";
 import { SigninError } from "@/util/error.js";
 
-const getAllUsers = async () => {
+const getAllUsers = async (): Promise<HydratedDocument<DbUser>[]> => {
 	return await User.find().sort({ "createdAt": -1 });
 };
 
-const createUser = async (createUserInput: CreateUserInput): Promise<CreateUserResponse> => {
-	const { username, password, email, displayName, tagline } = createUserInput;
+const createUser = async (createUserInput: CreateUserInput): Promise<CreateUserResult> => {
+	const { username, password, email, displayName, tagLine } = createUserInput;
 	const requiredFields = { username, password, email, displayName };
 	const missingFields: string = getMissingFields(requiredFields, true);
 
 	if (missingFields)
 		throw new Error(`Missing required field(s): ${missingFields}`);
 
-	const newUser: HydratedDocument<IUser> = new User({
-		username, password, email,
-		gameId: { displayName, tagline }
+	const newUser: HydratedDocument<DbUser> = new User({
+		username, password, email, displayName, tagLine
 	});
 
 	const savedUser = await newUser.save();
 
 	return {
 		id: savedUser.id,
-		gameId: savedUser.gameId,
+		displayName: savedUser.displayName,
+		tagLine: savedUser.tagLine,
 		role: savedUser.role,
 		createdAt: savedUser.createdAt
 	};
@@ -36,7 +36,7 @@ const deleteAllUsers = async (): Promise<number> => {
 	return (await User.deleteMany()).deletedCount;
 };
 
-const verifyUser = async (username: string, password: string): Promise<HydratedDocument<IUser> | null> => {
+const verifyUser = async (username: string, password: string): Promise<HydratedDocument<DbUser> | null> => {
 	const user = await User.findOne({ username: username });
 	if (!user)
 		return null;
@@ -48,64 +48,53 @@ const verifyUser = async (username: string, password: string): Promise<HydratedD
 const signinUser = async (
 	username: string,
 	password: string,
-	durationInSeconds: number = 60 * 5
-): Promise<{
-	jwt: string,
-	id: string,
-	displayName: string,
-	tagline: string,
-	role: string
-}> => {
-	const user = await verifyUser(username, password);
+	durationInSeconds: number = 60 * 10
+): Promise<SigninUserResult> => {
+	const user: HydratedDocument<DbUser> | null = await verifyUser(username, password);
 
 	if (!user)
 		throw new SigninError("Invalid username or password");
 
 	return {
-		jwt: generateUserJwtToken(user.id, user.role, durationInSeconds),
+		auth: { token: generateUserJwtToken(user.id, user.role, durationInSeconds) },
 		id: user.id,
-		displayName: user.gameId.displayName,
-		tagline: user.gameId.tagline,
+		displayName: user.displayName,
+		tagLine: user.tagLine,
 		role: user.role
 	};
 };
 
-const generateUserJwtToken = (userId: string, userRole: string, durationInSeconds: number): string => {
+const generateUserJwtToken = (id: string, role: UserRole, durationInSeconds: number): string => {
 	const jwt_secret = process.env.JWT_SECRET;
 	if (!jwt_secret)
 		throw new Error("Cannot get JWT_SECRET");
 
 	return jwt.sign(
-		{ id: userId, role: userRole },
+		{ sub: id, role },
 		jwt_secret,
 		{ expiresIn: `${durationInSeconds}s` }
 	);
 };
 
-const verifyUserJwtToken = (token: any): UserJwtPayload => {
+const verifyUserJwtToken = (token: string): UserJwtPayload => {
 	const jwt_secret = process.env.JWT_SECRET;
 
 	if (!jwt_secret)
 		throw new Error("Cannot get JWT_SECRET");
 
-	return jwt.verify(token, jwt_secret) as UserJwtPayload;
+	return jwt.verify(token, jwt_secret, { algorithms: ["HS256"] }) as UserJwtPayload;
 };
 
-const getUserInfo = async (userId: string): Promise<{
-	id: string,
-	displayName: string,
-	tagline: string,
-	role: string
-} | null> => {
-	const user = await User.findById(userId, "id username gameId role");
+const getUserInfo = async (userId: string): Promise<Partial<DbUser> | null> => {
+	const user: HydratedDocument<DbUser> | null = await User.findById(userId, "id displayName tagLine role");
 
 	if (!user)
 		return null;
 
 	return {
 		id: user.id,
-		displayName: user.gameId.displayName,
-		tagline: user.gameId.tagline,
+		displayName: user.displayName,
+		tagLine: user.tagLine,
 		role: user.role
 	};
 }

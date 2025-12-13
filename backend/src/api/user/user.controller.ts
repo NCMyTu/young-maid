@@ -8,6 +8,7 @@ import {
 	getUserInfo
 } from "./user.service.js";
 import type { Request, Response } from "express";
+import type { SigninUserResult } from "./user.type.js";
 
 const getAllUsersController = async (_: Request, res: Response): Promise<void> => {
 	//  TODO:
@@ -23,8 +24,8 @@ const getAllUsersController = async (_: Request, res: Response): Promise<void> =
 
 const createUserController = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const { username, password, email, displayName, tagline } = req.body;
-		const user = await createUser({ username, password, email, displayName, tagline });
+		const { username, password, email, displayName, tagLine } = req.body;
+		const user = await createUser({ username, password, email, displayName, tagLine });
 		res.status(201).json({ message: "User created successfully.", user });
 	} catch (e) {
 		const msg = e instanceof Error ? e.message : "Unexpected error";
@@ -43,24 +44,26 @@ const deleteAllUsersController = async (_: Request, res: Response): Promise<void
 };
 
 const signinUserController = async (req: Request, res: Response): Promise<void> => {
-	const durationInSeconds = 60 * 5;
+	const maxAgeMinutes = process.env.JWT_COOKIE_MAX_AGE_MINUTES;
+	if (!maxAgeMinutes)
+		throw new Error("Cannot get JWT_COOKIE_MAX_AGE_MINUTES");
+	const durationSeconds = Number(maxAgeMinutes) * 60;
 
 	try {
-		const userData = await signinUser(req.body.username, req.body.password, durationInSeconds);
+		const userData: SigninUserResult = await signinUser(req.body.username, req.body.password, durationSeconds);
 
-		res.cookie("token", userData.jwt, {
+		res.cookie("token", userData.auth.token, {
 			httpOnly: true,
 			sameSite: "strict",
 			secure: false, // TODO: true if over https
-			maxAge: 1000 * durationInSeconds
+			maxAge: 1000 * durationSeconds
 		});
 
 		res.status(200).json({
 			message: "Signin successful",
-			jwt: userData.jwt,
 			id: userData.id,
 			displayName: userData.displayName,
-			tagline: userData.tagline,
+			tagline: userData.tagLine,
 			role: userData.role
 		});
 	} catch (e) {
@@ -82,19 +85,21 @@ async function updateUserController(_: Request, res: Response): Promise<void> {
 async function verifyTokenController(req: Request, res: Response): Promise<void> {
 	const token = req.cookies.token;
 
-	if (!token) {
+	if (!token || typeof token !== "string") {
 		res.status(401).json({ message: "Not authenticated" });
 		return;
 	}
 
 	try {
-		const { id, role: roleFromToken } = verifyUserJwtToken(token);
+		const { sub: id, role } = verifyUserJwtToken(token);
 		const user = await getUserInfo(id);
 
-		if (!user || user.role !== roleFromToken)
-			throw new Error("Role may be updated and got stale");
+		if (!user || user.role !== role) {
+			res.status(401).json({ message: "Unauthorized: Role mismatch" });
+			return;
+		}
 
-		res.status(200).json({ message: "OK" , user});
+		res.status(200).json({ message: "OK", user });
 	} catch {
 		res.status(401).json({ message: "Invalid or expired token" });
 	}

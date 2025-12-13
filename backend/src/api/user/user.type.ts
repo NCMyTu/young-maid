@@ -1,41 +1,47 @@
 import type { JwtPayload } from "jsonwebtoken";
-import { Document, Types } from "mongoose";
 
-interface IGameId {
-	displayName: string,
-	tagline: string
-}
+type UserRole = "admin" | "user";
 
-interface IUser extends Document {
-	_id: Types.ObjectId,
-	id: string,
-	createdAt: Date,
-	updatedAt: Date,
+interface DbUser {
+	id?: string;
+	createdAt?: Date;
+	updatedAt?: Date;
 
-	username: string,
-	password: string,
-	email: string,
-	role: "user" | "admin",
-	gameId: IGameId,
-	comparePassword(passwordToTest: string): Promise<boolean>
-}
-
-interface CreateUserInput extends Pick<IUser, "username" | "password" | "email"> {
+	username: string;
+	password: string;
+	email: string;
 	displayName: string;
-	tagline: string;
+	tagLine: string;
+	role: UserRole
+};
+
+interface DbUserMethods {
+	comparePassword(against: string): Promise<boolean>
 }
 
-interface CreateUserResponse extends Pick<IUser, "id" | "gameId" | "role" | "createdAt"> { }
+type CreateUserInput = Omit<DbUser, "role">;
+type CreateUserResult = Pick<DbUser, "id" | "displayName" | "tagLine" | "role" | "createdAt">;
+
+type SigninUserResult = Pick<
+	DbUser,
+	"id" | "displayName" | "tagLine" | "role"
+> & {
+	auth: {
+		token: string
+	}
+};
 
 interface UserJwtPayload extends JwtPayload {
-	id: string,
-	role: string
+	sub: string, // user.id
+	role: UserRole
 }
 
 export type {
-	IGameId,
-	IUser,
+	UserRole,
+	DbUser,
+	DbUserMethods,
 	CreateUserInput,
-	CreateUserResponse,
+	CreateUserResult,
+	SigninUserResult,
 	UserJwtPayload
 };
