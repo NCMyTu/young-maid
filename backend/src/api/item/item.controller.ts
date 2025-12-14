@@ -1,12 +1,12 @@
 import type { Request, Response } from "express";
 import type { HydratedDocument } from "mongoose";
-import Item, { ShopItem } from "@/api/item/item.model.js";
-import type { IItem, IShopItem } from "./item.type.js";
+import { Item, ShopItem } from "@/api/item/item.model.js";
+import type { DbItem, DbShopItem, DbShopItemFlatten } from "./item.type.js";
 import { getShopItems } from "./item.service.js";
 
 const getShopItemsController = async (_: Request, res: Response): Promise<void> => {
 	try {
-		const items = await getShopItems({ status: "available" });
+		const items: DbShopItemFlatten[] = await getShopItems({ status: "available" });
 		res.status(200).json({ items });
 	} catch (e) {
 		const msg = e instanceof Error ? e.message : "Unexpected error";
@@ -16,8 +16,7 @@ const getShopItemsController = async (_: Request, res: Response): Promise<void> 
 
 const getShopItemsAdminController = async (_: Request, res: Response): Promise<void> => {
 	try {
-		const items = await getShopItems();
-		console.log(items)
+		const items: DbShopItemFlatten[] = await getShopItems();
 		res.status(200).json({ items });
 	} catch (e) {
 		const msg = e instanceof Error ? e.message : "Unexpected error";
@@ -28,9 +27,9 @@ const getShopItemsAdminController = async (_: Request, res: Response): Promise<v
 const createShopItemAdminController = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { name, type, description, icon, currency, price } = req.body;
-		const newItem: HydratedDocument<IItem> = new Item({ name, type, description, icon });
+		const newItem: HydratedDocument<DbItem> = new Item({ name, type, description, icon });
 		const savedItem = await newItem.save();
-		const newShopItem: HydratedDocument<IShopItem> = new ShopItem({
+		const newShopItem: HydratedDocument<DbShopItem> = new ShopItem({
 			baseItem: savedItem.id,
 			currency,
 			price

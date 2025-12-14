@@ -1,7 +1,7 @@
 import { getMissingFields } from "@/util/util.js";
 import type { HydratedDocument } from "mongoose";
 import type { UserRole, DbUser, CreateUserInput, CreateUserResult, SigninUserResult, UserJwtPayload } from "./user.type.js";
-import User from "./user.model.js";
+import { User } from "./user.model.js";
 import jwt from "jsonwebtoken";
 import { SigninError } from "@/util/error.js";
 

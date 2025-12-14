@@ -90,6 +90,7 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.post("save", function (error: any, _: any, next: (err?: CallbackError) => void) {
+	// TODO: test all error paths.
 	if (error && error.name === "MongoServerError" && error.code === MONGOOSE_DUPLICATE_KEY_ERR_CODE) {
 		console.log(error)
 		const field = Object.keys(error.keyPattern)[0];
@@ -109,4 +110,6 @@ userSchema.post("save", function (error: any, _: any, next: (err?: CallbackError
 
 const User = mongoose.model("User", userSchema);
 
-export default User;
+export {
+	User
+};

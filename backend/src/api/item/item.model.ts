@@ -1,17 +1,20 @@
-import mongoose from "mongoose";
-import type { IItem, IInventoryItem, IShopItem } from "./item.type.js";
+import mongoose, { Model } from "mongoose";
+import type { DbItem, DbShopItem, DbInventoryItem } from "./item.type.js";
 
-const ItemSchema = new mongoose.Schema<IItem>({
+//                                             redundant, but it aligns with the User model.
+//                                             |
+//                                             v
+const itemSchema = new mongoose.Schema<DbItem, Model<DbItem>>({
+	type: {
+		type: String,
+		enum: ["card-back"],
+		required: [true, "Item type is required."]
+	},
 	name: {
 		type: String,
 		required: [true, "Item name is required."],
 		trim: true,
 		unique: true
-	},
-	type: {
-		type: String,
-		enum: ["card-back"],
-		required: [true, "Item type is required."]
 	},
 	description: {
 		type: String,
@@ -26,7 +29,10 @@ const ItemSchema = new mongoose.Schema<IItem>({
 	{ timestamps: true }
 );
 
-const ShopItemSchema = new mongoose.Schema<IShopItem>({
+//                                                     Same as above.
+//                                                     |
+//                                                     v
+const shopItemSchema = new mongoose.Schema<DbShopItem, Model<DbShopItem>>({
 	baseItem: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Item",
@@ -50,7 +56,7 @@ const ShopItemSchema = new mongoose.Schema<IShopItem>({
 	{ timestamps: true }
 );
 
-const InventoryItemSchema = new mongoose.Schema<IInventoryItem>({
+const inventoryItemSchema = new mongoose.Schema<DbInventoryItem, Model<DbInventoryItem>>({
 	baseItem: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Item",
@@ -60,21 +66,17 @@ const InventoryItemSchema = new mongoose.Schema<IInventoryItem>({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "User",
 		required: true
-	},
-	acquiredDate: {
-		type: Date,
-		default: Date.now
 	}
 },
 	{ timestamps: true }
 );
 
-const Item = mongoose.model<IItem>("Item", ItemSchema);
-const InventoryItem = mongoose.model<IInventoryItem>("InventoryItem", InventoryItemSchema);
-const ShopItem = mongoose.model<IShopItem>("ShopItem", ShopItemSchema);
+const Item = mongoose.model("Item", itemSchema);
+const ShopItem = mongoose.model("ShopItem", shopItemSchema);
+const InventoryItem = mongoose.model("InventoryItem", inventoryItemSchema);
 
-export default Item;
 export {
-	InventoryItem,
-	ShopItem
-}
+	Item,
+	ShopItem,
+	InventoryItem
+};
