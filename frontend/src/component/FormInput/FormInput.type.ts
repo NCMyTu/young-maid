@@ -1,15 +1,18 @@
 interface IFormInputProps {
-	divClassName: string,
-	labelText: string,
-	inputId: string,
-	inputType: string,
-	inputRef?: React.RefObject<HTMLInputElement | null>,
-	warningRef?: React.RefObject<HTMLParagraphElement | null>,
-	validationRules: ValidationRule[]
+	divClassName?: string;
+	labelText: string;
+	inputId: string;
+	inputType: React.HTMLInputTypeAttribute;
+	required: boolean;
+	placeholder?: string;
+
+	value: string;
+	onChange: (value: string) => void;
+	warning?: string
 }
 
 type ValidationRule = {
-	validateFunc: (s: string) => boolean,
+	validateFunc: (s: string) => boolean;
 	message: string
 };
 

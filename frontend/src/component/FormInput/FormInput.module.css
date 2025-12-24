@@ -33,5 +33,4 @@
 	color: var(--form-input-warning-color) !important;
 	margin: var(--form-input-warning-margin);
 	font-size: var(--form-input-warning-font-size);
-	visibility: hidden;
 }

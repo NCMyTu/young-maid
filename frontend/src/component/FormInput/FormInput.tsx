@@ -1,73 +1,60 @@
-import React, { useRef } from "react";
+import React from "react";
 import clsx from "clsx";
 import type { ValidationRule, IFormInputProps } from "./FormInput.type";
 import styles from "./FormInput.module.css";
 
 /**
- * Handles input validation for an input field and display a corresponding warning <p>.
- *
  * Stops after the first failed validation, so the order of validation rules matters.
  */
-const handleOnInput = (
-	e: React.FormEvent<HTMLInputElement>,
-	warningRef: React.RefObject<HTMLParagraphElement | null>,
-	validationRules: ValidationRule[]
-) => {
-	const inputValue = e.currentTarget.value;
-	const warningElement = warningRef.current;
-
-	if (!warningElement)
-		return;
-
+function validateInput(input: string, validationRules: ValidationRule[]): string {
 	for (const { validateFunc, message } of validationRules)
-		if (!validateFunc(inputValue)) {
-			warningElement.style.visibility = "visible";
-			warningElement.textContent = message;
-			return;
-		}
-
-	warningElement.style.visibility = "hidden";
-	warningElement.textContent = "JUST F#$@*&^ STOP SHRINKING";
-};
+		if (!validateFunc(input))
+			return message;
+	return "";
+}
 
 function FormInput({
 	divClassName,
 	labelText,
 	inputId,
 	inputType,
-	inputRef, // This ref is used to get the input value out. I know it's ugly.
-	warningRef, // Same as above.
-	validationRules
+	value,
+	placeholder,
+	onChange,
+	warning,
+	required,
 }: IFormInputProps): React.JSX.Element {
-	const tempRef = useRef<HTMLParagraphElement>(null);
-	const localWarningRef = warningRef ?? tempRef;
-
 	return (
-		<div className={clsx("form-input", styles.container, divClassName)}>
+		<div className={clsx("form-container", styles.container, divClassName)}>
 			<label
 				className={clsx("form-label", styles.label)}
 				htmlFor={inputId}
 			>
 				{labelText}
 			</label>
+
 			<input
-				ref={inputRef}
 				className={clsx("form-input", styles.input)}
 				type={inputType}
 				id={inputId}
 				name={inputId}
-				onInput={(e) => handleOnInput(e, localWarningRef, validationRules)}
-				required
+				value={value}
+				onChange={(e) => onChange(e.target.value)}
+				required={required}
+				placeholder={placeholder}
 			/>
+
 			<p
 				className={clsx("form-warning", styles.warning)}
-				ref={localWarningRef}
+				id={`${inputId}-warning`}
 				aria-live="polite"
+				style={{ visibility: warning ? "visible" : "hidden" }}
 			>
-				This is a warning
+				{warning || "This is a warning"}
 			</p>
 		</div>
 	);
 }
 
 export default FormInput;
+export { validateInput };

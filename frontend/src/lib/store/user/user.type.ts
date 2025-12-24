@@ -1,7 +1,7 @@
 interface UserData {
 	id: string,
 	displayName: string,
-	tagline: string,
+	tagLine: string,
 	role: string
 }
 

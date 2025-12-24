@@ -45,7 +45,7 @@ const displayNameValidationRules: ValidationRule[] = [
 	}
 ];
 
-const taglineValidationRules: ValidationRule[] = [
+const tagLineValidationRules: ValidationRule[] = [
 	{
 		validateFunc: isAlphanumeric,
 		message: `Tagline must be A-Z, 0-9`,
@@ -61,5 +61,5 @@ export {
 	passwordValidationRules,
 	emailValidationRules,
 	displayNameValidationRules,
-	taglineValidationRules,
+	tagLineValidationRules,
 };

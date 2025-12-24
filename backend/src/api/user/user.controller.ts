@@ -63,7 +63,7 @@ const signinUserController = async (req: Request, res: Response): Promise<void> 
 			message: "Signin successful",
 			id: userData.id,
 			displayName: userData.displayName,
-			tagline: userData.tagLine,
+			tagLine: userData.tagLine,
 			role: userData.role
 		});
 	} catch (e) {

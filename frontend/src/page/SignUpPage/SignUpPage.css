@@ -21,7 +21,7 @@
 	font-weight: var(--auth-form-title-font-weight);
 }
 
-.signup-box .form-input input {
+.signup-box .form-container input {
 	width: var(--auth-form-input-width);
 }
 

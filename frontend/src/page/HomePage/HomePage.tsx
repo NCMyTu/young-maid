@@ -9,7 +9,7 @@ function HomePage(): React.JSX.Element {
 	const user = useUser(useShallow((state) => ({
 		id: state.id,
 		displayName: state.displayName,
-		tagline: state.tagline,
+		tagLine: state.tagLine,
 		role: state.role
 	})));
 	const clearUser = useUser((state) => state.clear);
@@ -40,7 +40,7 @@ function HomePage(): React.JSX.Element {
 			<p style={{ margin: "10px auto", width: "fit-content", fontSize: "2rem" }}>HOME</p>
 			<p>id: {user.id}</p>
 			<p>displayName: {user.displayName}</p>
-			<p>tagline: {user.tagline}</p>
+			<p>tagLine: {user.tagLine}</p>
 			<p>role: {user.role}</p>
 			<button onClick={signout}>
 				Sign out

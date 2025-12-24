@@ -12,7 +12,7 @@ const useUser = create<UserState>()(
 		(set) => ({
 			id: DEFAULT_ID,
 			displayName: DEFAULT_DISPLAY_NAME,
-			tagline: DEFAULT_TAGLINE,
+			tagLine: DEFAULT_TAGLINE,
 			role: DEFAULT_ROLE,
 
 			setUser: (user) => set(() => ({ ...user })),
@@ -21,7 +21,7 @@ const useUser = create<UserState>()(
 				set({
 					id: DEFAULT_ID,
 					displayName: DEFAULT_DISPLAY_NAME,
-					tagline: DEFAULT_TAGLINE,
+					tagLine: DEFAULT_TAGLINE,
 					role: DEFAULT_ROLE,
 				}),
 		}),

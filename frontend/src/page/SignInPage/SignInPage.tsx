@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import "./SignInPage.css";
 import clsx from "clsx";
@@ -9,7 +9,7 @@ import useUser from "@/lib/store/user/user";
 interface UserResponse extends Response {
 	id: string,
 	displayName: string,
-	tagline: string,
+	tagLine: string,
 	role: string
 };
 
@@ -17,28 +17,37 @@ function SignInPage(): React.JSX.Element {
 	const navigate = useNavigate();
 	const setUser = useUser((state) => state.setUser);
 
-	const refs = {
-		username: useRef<HTMLInputElement>(null),
-		password: useRef<HTMLInputElement>(null)
-	};
-	const warningRef = useRef<HTMLParagraphElement>(null);
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [warning, setWarning] = useState("");
 
 	const inputFieldInfo: IFormInputProps[] = [
-		{ divClassName: "signin-input", inputId: "username", labelText: "Username", inputType: "text", validationRules: [], inputRef: refs.username },
-		{ divClassName: "signin-input", inputId: "password", labelText: "Password", inputType: "password", validationRules: [], inputRef: refs.password, warningRef: warningRef }
+		{
+			divClassName: "signin-input",
+			inputId: "username",
+			labelText: "Username",
+			inputType: "text",
+			required: true,
+			value: username,
+			onChange: (value: string) => {
+				setUsername(value);
+			}
+		},
+		{
+			divClassName: "signin-input",
+			inputId: "password",
+			labelText: "Password",
+			inputType: "password",
+			required: true,
+			value: password,
+			warning: warning,
+			onChange: (value: string) => {
+				setPassword(value)
+			}
+		}
 	];
 
-	const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		if (!warningRef.current)
-			return;
-
-		const userData = {
-			username: refs.username.current?.value,
-			password: refs.password.current?.value
-		};
-
+	const submitForm = async () => {
 		try {
 			let res = await fetch("http://localhost:19722/api/users/auth/signin", {
 				method: "POST",
@@ -46,36 +55,32 @@ function SignInPage(): React.JSX.Element {
 					"Content-Type": "application/json",
 				},
 				credentials: "include",
-				body: JSON.stringify(userData)
+				body: JSON.stringify({ username, password })
 			}) as UserResponse;
 
 			if (!res.ok) {
-				if (res.status === 401) { // Peekaboo! Magin number!
-					warningRef.current.textContent = "Incorrect username or password";
-					warningRef.current.style.visibility = "visible";
-				}
+				if (res.status === 401) // Peekaboo! Magin number!
+					setWarning("Incorrect username or password")
 				else
 					throw new Error();
-
-				return;
 			}
 
 			res = await res.json();
 
-			const { id, displayName, tagline, role } = res;
-			setUser({ id, displayName, tagline, role });
+			const { id, displayName, tagLine, role } = res;
+			setUser({ id, displayName, tagLine, role });
 
 			navigate("/");
 		} catch {
-			warningRef.current.textContent = "Something's wrong. Try again later.";
-			warningRef.current.style.visibility = "visible";
+			// TODO: warning in a <p> above the button instead of this.
+			setWarning("Unexpected error. Try again later")
 		}
 	};
 
 	return (
 		<div className={clsx("signin-box")}>
 			<h2>Sign in</h2>
-			<form onSubmit={handleOnSubmit}>
+			<form action={submitForm}>
 				{generateFormInputFields(inputFieldInfo)}
 				<button type="submit">Sign In</button>
 			</form>

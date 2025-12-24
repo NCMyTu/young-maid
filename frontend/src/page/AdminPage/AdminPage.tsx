@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import styles from "./AdminPage.module.css";
 import TopBar from "@/component/TopBar/TopBar";
 import BackButtonAndScreenName from "@/component/TopBar/Group/BackButtonAndScreenName";
+import CreateResourceForm from "@/component/CreateResourceForm/CreateResourceForm";
+
+
+// TODO: have a dedicated service handling api calls. it's getting out of hand.
+
+
+
 
 async function fetchShopItems() {
-	const res = await fetch("http://localhost:19722/api/items/shop", {
+	const res = await fetch("http://localhost:19722/admin/api/items/shop", {
 		method: "GET",
 		credentials: "include"
 	});
@@ -14,11 +21,17 @@ async function fetchShopItems() {
 		return [];
 
 	const data = await res.json();
-	console.log(data);
 	return data.items;
 }
 
 function AdminPage(): React.JSX.Element {
+	const [ items, setItems ] = useState<any[]>([]);
+
+	const handleFetchItems = async () => {
+		const result = await fetchShopItems();
+		console.log(result);
+		setItems(result);
+	}
 	return (
 		<div className={clsx(styles.container)}>
 			<TopBar className={clsx(styles.topBar)}>
@@ -26,11 +39,20 @@ function AdminPage(): React.JSX.Element {
 			</TopBar>
 
 			<div className={clsx("left-bar", styles.leftBar)}>
-				<div onClick={(_)=>fetchShopItems}>Shop item</div>
+				<div>Shop item</div>
+				<button onClick={handleFetchItems}>Fetch Shop Items</button>
 				<div>User</div>
 			</div>
 
 			<div className={clsx("content-section", styles.contentSection)}>
+				<CreateResourceForm />
+
+				<div style={{ "height": "50px", "border": "1px solid black" }} />
+				<p>This is a p</p>
+				{items.length === 0
+					? "No items"
+					: items.map((item: any, i: number) => <div key={i}>{JSON.stringify(item)}</div>)
+				}
 			</div>
 		</div>
 	);

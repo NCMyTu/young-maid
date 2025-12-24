@@ -4,17 +4,27 @@ import FormInput from "./FormInput";
 const generateFormInputFields = (fieldInfo: IFormInputProps[]) => (
 	<>
 		{fieldInfo.map(({
-			divClassName, inputId, labelText, inputType, validationRules, inputRef, warningRef
+			divClassName,
+			labelText,
+			inputId,
+			inputType,
+			value,
+			placeholder,
+			onChange,
+			warning,
+			required
 		}) => (
 			<FormInput
 				key={inputId}
-				inputRef={inputRef}
-				warningRef={warningRef}
 				divClassName={divClassName}
-				inputId={inputId}
 				labelText={labelText}
+				inputId={inputId}
 				inputType={inputType}
-				validationRules={validationRules}
+				value={value}
+				onChange={onChange}
+				warning={warning}
+				required={required}
+				placeholder={placeholder}
 			/>
 		))}
 	</>
