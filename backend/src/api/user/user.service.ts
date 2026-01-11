@@ -10,7 +10,6 @@ const getAllUsers = async (): Promise<HydratedDocument<DbUser>[]> => {
 };
 
 const createUser = async (createUserInput: CreateUserInput): Promise<CreateUserResult> => {
-	// TODO: maybe implement a Bloom filter???
 	const { username, password, email, displayName, tagLine } = createUserInput;
 	const requiredFields = { username, password, email, displayName };
 	const missingFields: string = getMissingFields(requiredFields, true);

@@ -1,5 +1,5 @@
 import mongoose, { type CallbackError, Model } from "mongoose";
-import bcrypt from "bcrypt";
+import argon2 from "argon2";
 import validator from "validator";
 import type { DbUser, DbUserMethods } from "./user.type.js";
 
@@ -65,7 +65,7 @@ const userSchema = new mongoose.Schema<DbUser, Model<DbUser>, DbUserMethods>({
 
 		methods: {
 			async comparePassword(against: string): Promise<boolean> {
-				return bcrypt.compare(against, this.password);
+				return argon2.verify(this.password, against);
 			}
 		}
 	}
@@ -81,8 +81,13 @@ userSchema.pre("save", async function (next) {
 		return next();
 
 	try {
-		const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS) || 11);
-		this.password = await bcrypt.hash(this.password, salt);
+		this.password = await argon2.hash(this.password, {
+			type: argon2.argon2id,
+			hashLength: Number(process.env.ARGON2_HASH_LENGTH),
+			memoryCost: Number(process.env.ARGON2_MEMORY_COST),
+			timeCost: Number(process.env.ARGON2_TIME_COST),
+			parallelism: Number(process.env.ARGON2_PARALLELISM),
+		});
 		next();
 	} catch (e) {
 		next(e as CallbackError);
@@ -92,7 +97,6 @@ userSchema.pre("save", async function (next) {
 userSchema.post("save", function (error: any, _: any, next: (err?: CallbackError) => void) {
 	// TODO: test all error paths.
 	if (error && error.name === "MongoServerError" && error.code === MONGOOSE_DUPLICATE_KEY_ERR_CODE) {
-		console.log(error)
 		const field = Object.keys(error.keyPattern)[0];
 		const defaultMessage = "Duplicate field value.";
 		const messages: Record<string, string> = {
