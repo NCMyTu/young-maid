@@ -42,6 +42,11 @@
 	background-color: var(--auth-form-submit-button-hover-background-color);
 }
 
+.signup-box form button[type="submit"]:disabled {
+	cursor: default;
+	background-color: red;
+}
+
 .signup-box input#tagline {
 	text-transform: uppercase;
 }

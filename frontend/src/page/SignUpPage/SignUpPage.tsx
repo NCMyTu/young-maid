@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import "./SignUpPage.css";
-import clsx from "clsx";
 import type { IFormInputProps, ValidationRule } from "@/component/FormInput/FormInput.type";
 import {
 	displayNameValidationRules,
@@ -13,6 +12,7 @@ import {
 import generateFormInputFields from "@/component/FormInput/FormInput.helper";
 import { validateInput } from "@/component/FormInput/FormInput";
 import useUser from "@/lib/store/user/user";
+import SubmitButton from "@/component/SubmitButton/SubmitButton";
 
 // TODO:
 // HIGH PRIORITY: submit being blocked by tag line warning set from request errors.
@@ -55,7 +55,7 @@ function SignUpPage(): React.JSX.Element {
 		{ divClassName: divClassName, inputId: "password", labelText: "Password", inputType: "password", required: true, value: password, warning: passwordWarning, onChange: (value) => setInputAndWarning(value, passwordValidationRules, setPassword, setPasswordWarning) },
 		{ divClassName: divClassName, inputId: "email", labelText: "Email", inputType: "text", required: true, value: email, warning: emailWarning, onChange: (value) => setInputAndWarning(value, emailValidationRules, setEmail, setEmailWarning) },
 		{ divClassName: divClassName, inputId: "display-name", labelText: "Display Name", inputType: "text", required: true, value: displayName, warning: displayNameWarning, onChange: (value) => setInputAndWarning(value, displayNameValidationRules, setDisplayName, setDisplayNameWarning) },
-		{ divClassName: divClassName, inputId: "tagline", labelText: "Tag line #", inputType: "text", required: true, value: tagLine, warning: tagLineWarning, onChange: (value) => setInputAndWarning(value, tagLineValidationRules, setTagLine, setTagLineWarning), placeholder: "YM" }
+		{ divClassName: divClassName, inputId: "tagline", labelText: "Tag line #", inputType: "text", required: false, value: tagLine, warning: tagLineWarning, onChange: (value) => setInputAndWarning(value, tagLineValidationRules, setTagLine, setTagLineWarning), placeholder: "YM" }
 	];
 
 	const submitForm = async () => {
@@ -121,14 +121,14 @@ function SignUpPage(): React.JSX.Element {
 	};
 
 	return (
-		<div className={clsx("signup-box")}>
+		<div className="signup-box">
 			<h2>Create a new account</h2>
 			<form action={submitForm}>
 				{generateFormInputFields(inputFieldInfo)}
-				<button type="submit">Sign Up</button>
+				<SubmitButton text="Sign Up" />
 			</form>
 
-			<p className={clsx("signin-text")}>
+			<p className="signin-text">
 				Already have an account?{" "}
 				<Link to="/">Sign in</Link>
 			</p>

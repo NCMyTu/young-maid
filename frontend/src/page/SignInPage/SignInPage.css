@@ -42,6 +42,11 @@
 	background-color: var(--auth-form-submit-button-hover-background-color);
 }
 
+.signin-box form button[type="submit"]:disabled {
+	cursor: default;
+	background-color: red;
+}
+
 .signin-box p.signup-text a,
 .signin-box p.signup-text a:visited {
 	text-decoration: none;

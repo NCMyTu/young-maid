@@ -9,8 +9,6 @@ import CreateResourceForm from "@/component/CreateResourceForm/CreateResourceFor
 // TODO: have a dedicated service handling api calls. it's getting out of hand.
 
 
-
-
 async function fetchShopItems() {
 	const res = await fetch("http://localhost:19722/admin/api/items/shop", {
 		method: "GET",
@@ -25,7 +23,7 @@ async function fetchShopItems() {
 }
 
 function AdminPage(): React.JSX.Element {
-	const [ items, setItems ] = useState<any[]>([]);
+	const [items, setItems] = useState<any[]>([]);
 
 	const handleFetchItems = async () => {
 		const result = await fetchShopItems();
@@ -47,8 +45,6 @@ function AdminPage(): React.JSX.Element {
 			<div className={clsx("content-section", styles.contentSection)}>
 				<CreateResourceForm />
 
-				<div style={{ "height": "50px", "border": "1px solid black" }} />
-				<p>This is a p</p>
 				{items.length === 0
 					? "No items"
 					: items.map((item: any, i: number) => <div key={i}>{JSON.stringify(item)}</div>)

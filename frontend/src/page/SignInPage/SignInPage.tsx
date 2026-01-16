@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import "./SignInPage.css";
-import clsx from "clsx";
 import type { IFormInputProps } from "@/component/FormInput/FormInput.type";
 import generateFormInputFields from "@/component/FormInput/FormInput.helper";
 import useUser from "@/lib/store/user/user";
+import SubmitButton from "@/component/SubmitButton/SubmitButton";
 
 interface UserResponse extends Response {
 	id: string,
@@ -78,14 +78,14 @@ function SignInPage(): React.JSX.Element {
 	};
 
 	return (
-		<div className={clsx("signin-box")}>
+		<div className="signin-box">
 			<h2>Sign in</h2>
 			<form action={submitForm}>
 				{generateFormInputFields(inputFieldInfo)}
-				<button type="submit">Sign In</button>
+				<SubmitButton text="Sign In" />
 			</form>
 
-			<p className={clsx("signup-text")}>
+			<p className="signup-text">
 				Don't have an account?{" "}
 				<Link to="/signup">Create one</Link>
 			</p>
