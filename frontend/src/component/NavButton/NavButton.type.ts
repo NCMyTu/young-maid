@@ -1,6 +1,6 @@
 interface INavButtonProps {
-	buttonName: string,
-	iconSrc: string,
+	buttonName: string;
+	iconSrc: string
 }
 
 export type {

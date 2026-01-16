@@ -1,6 +1,6 @@
 interface ITopBarProps {
 	children?: React.ReactNode;
-	// Additional class for the outmost div to style it
+	// For styling purpose
 	className?: string
 }
 
