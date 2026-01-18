@@ -46,6 +46,14 @@ type DbShopItemFlatten = Pick<DbShopItem,
 
 type ShopItemFilter = Partial<Pick<DbShopItem, "status" | "currency">>;
 
+type CreateShopItemInput = Pick<DbItem,
+	"type" | "name" | "description" | "icon"
+> & Pick<DbShopItem,
+	"currency" | "price" | "status"
+>;
+
+type CreateShopItemResult = { id: string } & CreateShopItemInput;
+
 export type {
 	ItemType,
 	Currency,
@@ -54,5 +62,7 @@ export type {
 	DbShopItem,
 	DbInventoryItem,
 	ShopItemFilter,
-	DbShopItemFlatten
+	DbShopItemFlatten,
+	CreateShopItemInput,
+	CreateShopItemResult
 };

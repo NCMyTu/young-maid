@@ -1,8 +1,7 @@
 import type { Request, Response } from "express";
 import mongoose from "mongoose";
-import { Item, ShopItem } from "@/api/item/item.model.js";
-import type { DbItem, DbShopItem, DbShopItemFlatten } from "./item.type.js";
-import { getShopItems } from "./item.service.js";
+import type { CreateShopItemResult, DbItem, DbShopItem, DbShopItemFlatten } from "./item.type.js";
+import { createShopItem, getShopItems } from "./item.service.js";
 import { deleteFile } from "@/util/util.js";
 
 const getShopItemsController = async (_: Request, res: Response): Promise<void> => {
@@ -32,34 +31,18 @@ const createShopItemAdminController = async (req: Request, res: Response): Promi
 		return;
 	}
 
-	const session = await mongoose.startSession();
-
 	try {
-		const { type, name, description, currency } = req.body;
+		const { type, name, description, currency, status } = req.body;
 		const price = Number(req.body.price);
-		const icon = req.file.path.replaceAll("\\", "/");
+		const icon = req.file.path;
 
-		const responseItem = await session.withTransaction(async () => {
-			const item = new Item({ type, name, description, icon });
-			await item.save({ session });
-			const shopItem = new ShopItem({ baseItem: item._id, currency, price });
-			await shopItem.save({ session });
-
-			return {
-				id: shopItem.id,
-				type: item.type,
-				name: item.name,
-				description: item.description,
-				icon: item.icon,
-				currency: shopItem.currency,
-				price: shopItem.price,
-				status: shopItem.status
-			};
+		const shopItem: CreateShopItemResult = await createShopItem({
+			type, name, description, currency, status, icon, price
 		});
 
 		res.status(201).json({
 			message: "Shop item created successfully.",
-			item: responseItem
+			item: shopItem
 		});
 	} catch (e) {
 		deleteFile(req.file.path);
@@ -68,8 +51,6 @@ const createShopItemAdminController = async (req: Request, res: Response): Promi
 			res.status(400).json({ message: "Invalid input data." });
 		else
 			res.status(500).json({ message: "Unexpected error." });
-	} finally {
-		await session.endSession();
 	}
 };
 
