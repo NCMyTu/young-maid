@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import mongoose, { type HydratedDocument } from "mongoose";
+import mongoose from "mongoose";
 import { Item, ShopItem } from "@/api/item/item.model.js";
 import type { DbItem, DbShopItem, DbShopItemFlatten } from "./item.type.js";
 import { getShopItems } from "./item.service.js";
@@ -26,37 +26,37 @@ const getShopItemsAdminController = async (_: Request, res: Response): Promise<v
 }
 
 const createShopItemAdminController = async (req: Request, res: Response): Promise<void> => {
-	// TODO: if shop item fails to save, it creates orphaned.
-	// use transaction
 	if (!req.file) {
 		// Why not?
 		res.status(400).json({ message: "Icon file is required." });
 		return;
 	}
 
+	const session = await mongoose.startSession();
+
 	try {
-		const { type, name, description, currency, price } = req.body;
-		const icon = req.file.path;
+		const { type, name, description, currency } = req.body;
+		const price = Number(req.body.price);
+		const icon = req.file.path.replaceAll("\\", "/");
 
-		const newItem: HydratedDocument<DbItem> = new Item({ type, name, description, icon });
-		const savedItem = await newItem.save();
-		const newShopItem: HydratedDocument<DbShopItem> = new ShopItem({
-			baseItem: savedItem.id,
-			currency,
-			price
+		const responseItem = await session.withTransaction(async () => {
+			const item = new Item({ type, name, description, icon });
+			await item.save({ session });
+			const shopItem = new ShopItem({ baseItem: item._id, currency, price });
+			await shopItem.save({ session });
+
+			return {
+				id: shopItem.id,
+				type: item.type,
+				name: item.name,
+				description: item.description,
+				icon: item.icon,
+				currency: shopItem.currency,
+				price: shopItem.price,
+				status: shopItem.status
+			};
 		});
-		const savedShopItem = await newShopItem.save();
 
-		const responseItem = {
-			id: savedShopItem.id,
-			type: savedItem.type,
-			name: savedItem.name,
-			description: savedItem.description,
-			icon: savedItem.icon,
-			currency: savedShopItem.currency,
-			price: savedShopItem.price,
-			status: savedShopItem.status
-		};
 		res.status(201).json({
 			message: "Shop item created successfully.",
 			item: responseItem
@@ -64,10 +64,12 @@ const createShopItemAdminController = async (req: Request, res: Response): Promi
 	} catch (e) {
 		deleteFile(req.file.path);
 
-		if (e instanceof mongoose.Error.ValidationError)
-			res.status(400).json({message: "Invalid input data."});
+		if (e instanceof mongoose.Error.ValidationError || e instanceof mongoose.Error.CastError)
+			res.status(400).json({ message: "Invalid input data." });
 		else
 			res.status(500).json({ message: "Unexpected error." });
+	} finally {
+		await session.endSession();
 	}
 };
 
