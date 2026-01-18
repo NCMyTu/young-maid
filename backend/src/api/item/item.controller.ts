@@ -62,7 +62,6 @@ const createShopItemAdminController = async (req: Request, res: Response): Promi
 			item: responseItem
 		});
 	} catch (e) {
-		console.log(e)
 		deleteFile(req.file.path);
 
 		if (e instanceof mongoose.Error.ValidationError)

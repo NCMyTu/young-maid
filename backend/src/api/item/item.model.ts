@@ -8,6 +8,7 @@ const itemSchema = new mongoose.Schema<DbItem, Model<DbItem>>({
 	type: {
 		type: String,
 		enum: ["card-back"],
+		trim: true,
 		required: [true, "Item type is required."]
 	},
 	name: {
@@ -22,6 +23,7 @@ const itemSchema = new mongoose.Schema<DbItem, Model<DbItem>>({
 	},
 	icon: {
 		type: String,
+		trim: true,
 		required: [true, "Item icon path is required."]
 	},
 },
@@ -39,6 +41,7 @@ const shopItemSchema = new mongoose.Schema<DbShopItem, Model<DbShopItem>>({
 	},
 	currency: {
 		type: String,
+		trim: true,
 		required: [true, "Item currency is required."],
 		enum: ["gem", "gold"]
 	},
@@ -48,6 +51,7 @@ const shopItemSchema = new mongoose.Schema<DbShopItem, Model<DbShopItem>>({
 	},
 	status: {
 		type: String,
+		trim: true,
 		enum: ["available", "unavailable"],
 		default: "available"
 	}

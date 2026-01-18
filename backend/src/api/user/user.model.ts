@@ -41,6 +41,7 @@ const userSchema = new mongoose.Schema<DbUser, Model<DbUser>, DbUserMethods>({
 	role: {
 		type: String,
 		enum: ["user", "admin"],
+		trim: true,
 		default: "user"
 	},
 	displayName: {
@@ -58,7 +59,7 @@ const userSchema = new mongoose.Schema<DbUser, Model<DbUser>, DbUserMethods>({
 		uppercase: true,
 		validate: [(s: string) => validator.isAlphanumeric(s, "en-US"), "Tag line must be A-Z, 0-9."],
 		minLength: [TAGLINE_MIN_LENGTH, `Tag line must be at least ${TAGLINE_MIN_LENGTH} characters long.`],
-		maxLength: [TAGLINE_MAX_LENGTH, `Tag line must be less than ${TAGLINE_MAX_LENGTH} characters.`]
+		maxLength: [TAGLINE_MAX_LENGTH, `Tag line must be at most ${TAGLINE_MAX_LENGTH} characters.`]
 	}},
 	{
 		timestamps: true,
