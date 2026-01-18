@@ -18,7 +18,7 @@ const getAllUsersController = async (_: Request, res: Response): Promise<void> =
 		const users = await getAllUsers();
 		res.status(200).json(users);
 	} catch {
-		res.status(500).json({ message: "Something went wrong while trying to get all users" });
+		res.status(500).json({ message: "Something went wrong while trying to get all users." });
 	}
 };
 
@@ -28,7 +28,7 @@ const createUserController = async (req: Request, res: Response): Promise<void> 
 		const user = await createUser({ username, password, email, displayName, tagLine });
 		res.status(201).json({ message: "User created successfully.", user });
 	} catch (e) {
-		const msg = e instanceof Error ? e.message : "Unexpected error";
+		const msg = e instanceof Error ? e.message : "Unexpected error.";
 		res.status(409).json({ message: msg });
 	}
 };
@@ -36,9 +36,9 @@ const createUserController = async (req: Request, res: Response): Promise<void> 
 const deleteAllUsersController = async (_: Request, res: Response): Promise<void> => {
 	try {
 		const deletedCount = await deleteAllUsers();
-		res.status(200).json({ message: `deleted ${deletedCount} users` });
+		res.status(200).json({ message: `deleted ${deletedCount} users.` });
 	} catch (e) {
-		const msg = e instanceof Error ? e.message : "Unexpected error";
+		const msg = e instanceof Error ? e.message : "Unexpected error.";
 		res.status(500).json({ message: msg });
 	}
 };
@@ -60,7 +60,7 @@ const signinUserController = async (req: Request, res: Response): Promise<void> 
 		});
 
 		res.status(200).json({
-			message: "Signin successful",
+			message: "Signin successful.",
 			id: userData.id,
 			displayName: userData.displayName,
 			tagLine: userData.tagLine,
@@ -68,25 +68,25 @@ const signinUserController = async (req: Request, res: Response): Promise<void> 
 		});
 	} catch (e) {
 		if (e instanceof SigninError)
-			res.status(401).json({ message: "Incorrect username or password" });
+			res.status(401).json({ message: "Incorrect username or password." });
 		else
-			res.status(500).json({ message: "Unexpected error" });
+			res.status(500).json({ message: "Unexpected error." });
 	}
 };
 
 async function resetPasswordController(_: Request, res: Response): Promise<void> {
-	res.status(200).json("hi from forget password");
+	res.status(200).json("hi from forget password.");
 }
 
 async function updateUserController(_: Request, res: Response): Promise<void> {
-	res.status(200).json("hi from update");
+	res.status(200).json("hi from update.");
 }
 
 async function verifyTokenController(req: Request, res: Response): Promise<void> {
 	const token = req.cookies.token;
 
 	if (!token || typeof token !== "string") {
-		res.status(401).json({ message: "Not authenticated" });
+		res.status(401).json({ message: "Not authenticated." });
 		return;
 	}
 
@@ -95,13 +95,13 @@ async function verifyTokenController(req: Request, res: Response): Promise<void>
 		const user = await getUserInfo(id);
 
 		if (!user || user.role !== role) {
-			res.status(401).json({ message: "Unauthorized: Role mismatch" });
+			res.status(401).json({ message: "Unauthorized: Role mismatch." });
 			return;
 		}
 
 		res.status(200).json({ message: "OK", user });
 	} catch {
-		res.status(401).json({ message: "Invalid or expired token" });
+		res.status(401).json({ message: "Invalid or expired token." });
 	}
 }
 
