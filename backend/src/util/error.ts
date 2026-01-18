@@ -6,4 +6,16 @@ class SigninError extends Error {
 	}
 }
 
-export { SigninError };
+class FileNotFoundError extends Error {
+	readonly code = "EOENT";
+	constructor() {
+		super("File not found");
+		this.name = "FileNotFoundError";
+		Error.captureStackTrace?.(this, this.constructor);
+	}
+}
+
+export {
+	SigninError,
+	FileNotFoundError
+ };

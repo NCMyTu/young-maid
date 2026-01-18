@@ -10,7 +10,7 @@ const authenticateUser = (req: UserRequest, res: Response, next: NextFunction) =
 	const token = req.cookies.token;
 
 	if (!token)
-		return res.status(401).json({ message: "Authorization token is required" });
+		return res.status(401).json({ message: "Authentication token is required" });
 
 	try {
 		const decoded = verifyUserJwtToken(token);
@@ -32,7 +32,7 @@ const authorizeUser = (roles: string[]) => {
 			return res.status(403).json({ message: "User role not found in token" });
 
 		if (roles.includes("all"))
-			return next()
+			return next();
 
 		if (!roles.includes(userRole))
 			return res.status(403).json({ message: "Insufficient permission" });

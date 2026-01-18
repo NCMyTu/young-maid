@@ -26,7 +26,7 @@ const getShopItemsAdminController = async (_: Request, res: Response): Promise<v
 
 const createShopItemAdminController = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const { name, type, description, icon, currency, price } = req.body;
+		const { type, name, description, icon, currency, price } = req.body;
 		const newItem: HydratedDocument<DbItem> = new Item({ name, type, description, icon });
 		const savedItem = await newItem.save();
 		const newShopItem: HydratedDocument<DbShopItem> = new ShopItem({
