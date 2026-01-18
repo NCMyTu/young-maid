@@ -18,7 +18,6 @@ const itemSchema = new mongoose.Schema<DbItem, Model<DbItem>>({
 	},
 	description: {
 		type: String,
-		required: [true, "Item description is required."],
 		trim: true
 	},
 	icon: {
