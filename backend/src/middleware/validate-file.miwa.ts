@@ -28,11 +28,11 @@ const validateFile = async (req: Request, res: Response, next: NextFunction) => 
 
 		const ext = fileType.ext === "jpeg" ? "jpg" : fileType.ext;
 
-		const oldPath = req.file.path.replaceAll("\\", "/");
+		const oldPath = req.file.path;
 		const dir = path.dirname(oldPath).replaceAll("\\", "/");
 		const baseName = path.basename(oldPath, path.extname(oldPath));
 		const newName = `${baseName}.${ext}`;
-		const newPath = path.join(dir, newName).replaceAll("\\", "/");
+		const newPath = path.join(dir, newName);
 
 		if (oldPath === newPath)
 			return next();

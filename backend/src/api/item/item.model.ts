@@ -37,7 +37,8 @@ const shopItemSchema = new mongoose.Schema<DbShopItem, Model<DbShopItem>>({
 	baseItem: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Item",
-		required: true
+		required: true,
+		unique: true
 	},
 	currency: {
 		type: String,
@@ -47,7 +48,8 @@ const shopItemSchema = new mongoose.Schema<DbShopItem, Model<DbShopItem>>({
 	},
 	price: {
 		type: Number,
-		required: [true, "Item price is required."]
+		required: [true, "Item price is required."],
+		validate: [(p: number) => p >= 0, "Item price must be at least 0."]
 	},
 	status: {
 		type: String,
