@@ -1,7 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
 import { fileTypeFromFile } from "file-type";
 import path from "path";
-import { rename, unlink } from "fs/promises";
+import { rename } from "fs/promises";
+import { deleteFile } from "@/util/util.js";
 
 const ALLOWED_MIME_TYPES = [
 	"image/jpeg",
@@ -10,24 +11,14 @@ const ALLOWED_MIME_TYPES = [
 	"image/webp"
 ];
 
-const message = "File rejected."
-
-const cleanUp = async (path?: string) => {
-	if (!path)
-		return;
-	try {
-		await unlink(path);
-	} catch (e) {
-		console.error(`Error when deleting file: ${e}`)
-	}
-};
+const message = "No file found or file rejected."
 
 const validateFile = async (req: Request, res: Response, next: NextFunction) => {
 	// Perform actual validation on the uploaded/downloaded file.
 	let currentPath: string | undefined = req.file?.path;
 
 	if (!req.file || !req.file.path)
-		return res.status(401).json({ message });
+		return res.status(415).json({ message });
 
 	try {
 		const fileType: { ext: string, mime: string } | undefined = await fileTypeFromFile(req.file.path);
@@ -56,7 +47,7 @@ const validateFile = async (req: Request, res: Response, next: NextFunction) => 
 
 		next();
 	} catch {
-		await cleanUp(currentPath);
+		await deleteFile(currentPath);
 		return res.status(415).json({ message });
 	}
 };
