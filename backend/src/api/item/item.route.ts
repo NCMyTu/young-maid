@@ -6,6 +6,8 @@ import {
 	getShopItemsController,
 	getShopItemsAdminController
 } from "./item.controller.js";
+import { uploadSingleFile } from "@/middleware/upload.miwa.js";
+import { validateFile } from "@/middleware/validate-file.miwa.js";
 
 // *** = to be implemented
 // TODO: remove access when user is deleted and token is still in use.
@@ -23,8 +25,19 @@ router.get("/shop", authenticateUser, getShopItemsController);
 router.all(/(.*)/, routeNotFound);
 
 const adminRouter = express.Router();
-adminRouter.get("/shop", authenticateUser, authorizeUser(["admin"]), getShopItemsAdminController);
-adminRouter.post("/shop", authenticateUser, authorizeUser(["admin"]), createShopItemAdminController);
+adminRouter.get("/shop",
+	authenticateUser,
+	authorizeUser(["admin"]),
+	getShopItemsAdminController
+);
+// To see all constraints on file upload, go to @/middleware/upload.miwa.ts
+adminRouter.post("/shop",
+	authenticateUser,
+	authorizeUser(["admin"]),
+	uploadSingleFile("item-icon"),
+	validateFile,
+	createShopItemAdminController
+);
 adminRouter.all(/(.*)/, routeNotFound);
 
 export {
