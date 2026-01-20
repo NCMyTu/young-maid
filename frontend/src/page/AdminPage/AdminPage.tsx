@@ -3,7 +3,7 @@ import clsx from "clsx";
 import styles from "./AdminPage.module.css";
 import TopBar from "@/component/TopBar/TopBar";
 import BackButtonAndScreenName from "@/component/TopBar/Group/BackButtonAndScreenName";
-import CreateResourceForm from "@/component/CreateResourceForm/CreateResourceForm";
+import CreateShopItemForm from "@/component/CreateResourceForm/CreateShopItemForm";
 
 
 // TODO: have a dedicated service handling api calls. it's getting out of hand.
@@ -43,7 +43,7 @@ function AdminPage(): React.JSX.Element {
 			</div>
 
 			<div className={clsx("content-section", styles.contentSection)}>
-				<CreateResourceForm />
+				<CreateShopItemForm />
 
 				{items.length === 0
 					? "No items"

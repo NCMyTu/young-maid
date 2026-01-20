@@ -1,0 +1,41 @@
+.container {
+	border: solid 1px black;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.container input {
+	border: 2px solid blue;
+	field-sizing: content; /* to make it fit the placeholder */
+}
+
+/* Disable arrows in number input */
+/* Chrome, Safari, Edge, Opera */
+.container input::-webkit-outer-spin-button,
+.container input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+/* Firefox */
+.container input[type=number] {
+	appearance: textfield;
+	-moz-appearance: textfield;
+	-webkit-appearance: textfield;
+}
+
+.fileInput {
+	border: 1px solid black;
+}
+
+.iconPreview {
+	width: 75px;
+	height: 75px
+}
+
+.disable {
+	opacity: 0.5;
+	cursor: not-allowed;
+	background-color: #ccc;
+	color: #666;
+}
