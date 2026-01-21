@@ -4,13 +4,14 @@ import styles from "./AdminPage.module.css";
 import TopBar from "@/component/TopBar/TopBar";
 import BackButtonAndScreenName from "@/component/TopBar/Group/BackButtonAndScreenName";
 import CreateShopItemForm from "@/component/CreateResourceForm/CreateShopItemForm";
+import { ENDPOINTS } from "@/config/endpoints";
 
 
 // TODO: have a dedicated service handling api calls. it's getting out of hand.
 
 
 async function fetchShopItems() {
-	const res = await fetch("http://localhost:19722/admin/api/items/shop", {
+	const res = await fetch(ENDPOINTS.ADMIN.GET.shopItems, {
 		method: "GET",
 		credentials: "include"
 	});

@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider, redirect, useRouteError, isRouteEr
 import SignUpPage from "@/page/SignUpPage/SignUpPage";
 import SignInPage from "@/page/SignInPage/SignInPage";
 import RootPage from "@/page/RootPage/RootPage";
+import { ENDPOINTS } from "./config/endpoints";
 
 // TODO:
 // cancel pending request when there's a new request
@@ -11,7 +12,7 @@ import RootPage from "@/page/RootPage/RootPage";
 
 const requireAuth = async () => {
 	try {
-		const res = await fetch("http://localhost:19722/api/users/auth/verify", {
+		const res = await fetch(ENDPOINTS.AUTH.verify, {
 			method: "GET",
 			credentials: "include"
 		});
@@ -19,7 +20,7 @@ const requireAuth = async () => {
 		if (!res.ok)
 			return redirect("/signin");
 	} catch {
-		throw Error("Something went wrong in requireAuth");
+		throw Error("Something went wrong in when trying to verify user");
 	}
 };
 

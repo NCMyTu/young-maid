@@ -5,6 +5,7 @@ import type { IFormInputProps } from "@/component/FormInput/FormInput.type";
 import generateFormInputFields from "@/component/FormInput/FormInput.helper";
 import useUser from "@/lib/store/user/user";
 import SubmitButton from "@/component/SubmitButton/SubmitButton";
+import { ENDPOINTS } from "@/config/endpoints";
 
 interface UserResponse extends Response {
 	id: string,
@@ -49,7 +50,7 @@ function SignInPage(): React.JSX.Element {
 
 	const submitForm = async () => {
 		try {
-			let res = await fetch("http://localhost:19722/api/users/auth/signin", {
+			let res = await fetch(ENDPOINTS.AUTH.signIn, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

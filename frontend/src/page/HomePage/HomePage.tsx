@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { useShallow } from "zustand/shallow";
 import useScreenStack from "@/lib/store/screen-stack/screen-stack";
 import useUser from "@/lib/store/user/user";
+import { ENDPOINTS } from "@/config/endpoints";
 
 function HomePage(): React.JSX.Element {
 	const pushScreen = useScreenStack((state) => state.push);
@@ -17,7 +18,7 @@ function HomePage(): React.JSX.Element {
 
 	const signout = async () => {
 		try {
-			let res = await fetch("http://localhost:19722/api/users/auth/signout", {
+			let res = await fetch(ENDPOINTS.AUTH.signOut, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

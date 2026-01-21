@@ -11,6 +11,7 @@ import ShopItem from "@/component/ShopItem/ShopItem";
 import goldIcon from "/asset/icon/gold.svg";
 import gemIcon from "/asset/icon/gem.svg";
 import Modal from "@/component/Modal/Modal";
+import { API_BASE_URL, ENDPOINTS } from "@/config/endpoints";
 
 // TODO: implement drag-and-scroll
 
@@ -24,7 +25,7 @@ const generateShopItems = (shopItems: any[]): React.JSX.Element[] => {
 			key={i}
 			name={item.name}
 			price={item.price}
-			iconSrc={item.icon}
+			iconSrc={`${API_BASE_URL}/${item.icon}`}
 			currencySrc={item.currency === "gold" ? goldIcon : gemIcon}
 		/>
 	));
@@ -37,7 +38,7 @@ function ShopPage(): React.JSX.Element {
 
 	useEffect(() => {
 		async function fetchShopItems() {
-			const res = await fetch("http://localhost:19722/api/items/shop", {
+			const res = await fetch(ENDPOINTS.GET.shopItems, {
 				method: "GET",
 				credentials: "include"
 			});

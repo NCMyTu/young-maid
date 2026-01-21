@@ -1,8 +1,9 @@
 import React, {  useEffect, useState } from "react";
-import styles from "./CreateResourceForm.module.css";
+import styles from "./CreateShopItemForm.module.css";
 import clsx from "clsx";
 import SubmitButton from "@/component/SubmitButton/SubmitButton";
 import itemIconPlaceholder from "/asset/placeholder.png";
+import { ENDPOINTS } from "@/config/endpoints";
 
 function CreateShopItemForm(): React.JSX.Element {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -15,7 +16,7 @@ function CreateShopItemForm(): React.JSX.Element {
 	}, [previewUrl]);
 
 	const createItem = async (formData: FormData) => {
-		const res: Response = await fetch("http://localhost:19722/admin/api/items/shop", {
+		const res: Response = await fetch(ENDPOINTS.ADMIN.POST.shopItem, {
 			method: "POST",
 			credentials: "include",
 			body: formData

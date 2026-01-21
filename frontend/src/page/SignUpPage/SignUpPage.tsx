@@ -13,6 +13,7 @@ import generateFormInputFields from "@/component/FormInput/FormInput.helper";
 import { validateInput } from "@/component/FormInput/FormInput";
 import useUser from "@/lib/store/user/user";
 import SubmitButton from "@/component/SubmitButton/SubmitButton";
+import { ENDPOINTS } from "@/config/endpoints";
 
 // TODO:
 // HIGH PRIORITY: submit being blocked by tag line warning set from request errors.
@@ -76,7 +77,7 @@ function SignUpPage(): React.JSX.Element {
 		};
 
 		try {
-			const res = await fetch("http://localhost:19722/api/users/auth/signup", {
+			const res = await fetch(ENDPOINTS.AUTH.signUp, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -95,7 +96,7 @@ function SignUpPage(): React.JSX.Element {
 
 			// Sign in.
 			// TODO: extract this with the one in SignInPage into common function.
-			let resSignIn = await fetch("http://localhost:19722/api/users/auth/signin", {
+			let resSignIn = await fetch(ENDPOINTS.AUTH.signIn, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

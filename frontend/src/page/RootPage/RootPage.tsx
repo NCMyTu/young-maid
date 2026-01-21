@@ -4,6 +4,7 @@ import HomePage from "@/page/HomePage/HomePage";
 import ShopPage from "@/page/ShopPage/ShopPage";
 import AdminPage from "@/page/AdminPage/AdminPage";
 import useUser from "@/lib/store/user/user";
+import { ENDPOINTS } from "@/config/endpoints";
 
 function RootPage(): React.JSX.Element {
 	const setUser = useUser((state) => state.setUser);
@@ -12,7 +13,7 @@ function RootPage(): React.JSX.Element {
 	useEffect(() => {
 		(async () => {
 			try {
-				const res = await fetch("http://localhost:19722/api/users/auth/verify", {
+				const res = await fetch(ENDPOINTS.AUTH.verify, {
 					credentials: "include",
 				});
 
