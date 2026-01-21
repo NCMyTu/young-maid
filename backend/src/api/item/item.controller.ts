@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import mongoose from "mongoose";
-import type { CreateShopItemResult, DbItem, DbShopItem, DbShopItemFlatten } from "./item.type.js";
+import type { CreateShopItemResult, DbShopItemFlatten } from "./item.type.js";
 import { createShopItem, getShopItems } from "./item.service.js";
 import { deleteFile } from "@/util/util.js";
 
