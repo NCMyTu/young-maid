@@ -30,7 +30,7 @@ function CreateShopItemForm(): React.JSX.Element {
 
 		setPreviewUrl(null);
 		alert("Created item successfully!");
-	}
+	};
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const uploadedFile = e.target.files?.[0];
@@ -45,9 +45,13 @@ function CreateShopItemForm(): React.JSX.Element {
 	};
 
 	return (
-		<form action={createItem} className={clsx("create-resource-form", styles.container)}>
+		<form
+			className={clsx("create-resource-form", styles.container)}
+			action={createItem}
+			onSubmit={(e: React.FormEvent<HTMLFormElement>) => !previewUrl && e.preventDefault()}
+		>
 			{/*  icon */}
-			<label htmlFor="form-file-input" className={clsx(styles.fileInput)}>Choose file</label>
+			<label htmlFor="form-file-input">Choose file</label>
 			<input
 				id="form-file-input"
 				type="file"
@@ -63,34 +67,46 @@ function CreateShopItemForm(): React.JSX.Element {
 
 			{/* type */}
 			<label htmlFor="form-item-type">Choose item type</label>
-			<select id="form-item-type" name="type" required>
+			<select required id="form-item-type" name="type">
 				<option value="" disabled selected hidden>Select</option>
 				<option value="card-back">Card back</option>
 			</select>
 
 			{/* name */}
-			<input type="text" name="name" placeholder="item-name" />
+			<input required type="text" name="name" placeholder="item-name" />
 
 			{/* description */}
 			<input type="text" name="description" placeholder="item-description" />
 
 			{/* currency */}
 			<label htmlFor="form-item-currency">Choose item currency</label>
-			<select id="form-item-currency" name="currency" required>
+			<select required id="form-item-currency" name="currency">
 				<option value="" disabled selected hidden>Select</option>
-				<hr />
 				<option value="gold">Gold</option>
 				<option value="gem">Gem</option>
 			</select>
 
 			{/* price */}
-			<input type="number" name="price" placeholder="item-price, digits only" />
+			<input
+				required
+				type="number"
+				name="price"
+				min={0}
+				placeholder="item-price, digits only"
+				onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
+					e.key === '-' && e.preventDefault()
+				}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+					const v = Number(e.target.value);
+					if (v < 0)
+						e.currentTarget.value = "0";
+				}}
+			/>
 
 			{/* status */}
 			<label htmlFor="form-item-status">Choose item status</label>
-			<select id="form-item-status" name="status" required>
+			<select required id="form-item-status" name="status">
 				<option value="" disabled selected hidden>Select</option>
-				<hr />
 				<option value="available">Available</option>
 				<option value="unavailable">Unavailable</option>
 			</select>

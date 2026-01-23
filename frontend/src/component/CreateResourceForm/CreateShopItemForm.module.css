@@ -24,8 +24,9 @@
 	-webkit-appearance: textfield;
 }
 
-.fileInput {
-	border: 1px solid black;
+.container input:invalid,
+.container input:out-of-range {
+	border: 2px solid red;
 }
 
 .iconPreview {
