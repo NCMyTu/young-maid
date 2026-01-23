@@ -12,6 +12,7 @@ import goldIcon from "/asset/icon/gold.svg";
 import gemIcon from "/asset/icon/gem.svg";
 import Modal from "@/component/Modal/Modal";
 import { API_BASE_URL, ENDPOINTS } from "@/config/endpoints";
+import { useModal } from "@/component/Modal/Modal.hook";
 
 // TODO: implement drag-and-scroll
 
@@ -56,42 +57,40 @@ function ShopPage(): React.JSX.Element {
 		})();
 	}, []);
 
-	const [isModalShowing, setModalShowing] = useState(false);
-
-	const toggleModal = () => {
-		setModalShowing(!isModalShowing);
-	}
+	const [isModalOpen, openModal, closeModal] = useModal(false);
 
 	return (
-		<div className={clsx(styles.container)}>
-			<TopBar className={clsx(styles.topBar)}>
-				<BackButtonAndScreenName screenName="shop" />
-				<ResourceBadges />
-				<SettingButton />
-				<div>
-					<button onClick={toggleModal}>
-						This is the modal's button
-					</button>
+		<>
+			<div className={clsx(styles.container)}>
+				<TopBar className={clsx(styles.topBar)}>
+					<BackButtonAndScreenName screenName="shop" />
+					<ResourceBadges />
+					<SettingButton />
+					<div>
+						<button onClick={openModal}>
+							This is the modal's button
+						</button>
+					</div>
+				</TopBar>
+
+				<div className={clsx("left-bar", styles.leftBar)}>
+					{shopCategories}
 				</div>
-			</TopBar>
+
+				<div className={clsx("item-section", styles.itemSection)}>
+					{generateShopItems(shopItems)}
+				</div>
+			</div>
 
 			<Modal
-				isShowing={isModalShowing}
-				onClose={toggleModal}
-				onConfirm={toggleModal}
+				isOpen={isModalOpen}
+				onClose={closeModal}
+				onConfirm={closeModal}
 				title={"MODAL"}
 			>
 				<p>This is the modal's content</p>
 			</Modal>
-
-			<div className={clsx("left-bar", styles.leftBar)}>
-				{shopCategories}
-			</div>
-
-			<div className={clsx("item-section", styles.itemSection)}>
-				{generateShopItems(shopItems)}
-			</div>
-		</div>
+		</>
 	);
 }
 

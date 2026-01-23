@@ -21,6 +21,7 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: "20mb" }));
 app.use(cookieParser());
 app.use("/uploads", express.static("uploads"));
+
 // Routes
 app.use("/api/users", userRouter);
 app.use("/api/items", itemRouter);

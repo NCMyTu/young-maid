@@ -1,25 +1,30 @@
 import React from "react";
-import ReactDom from "react-dom";
+import ReactDOM from "react-dom";
 import clsx from "clsx";
 import styles from "./Modal.module.css";
 import type { IModalProps } from "./Modal.type";
-import xIcon from "/asset/icon/x.svg";
+import closeIcon from "/asset/icon/x.svg";
 
-function Modal({ isShowing, onClose, onConfirm, children, title }: IModalProps): React.JSX.Element | null {
-	if (!isShowing)
-		return null;
+function Modal({
+	isOpen,
+	onClose,
+	onConfirm,
+	confirmText = "Confirm",
+	children,
+	title
+}: IModalProps): React.JSX.Element {
+	if (!isOpen)
+		return <></>;
 
 	const portal = document.getElementById("portal");
 	if (!portal)
-		return null;
+		return <></>;
 
-	return ReactDom.createPortal(
-		<>
-			<div
-				className={clsx("modal-overlay", styles.overlay)}
-				onClick={onClose}
-			/>
-
+	return ReactDOM.createPortal(
+		<div
+			className={clsx("modal-overlay", styles.overlay)}
+			onClick={onClose}
+		>
 			<div
 				className={clsx("modal", styles.modal)}
 				onClick={(e) => e.stopPropagation()}
@@ -31,7 +36,7 @@ function Modal({ isShowing, onClose, onConfirm, children, title }: IModalProps):
 						</p>
 					)}
 					<button className={clsx("close", styles.closeButton)} onClick={onClose}>
-						<img src={xIcon} />
+						<img src={closeIcon} />
 					</button>
 				</div>
 
@@ -42,16 +47,22 @@ function Modal({ isShowing, onClose, onConfirm, children, title }: IModalProps):
 				<div className={clsx("modal-action", styles.actionContainer)}>
 					{onConfirm ? (
 						<>
-						<button id="button-cancel" className={clsx("modal-button-action", styles.actionButton)} onClick={onClose}>
-							Cancel
-						</button>
-						<button id="button-confirm" className={clsx("modal-button-action", styles.actionButton)} onClick={onConfirm}>
-							Confirm
-						</button>
+							<button className={clsx("modal-button-action", styles.actionButton)} onClick={onClose}>
+								Cancel
+							</button>
+							<button
+								className={clsx("modal-button-action", styles.actionButton)}
+								onClick={() => {
+									onConfirm();
+									onClose();
+								}}
+							>
+								{confirmText}
+							</button>
 						</>
 					) : (
 						<button
-							id="button-confirm"
+							type="button"
 							className={clsx("modal-button-action", styles.actionButton)}
 							onClick={onClose}
 						>
@@ -60,7 +71,7 @@ function Modal({ isShowing, onClose, onConfirm, children, title }: IModalProps):
 					)}
 				</div>
 			</div>
-		</>,
+		</div>,
 		portal
 	);
 }
