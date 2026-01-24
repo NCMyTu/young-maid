@@ -3,7 +3,7 @@ import clsx from "clsx";
 import styles from "./AdminPage.module.css";
 import TopBar from "@/component/TopBar/TopBar";
 import BackButtonAndScreenName from "@/component/TopBar/Group/BackButtonAndScreenName";
-import CreateShopItemForm from "@/component/CreateResourceForm/CreateShopItemForm";
+import CreateShopItemForm from "@/component/CreateShopItemForm/CreateShopItemForm";
 import { ENDPOINTS } from "@/config/endpoints";
 
 

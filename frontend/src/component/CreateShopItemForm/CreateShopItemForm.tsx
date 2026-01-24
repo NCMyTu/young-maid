@@ -106,10 +106,34 @@ function CreateShopItemForm(): React.JSX.Element {
 			{/* status */}
 			<label htmlFor="form-item-status">Choose item status</label>
 			<select required id="form-item-status" name="status">
-				<option value="" disabled selected hidden>Select</option>
-				<option value="available">Available</option>
+				<option value="available" selected>Available (default)</option>
 				<option value="unavailable">Unavailable</option>
 			</select>
+
+			{/* stackable */}
+			<label htmlFor="form-item-stackable">Choose item stackable</label>
+			<select required id="form-item-stackable" name="stackable">
+				<option value="" disabled selected hidden>Select</option>
+				<option value="true">Stackable</option>
+				<option value="false">Unstackable</option>
+			</select>
+
+			{/* maxStack */}
+			<input
+				required
+				type="number"
+				name="maxStack"
+				min={2}
+				placeholder="item-maxStack, digits only"
+				onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
+					e.key === '-' && e.preventDefault()
+				}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+					const v = Number(e.target.value);
+					if (v < 0)
+						e.currentTarget.value = "0";
+				}}
+			/>
 
 			<SubmitButton text="Create" />
 		</form>
