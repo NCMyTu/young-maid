@@ -9,6 +9,7 @@ import {
 } from "./user.service.js";
 import type { Request, Response } from "express";
 import type { SigninUserResult } from "./user.type.js";
+import mongoose from "mongoose";
 
 const getAllUsersController = async (_: Request, res: Response): Promise<void> => {
 	//  TODO:
@@ -18,7 +19,7 @@ const getAllUsersController = async (_: Request, res: Response): Promise<void> =
 		const users = await getAllUsers();
 		res.status(200).json(users);
 	} catch {
-		res.status(500).json({ message: "Something went wrong while trying to get all users." });
+		res.status(500).json({ message: "Unexpected error." });
 	}
 };
 
@@ -28,18 +29,22 @@ const createUserController = async (req: Request, res: Response): Promise<void> 
 		const user = await createUser({ username, password, email, displayName, tagLine });
 		res.status(201).json({ message: "User created successfully.", user });
 	} catch (e) {
-		const msg = e instanceof Error ? e.message : "Unexpected error.";
-		res.status(409).json({ message: msg });
+		if (e instanceof mongoose.Error)
+			res.status(409).json({ message: e.message });
+		else
+			res.status(500).json({ message: "Unexpected error." });
 	}
 };
 
 const deleteAllUsersController = async (_: Request, res: Response): Promise<void> => {
 	try {
 		const deletedCount = await deleteAllUsers();
-		res.status(200).json({ message: `deleted ${deletedCount} users.` });
+		res.status(200).json({ message: `Deleted ${deletedCount} users.` });
 	} catch (e) {
-		const msg = e instanceof Error ? e.message : "Unexpected error.";
-		res.status(500).json({ message: msg });
+		if (e instanceof mongoose.Error)
+			res.status(409).json({ message: e.message });
+		else
+			res.status(500).json({ message: "Unexpected error." });
 	}
 };
 
@@ -64,6 +69,8 @@ const signinUserController = async (req: Request, res: Response): Promise<void> 
 			id: userData.id,
 			displayName: userData.displayName,
 			tagLine: userData.tagLine,
+			gold: userData.gold,
+			gem: userData.gem,
 			role: userData.role
 		});
 	} catch (e) {

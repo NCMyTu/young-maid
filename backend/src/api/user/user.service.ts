@@ -60,7 +60,9 @@ const signinUser = async (
 		id: user.id,
 		displayName: user.displayName,
 		tagLine: user.tagLine,
-		role: user.role
+		role: user.role,
+		gold: user.gold,
+		gem: user.gem
 	};
 };
 
@@ -86,7 +88,7 @@ const verifyUserJwtToken = (token: string): UserJwtPayload => {
 };
 
 const getUserInfo = async (userId: string): Promise<Partial<DbUser> | null> => {
-	const user: HydratedDocument<DbUser> | null = await User.findById(userId, "id displayName tagLine role");
+	const user: HydratedDocument<DbUser> | null = await User.findById(userId, "id displayName tagLine role gold gem");
 
 	if (!user)
 		return null;
@@ -95,7 +97,9 @@ const getUserInfo = async (userId: string): Promise<Partial<DbUser> | null> => {
 		id: user.id,
 		displayName: user.displayName,
 		tagLine: user.tagLine,
-		role: user.role
+		role: user.role,
+		gold: user.gold,
+		gem: user.gem
 	};
 }
 

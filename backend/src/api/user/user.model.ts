@@ -60,17 +60,24 @@ const userSchema = new mongoose.Schema<DbUser, Model<DbUser>, DbUserMethods>({
 		validate: [(s: string) => validator.isAlphanumeric(s, "en-US"), "Tag line must be A-Z, 0-9."],
 		minLength: [TAGLINE_MIN_LENGTH, `Tag line must be at least ${TAGLINE_MIN_LENGTH} characters long.`],
 		maxLength: [TAGLINE_MAX_LENGTH, `Tag line must be at most ${TAGLINE_MAX_LENGTH} characters.`]
-	}},
-	{
-		timestamps: true,
+	},
+	gold: {
+		type: Number,
+		default: 0,
+	},
+	gem: {
+		type: Number,
+		default: 0,
+	}
+}, {
+	timestamps: true,
 
-		methods: {
-			async comparePassword(against: string): Promise<boolean> {
-				return argon2.verify(this.password, against);
-			}
+	methods: {
+		async comparePassword(against: string): Promise<boolean> {
+			return argon2.verify(this.password, against);
 		}
 	}
-);
+});
 
 userSchema.index(
 	{ "displayName": 1, "tagLine": 1 },

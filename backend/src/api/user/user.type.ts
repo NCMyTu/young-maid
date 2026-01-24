@@ -10,21 +10,23 @@ interface DbUser {
 	username: string;
 	password: string;
 	email: string;
+	role: UserRole;
 	displayName: string;
 	tagLine: string;
-	role: UserRole
+	gold: number;
+	gem: number
 };
 
 interface DbUserMethods {
 	comparePassword(against: string): Promise<boolean>
 }
 
-type CreateUserInput = Omit<DbUser, "role">;
+type CreateUserInput = Pick<DbUser, "username" | "password" | "email" | "displayName" | "tagLine">;
 type CreateUserResult = Pick<DbUser, "id" | "displayName" | "tagLine" | "role" | "createdAt">;
 
 type SigninUserResult = Pick<
 	DbUser,
-	"id" | "displayName" | "tagLine" | "role"
+	"id" | "displayName" | "tagLine" | "role" | "gold" | "gem"
 > & {
 	auth: {
 		token: string
