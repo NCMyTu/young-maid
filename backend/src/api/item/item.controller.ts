@@ -32,13 +32,30 @@ const createShopItemAdminController = async (req: Request, res: Response): Promi
 	}
 
 	try {
-		const { type, name, description, currency, status } = req.body;
+		// NOTE:
+		// Only perform type check.
+		// Do not check for semantic values. mongoose will handle them.
 		const price = Number(req.body.price);
-		const icon = req.file.path;
+		if (!Number.isInteger(price))
+			throw new Error("price must be an integer");
 
-		const shopItem: CreateShopItemResult = await createShopItem({
-			type, name, description, currency, status, icon, price
-		});
+		const { type, name, description, currency, status } = req.body;
+		const icon = req.file.path;
+		const stackable = req.body.stackable === "true";
+
+		let maxStack: number | undefined;
+		if (stackable) {
+			maxStack = Number(req.body.maxStack);
+
+			if (!Number.isInteger(maxStack))
+				throw new Error("maxStack must be an integer");
+		}
+
+		const itemData = {
+			type, name, description, currency, status, icon, price, stackable, maxStack
+		};
+
+		const shopItem: CreateShopItemResult = await createShopItem(itemData);
 
 		res.status(201).json({
 			message: "Shop item created successfully.",

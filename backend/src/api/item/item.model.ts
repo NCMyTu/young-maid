@@ -26,6 +26,14 @@ const itemSchema = new mongoose.Schema<DbItem, Model<DbItem>>({
 		trim: true,
 		required: [true, "Item icon path is required."]
 	},
+	stackable: {
+		type: Boolean,
+		required: [true, "Item stackable is required."]
+	},
+	maxStack: {
+		type: Number,
+		validate: [(m: number) => m >= 2, "Item maxStack must be at least 2."]
+	}
 },
 	{ timestamps: true }
 );

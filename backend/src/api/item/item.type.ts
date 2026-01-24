@@ -13,7 +13,9 @@ type DbItem = {
 	type: ItemType;
 	name: string;
 	description: string;
-	icon: string
+	icon: string;
+	stackable: boolean;
+	maxStack: number
 };
 
 type DbShopItem = {
@@ -22,6 +24,7 @@ type DbShopItem = {
 	updatedAt?: Date;
 
 	baseItem: mongoose.Types.ObjectId | DbItem;
+
 	currency: Currency;
 	price: number;
 	status: ShopItemStatus
@@ -34,6 +37,7 @@ type DbInventoryItem = {
 
 	baseItem: mongoose.Types.ObjectId | DbItem;
 	user: mongoose.Types.ObjectId | DbUser;
+
 	amount: number
 };
 
@@ -47,8 +51,10 @@ type DbShopItemFlatten = Pick<DbShopItem,
 type ShopItemFilter = Partial<Pick<DbShopItem, "status" | "currency">>;
 
 type CreateShopItemInput = Pick<DbItem,
-	"type" | "name" | "description" | "icon"
-> & Pick<DbShopItem,
+	"type" | "name" | "description" | "icon" | "stackable"
+> & Partial<Pick<DbItem,
+	"maxStack"
+>> & Pick<DbShopItem,
 	"currency" | "price" | "status"
 >;
 
