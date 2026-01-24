@@ -11,7 +11,9 @@ function HomePage(): React.JSX.Element {
 		id: state.id,
 		displayName: state.displayName,
 		tagLine: state.tagLine,
-		role: state.role
+		role: state.role,
+		gold: state.gold,
+		gem: state.gem
 	})));
 	const clearUser = useUser((state) => state.clear);
 	const navigate = useNavigate();
@@ -43,6 +45,8 @@ function HomePage(): React.JSX.Element {
 			<p>displayName: {user.displayName}</p>
 			<p>tagLine: {user.tagLine}</p>
 			<p>role: {user.role}</p>
+			<p>gold: {user.gold}</p>
+			<p>gem: {user.gem}</p>
 			<button onClick={signout}>
 				Sign out
 			</button>

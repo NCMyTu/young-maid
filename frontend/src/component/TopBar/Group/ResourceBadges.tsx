@@ -4,11 +4,11 @@ import clsx from "clsx";
 import GemBadge from "@/component/ResourceBadge/GemBadge";
 import GoldBadge from "@/component/ResourceBadge/GoldBadge";
 
-function ResourceBadges(): React.JSX.Element {
+function ResourceBadges({ gold, gem }: { gold: number, gem: number }): React.JSX.Element {
 	return (
 		<div className={clsx("resource-badge-group", styles.div)}>
-			<GemBadge amount={2222222222222222222222222222222222222222222222222222222222} />
-			<GoldBadge amount={123132} maxAmount={10} />
+			<GoldBadge amount={gold} />
+			<GemBadge amount={gem} />
 		</div>
 	);
 }

@@ -13,6 +13,8 @@ import gemIcon from "/asset/icon/gem.svg";
 import Modal from "@/component/Modal/Modal";
 import { API_BASE_URL, ENDPOINTS } from "@/config/endpoints";
 import { useModal } from "@/component/Modal/Modal.hook";
+import useUser from "@/lib/store/user/user";
+import { useShallow } from "zustand/shallow";
 
 // TODO: implement drag-and-scroll
 
@@ -36,6 +38,11 @@ const shopCategories = generateShopCategories(10);
 
 function ShopPage(): React.JSX.Element {
 	const [shopItems, setShopItems] = useState([]);
+	const user = useUser(useShallow((state) => ({
+		id: state.id,
+		gold: state.gold,
+		gem: state.gem
+	})));
 
 	useEffect(() => {
 		async function fetchShopItems() {
@@ -64,7 +71,7 @@ function ShopPage(): React.JSX.Element {
 			<div className={clsx(styles.container)}>
 				<TopBar className={clsx(styles.topBar)}>
 					<BackButtonAndScreenName screenName="shop" />
-					<ResourceBadges />
+					<ResourceBadges gold={user.gold} gem={user.gem} />
 					<SettingButton />
 					<div>
 						<button onClick={openModal}>
