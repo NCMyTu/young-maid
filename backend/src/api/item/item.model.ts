@@ -7,7 +7,7 @@ import type { DbItem, DbShopItem, DbInventoryItem } from "./item.type.js";
 const itemSchema = new mongoose.Schema<DbItem, Model<DbItem>>({
 	type: {
 		type: String,
-		enum: ["card-back"],
+		enum: ["card-back", "card-front", "table-cloth"],
 		trim: true,
 		required: [true, "Item type is required."]
 	},
@@ -29,10 +29,6 @@ const itemSchema = new mongoose.Schema<DbItem, Model<DbItem>>({
 	stackable: {
 		type: Boolean,
 		required: [true, "Item stackable is required."]
-	},
-	maxStack: {
-		type: Number,
-		validate: [(m: number) => m >= 2, "Item maxStack must be at least 2."]
 	}
 },
 	{ timestamps: true }

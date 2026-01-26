@@ -33,26 +33,16 @@ const createShopItemAdminController = async (req: Request, res: Response): Promi
 
 	try {
 		// NOTE:
-		// Only perform type check.
-		// Do not check for semantic values. mongoose will handle them.
-		const price = Number(req.body.price);
-		if (!Number.isInteger(price))
-			throw new Error("price must be an integer");
-
+		// If you perform checks, only check for types.
+		// Let mongoose handle semantic checks
+		// so it can return the correct HTTP status codes.
 		const { type, name, description, currency, status } = req.body;
+		const price = Number(req.body.price); // Mongoose will handle NaN.
 		const icon = req.file.path;
 		const stackable = req.body.stackable === "true";
 
-		let maxStack: number | undefined;
-		if (stackable) {
-			maxStack = Number(req.body.maxStack);
-
-			if (!Number.isInteger(maxStack))
-				throw new Error("maxStack must be an integer");
-		}
-
 		const itemData = {
-			type, name, description, currency, status, icon, price, stackable, maxStack
+			type, name, description, currency, status, icon, price, stackable
 		};
 
 		const shopItem: CreateShopItemResult = await createShopItem(itemData);
@@ -62,6 +52,7 @@ const createShopItemAdminController = async (req: Request, res: Response): Promi
 			item: shopItem
 		});
 	} catch (e) {
+		console.log(e);
 		deleteFile(req.file.path);
 
 		if (e instanceof mongoose.Error.ValidationError || e instanceof mongoose.Error.CastError)

@@ -41,8 +41,7 @@ const createShopItem = async ({
 	price,
 	icon,
 	status,
-	stackable,
-	maxStack
+	stackable
 }: CreateShopItemInput): Promise<CreateShopItemResult> => {
 	const session = await mongoose.startSession();
 
@@ -54,8 +53,7 @@ const createShopItem = async ({
 				description,
 				// Stupid windows path separator...
 				icon: icon.replaceAll("\\", "/"),
-				stackable,
-				maxStack
+				stackable
 			});
 			await item.save({ session });
 
@@ -76,8 +74,7 @@ const createShopItem = async ({
 				currency: shopItem.currency,
 				price: shopItem.price,
 				status: shopItem.status,
-				stackable: item.stackable,
-				maxStack: item.maxStack
+				stackable: item.stackable
 			};
 		});
 

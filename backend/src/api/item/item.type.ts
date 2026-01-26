@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import type { DbUser } from "@/api/user/user.type.js";
 
-type ItemType = "card-back";
+type ItemType = "card-back" | "card-front" | "table-cloth";
 type Currency = "gem" | "gold";
 type ShopItemStatus = "unavailable" | "available";
 
@@ -14,8 +14,7 @@ type DbItem = {
 	name: string;
 	description: string;
 	icon: string;
-	stackable: boolean;
-	maxStack: number
+	stackable: boolean
 };
 
 type DbShopItem = {
@@ -42,8 +41,7 @@ type DbInventoryItem = {
 };
 
 type DbShopItemFlatten = Pick<DbShopItem,
-	"id" | "createdAt" | "updatedAt" |
-	"currency" | "price" | "status"
+	"id" | "createdAt" | "updatedAt" | "currency" | "price" | "status"
 > & Pick<DbItem,
 	"type" | "name" | "description" | "icon"
 >;
@@ -52,9 +50,7 @@ type ShopItemFilter = Partial<Pick<DbShopItem, "status" | "currency">>;
 
 type CreateShopItemInput = Pick<DbItem,
 	"type" | "name" | "description" | "icon" | "stackable"
-> & Partial<Pick<DbItem,
-	"maxStack"
->> & Pick<DbShopItem,
+> & Pick<DbShopItem,
 	"currency" | "price" | "status"
 >;
 
