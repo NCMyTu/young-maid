@@ -70,6 +70,8 @@ function CreateShopItemForm(): React.JSX.Element {
 			<select required id="form-item-type" name="type">
 				<option value="" disabled selected hidden>Select</option>
 				<option value="card-back">Card back</option>
+				<option value="card-front">Card front</option>
+				<option value="table-cloth">Table cloth</option>
 			</select>
 
 			{/* name */}
@@ -117,23 +119,6 @@ function CreateShopItemForm(): React.JSX.Element {
 				<option value="true">Stackable</option>
 				<option value="false">Unstackable</option>
 			</select>
-
-			{/* maxStack */}
-			<input
-				required
-				type="number"
-				name="maxStack"
-				min={2}
-				placeholder="item-maxStack, digits only"
-				onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
-					e.key === '-' && e.preventDefault()
-				}
-				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-					const v = Number(e.target.value);
-					if (v < 0)
-						e.currentTarget.value = "0";
-				}}
-			/>
 
 			<SubmitButton text="Create" />
 		</form>
