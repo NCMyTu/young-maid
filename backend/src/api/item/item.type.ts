@@ -37,7 +37,7 @@ type DbInventoryItem = {
 	baseItem: mongoose.Types.ObjectId | DbItem;
 	user: mongoose.Types.ObjectId | DbUser;
 
-	amount: number
+	quantity?: number
 };
 
 type DbShopItemFlatten = Pick<DbShopItem,

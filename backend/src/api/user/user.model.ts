@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema<DbUser, Model<DbUser>, DbUserMethods>({
 		unique: true,
 		minLength: [USERNAME_MIN_LENGTH, `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`],
 		maxLength: [USERNAME_MAX_LENGTH, `Username must be less than ${USERNAME_MAX_LENGTH} characters.`],
-		match: [/^\S+$/, 'Username cannot contain whitespace characters.']
+		match: [/^\S+$/, "Username cannot contain whitespaces."]
 	},
 	password: {
 		type: String,
@@ -57,9 +57,9 @@ const userSchema = new mongoose.Schema<DbUser, Model<DbUser>, DbUserMethods>({
 		set: (s: string) => (s.trim() === "" ? "YM" : s),
 		trim: true,
 		uppercase: true,
-		validate: [(s: string) => validator.isAlphanumeric(s, "en-US"), "Tag line must be A-Z, 0-9."],
 		minLength: [TAGLINE_MIN_LENGTH, `Tag line must be at least ${TAGLINE_MIN_LENGTH} characters long.`],
-		maxLength: [TAGLINE_MAX_LENGTH, `Tag line must be at most ${TAGLINE_MAX_LENGTH} characters.`]
+		maxLength: [TAGLINE_MAX_LENGTH, `Tag line must be at most ${TAGLINE_MAX_LENGTH} characters.`],
+		validate: [(s: string) => validator.isAlphanumeric(s, "en-US"), "Tag line must be A-Z, 0-9."]
 	},
 	gold: {
 		type: Number,

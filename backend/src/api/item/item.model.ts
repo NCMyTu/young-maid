@@ -53,7 +53,7 @@ const shopItemSchema = new mongoose.Schema<DbShopItem, Model<DbShopItem>>({
 	price: {
 		type: Number,
 		required: [true, "Item price is required."],
-		validate: [(p: number) => p >= 0, "Item price must be at least 0."]
+		min: [0, "Item price must be at least 0."]
 	},
 	status: {
 		type: String,
@@ -75,6 +75,10 @@ const inventoryItemSchema = new mongoose.Schema<DbInventoryItem, Model<DbInvento
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "User",
 		required: true
+	},
+	quantity: {
+		type: Number,
+		min: [1, "Item quantity must be at least 1."]
 	}
 },
 	{ timestamps: true }
