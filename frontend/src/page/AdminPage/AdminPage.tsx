@@ -48,7 +48,7 @@ function AdminPage(): React.JSX.Element {
 
 				{items.length === 0
 					? "No items"
-					: items.map((item: any, i: number) => <div key={i}>{JSON.stringify(item)}</div>)
+					: items.map((item: any) => <div key={item.id}>{JSON.stringify(item)}</div>)
 				}
 			</div>
 		</div>

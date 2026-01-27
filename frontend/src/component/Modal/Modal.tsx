@@ -47,7 +47,10 @@ function Modal({
 				<div className={clsx("modal-action", styles.actionContainer)}>
 					{onConfirm ? (
 						<>
-							<button className={clsx("modal-button-action", styles.actionButton)} onClick={onClose}>
+							<button
+								className={clsx("modal-button-action", styles.actionButton)}
+								onClick={onClose}
+							>
 								Cancel
 							</button>
 							<button
@@ -61,13 +64,15 @@ function Modal({
 							</button>
 						</>
 					) : (
-						<button
-							type="button"
-							className={clsx("modal-button-action", styles.actionButton)}
-							onClick={onClose}
-						>
-							Confirm
-						</button>
+						<>
+							<button
+								type="button"
+								className={clsx("modal-button-action", styles.actionButton)}
+								onClick={onClose}
+							>
+								Confirm
+							</button>
+						</>
 					)}
 				</div>
 			</div>

@@ -69,9 +69,9 @@ function CreateShopItemForm(): React.JSX.Element {
 			<label htmlFor="form-item-type">Choose item type</label>
 			<select required id="form-item-type" name="type">
 				<option value="" disabled selected hidden>Select</option>
-				<option value="card-back">Card back</option>
-				<option value="card-front">Card front</option>
-				<option value="table-cloth">Table cloth</option>
+				<option value="card-back">Card Back</option>
+				<option value="card-face">Card Face</option>
+				<option value="table-cloth">Table Cloth</option>
 			</select>
 
 			{/* name */}
