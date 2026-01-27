@@ -3,22 +3,25 @@ import styles from "./ShopCategory.module.css";
 import clsx from "clsx";
 import type { IShopCategoryProps } from "./ShopCategory.type";
 
-const handleOnClick = (_: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-	alert("TODO: implement ShopCategory onClick");
-};
-
 function ShopCategory({
 	name,
 	iconSrc,
+	isActive,
+	onClick,
 	className
 }: IShopCategoryProps): React.JSX.Element {
+	const containerClassName = clsx(
+		"shop-category",
+		styles.container,
+		isActive && styles.containerActive,
+		className
+	);
+
 	return (
-		<>
-			<div className={clsx("shop-category", styles.container, className)} onClick={handleOnClick}>
-				<img className={clsx(styles.icon)} src={iconSrc} />
-				<p className={clsx(styles.text)}>{name}</p>
-			</div>
-		</>
+		<div className={containerClassName} onClick={onClick}>
+			<img className={clsx(styles.icon)} src={iconSrc} />
+			<p className={clsx(styles.text)}>{name}</p>
+		</div>
 	);
 }
 

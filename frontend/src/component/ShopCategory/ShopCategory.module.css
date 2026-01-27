@@ -12,6 +12,11 @@
 	user-select: none;
 }
 
+/* TODO: extract this into App.css */
+.containerActive {
+	border: 3px solid red;
+}
+
 .icon {
 	height: var(--shop-category-icon-size);
 	aspect-ratio: 1 / 1;
