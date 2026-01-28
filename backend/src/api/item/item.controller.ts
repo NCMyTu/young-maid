@@ -1,22 +1,30 @@
 import type { Request, Response } from "express";
 import mongoose from "mongoose";
 import type { CreateShopItemResult, DbShopItemFlatten } from "./item.type.js";
-import { createShopItem, getShopItems } from "./item.service.js";
+import { createShopItem, getShopItemsByType, isValidItemType } from "./item.service.js";
 import { deleteFile } from "@/util/util.js";
+import { InvalidItemTypeError } from "@/util/error.js";
 
-const getShopItemsController = async (_: Request, res: Response): Promise<void> => {
+const getShopItemsController = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const items: DbShopItemFlatten[] = await getShopItems({ status: "available" });
+		const { type } = req.query;
+
+		if (!isValidItemType(type))
+			throw new InvalidItemTypeError(type);
+
+		const items: DbShopItemFlatten[] = await getShopItemsByType(type);
 		res.status(200).json({ items });
 	} catch (e) {
-		const msg = e instanceof Error ? e.message : "Unexpected error.";
-		res.status(500).json({ message: msg });
+		if (e instanceof InvalidItemTypeError)
+			res.status(400).json({ message: e.message });
+		else
+			res.status(500).json({ message: "Unexpected error." });
 	}
 }
 
 const getShopItemsAdminController = async (_: Request, res: Response): Promise<void> => {
 	try {
-		const items: DbShopItemFlatten[] = await getShopItems();
+		const items: DbShopItemFlatten[] = await getShopItemsByType();
 		res.status(200).json({ items });
 	} catch (e) {
 		const msg = e instanceof Error ? e.message : "Unexpected error.";

@@ -1,9 +1,13 @@
 import mongoose from "mongoose";
 import type { DbUser } from "@/api/user/user.type.js";
 
-type ItemType = "card-back" | "card-front" | "table-cloth";
-type Currency = "gem" | "gold";
-type ShopItemStatus = "unavailable" | "available";
+const ITEM_TYPES = ["card-back", "card-face", "table-cloth"] as const;
+const CURRENCY = ["gem", "gold"] as const;
+const SHOP_ITEM_STATUS = ["available", "unavailable"] as const;
+
+type ItemType = typeof ITEM_TYPES[number];
+type Currency = typeof CURRENCY[number];
+type ShopItemStatus = typeof SHOP_ITEM_STATUS[number];
 
 type DbItem = {
 	id?: string;
@@ -46,7 +50,7 @@ type DbShopItemFlatten = Pick<DbShopItem,
 	"type" | "name" | "description" | "icon"
 >;
 
-type ShopItemFilter = Partial<Pick<DbShopItem, "status" | "currency">>;
+type ShopItemFilter = Pick<DbItem, "type">;
 
 type CreateShopItemInput = Pick<DbItem,
 	"type" | "name" | "description" | "icon" | "stackable"
@@ -55,6 +59,12 @@ type CreateShopItemInput = Pick<DbItem,
 >;
 
 type CreateShopItemResult = { id: string } & CreateShopItemInput;
+
+export {
+	ITEM_TYPES,
+	CURRENCY,
+	SHOP_ITEM_STATUS
+};
 
 export type {
 	ItemType,

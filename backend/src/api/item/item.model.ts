@@ -7,7 +7,7 @@ import type { DbItem, DbShopItem, DbInventoryItem } from "./item.type.js";
 const itemSchema = new mongoose.Schema<DbItem, Model<DbItem>>({
 	type: {
 		type: String,
-		enum: ["card-back", "card-front", "table-cloth"],
+		enum: ["card-back", "card-face", "table-cloth"],
 		trim: true,
 		required: [true, "Item type is required."]
 	},

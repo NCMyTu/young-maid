@@ -15,7 +15,16 @@ class FileNotFoundError extends Error {
 	}
 }
 
+class InvalidItemTypeError extends Error {
+	constructor(type: unknown) {
+		super(`Invalid item type: ${String(type)}`);
+		this.name = "InvalidItemTypeError";
+		Error.captureStackTrace?.(this, this.constructor);
+	}
+}
+
 export {
-	SigninError,
-	FileNotFoundError
+	FileNotFoundError,
+	InvalidItemTypeError,
+	SigninError
  };
