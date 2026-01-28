@@ -53,7 +53,7 @@ const signinUser = async (
 	const user: HydratedDocument<DbUser> | null = await verifyUser(username, password);
 
 	if (!user)
-		throw new SigninError("Invalid username or password");
+		throw new SigninError();
 
 	return {
 		auth: { token: generateUserJwtToken(user.id, user.role, durationInSeconds) },

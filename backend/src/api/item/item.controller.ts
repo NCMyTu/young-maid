@@ -1,43 +1,28 @@
-import type { Request, Response } from "express";
-import mongoose from "mongoose";
+import type { RequestHandler } from "express";
 import type { CreateShopItemResult, DbShopItemFlatten } from "./item.type.js";
 import { createShopItem, getShopItemsByType, isValidItemType } from "./item.service.js";
 import { deleteFile } from "@/util/util.js";
-import { InvalidItemTypeError } from "@/util/error.js";
+import { InvalidItemTypeError, MissingFileError } from "@/util/error.js";
 
-const getShopItemsController = async (req: Request, res: Response): Promise<void> => {
-	try {
-		const { type } = req.query;
+const getShopItemsController: RequestHandler = async (req, res) => {
+	const { type } = req.query;
 
-		if (!isValidItemType(type))
-			throw new InvalidItemTypeError(type);
+	if (!isValidItemType(type))
+		throw new InvalidItemTypeError(type);
 
-		const items: DbShopItemFlatten[] = await getShopItemsByType(type);
-		res.status(200).json({ items });
-	} catch (e) {
-		if (e instanceof InvalidItemTypeError)
-			res.status(400).json({ message: e.message });
-		else
-			res.status(500).json({ message: "Unexpected error." });
-	}
+	const items: DbShopItemFlatten[] = await getShopItemsByType(type);
+	res.status(200).json({ items });
 }
 
-const getShopItemsAdminController = async (_: Request, res: Response): Promise<void> => {
-	try {
-		const items: DbShopItemFlatten[] = await getShopItemsByType();
-		res.status(200).json({ items });
-	} catch (e) {
-		const msg = e instanceof Error ? e.message : "Unexpected error.";
-		res.status(500).json({ message: msg });
-	}
+const getShopItemsAdminController: RequestHandler = async (_, res) => {
+	const items: DbShopItemFlatten[] = await getShopItemsByType();
+	res.status(200).json({ items });
 }
 
-const createShopItemAdminController = async (req: Request, res: Response): Promise<void> => {
-	if (!req.file) {
+const createShopItemAdminController: RequestHandler = async (req, res) => {
+	if (!req.file)
 		// Why not?
-		res.status(400).json({ message: "Icon file is required." });
-		return;
-	}
+		throw new MissingFileError("icon");
 
 	try {
 		// NOTE:
@@ -60,12 +45,8 @@ const createShopItemAdminController = async (req: Request, res: Response): Promi
 			item: shopItem
 		});
 	} catch (e) {
-		deleteFile(req.file.path);
-
-		if (e instanceof mongoose.Error.ValidationError || e instanceof mongoose.Error.CastError)
-			res.status(400).json({ message: "Invalid input data." });
-		else
-			res.status(500).json({ message: "Unexpected error." });
+		await deleteFile(req.file.path);
+		throw e;
 	}
 };
 
