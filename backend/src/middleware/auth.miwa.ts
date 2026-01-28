@@ -14,6 +14,7 @@ const authenticateUser: RequestHandler = (req: UserRequest, _: Response, next: N
 
 	try {
 		req.user = verifyUserJwtToken(token);
+		req.user.id = req.user.sub;
 		next();
 	} catch {
 		throw new InvalidOrMissingAuthToken();

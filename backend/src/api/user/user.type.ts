@@ -35,6 +35,7 @@ type SigninUserResult = Pick<
 
 interface UserJwtPayload extends JwtPayload {
 	sub: string, // user.id
+	id: string,
 	role: UserRole
 }
 
