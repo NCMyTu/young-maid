@@ -11,8 +11,8 @@
 }
 
 .container .icon {
-	width: var(--shop-item-icon-width);
-	aspect-ratio: var(--shop-item-icon-aspect-ratio);
+	width: var(--item-icon-size);
+	aspect-ratio: 1 / 1;
 	margin: var(--shop-item-icon-margin);
 	border: 1px solid red;
 }

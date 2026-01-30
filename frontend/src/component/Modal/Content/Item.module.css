@@ -1,0 +1,42 @@
+.container p {
+	margin: 0;
+}
+
+.container {
+	display: flex;
+	flex-direction: row;
+}
+
+.container .visualSection {
+	width: var(--modal-content-item-visual-section-width);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--modal-content-item-visual-section-gap);
+}
+
+.container .visualSection p { /* amount owned */
+	font-size: var(--modal-content-item-amount-owned-font-size);
+	font-style: var(--modal-content-item-amount-owned-font-style);
+}
+
+/* TODO: style the scroll bar */
+.container .detailSection {
+	width: var(--modal-content-item-detail-section-width);
+	height: var(--modal-content-item-detail-section-height);
+	box-sizing: border-box;
+	padding-top: var(--modal-content-item-detail-section-padding-top);
+	overflow-y: scroll;
+}
+
+.container .detailSection :nth-child(1) { /* item name */
+	font-weight: var(--modal-content-item-item-name-font-weight);
+	font-size: var(--modal-content-item-item-name-font-size);
+	margin-bottom: var(--modal-content-item-item-name-margin-bottom);
+}
+
+.container .icon {
+	width: var(--item-icon-size);
+	aspect-ratio: 1 / 1;
+}

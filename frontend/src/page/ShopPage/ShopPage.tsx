@@ -14,6 +14,9 @@ import { API_BASE_URL, ENDPOINTS } from "@/config/endpoints";
 import useUser from "@/lib/store/user/user";
 import { useShallow } from "zustand/shallow";
 import type { ShopPageItemCategories } from "./ShopPage.type";
+import Modal from "@/component/Modal/Modal";
+import { useModal } from "@/component/Modal/Modal.hook";
+import ModalContentItem from "@/component/Modal/Content/Item";
 
 // TODO:
 // Type properly.
@@ -41,17 +44,26 @@ const fetchShopItems = async (type: string) => {
 };
 
 function ShopPage(): React.JSX.Element {
-	const [selectedCategory, setSelectedCategory] = useState<ShopPageItemCategories>(
-		// Carefully careful
-		SHOP_ITEM_CATEGORIES[0]!
-	);
+	const [isModalOpen, openModal, closeModal] = useModal();
+	const [selectedCategory, setSelectedCategory] = useState(SHOP_ITEM_CATEGORIES[0]!);
 	//                                         ↓ uh oh...
-	const [shopItems, setShopItems] = useState<any>([]);
+	const [shopItems, setShopItems] = useState<any[]>([]);
+	const [selectedItem, setSelectedItem] = useState<any | null>(null);
 	const user = useUser(useShallow((state) => ({
 		id: state.id,
 		gold: state.gold,
 		gem: state.gem
 	})));
+
+	const onClickShopItem = (item: any) => {
+		setSelectedItem(item);
+		openModal();
+	};
+
+	const onCloseModal = () => {
+		setSelectedItem(null);
+		closeModal();
+	};
 
 	useEffect(() => {
 		(async () => {
@@ -60,7 +72,22 @@ function ShopPage(): React.JSX.Element {
 		})();
 	}, [selectedCategory]);
 
-	return (
+	return (<>
+		{selectedItem && <Modal
+			title="Info"
+			isOpen={isModalOpen}
+			onClose={onCloseModal}
+			onConfirm={() => alert("Implement item purchase")}
+			confirmText="Exchange"
+		>
+			<ModalContentItem
+				name={selectedItem.name}
+				description={selectedItem.description}
+				icon={`${API_BASE_URL}/${selectedItem.icon}`}
+				amountOwned={0}
+			/>
+		</Modal>}
+
 		<div className={clsx(styles.container)}>
 			<TopBar className={clsx(styles.topBar)}>
 				<BackButtonAndScreenName screenName="shop" />
@@ -84,6 +111,7 @@ function ShopPage(): React.JSX.Element {
 				{shopItems.map((item: any) => (
 					<ShopItem
 						key={item.id}
+						onClick={() => onClickShopItem(item)}
 						name={item.name}
 						price={item.price}
 						iconSrc={`${API_BASE_URL}/${item.icon}`}
@@ -92,7 +120,7 @@ function ShopPage(): React.JSX.Element {
 				))}
 			</div>
 		</div>
-	);
+	</>);
 }
 
 export default ShopPage;

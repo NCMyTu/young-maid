@@ -3,10 +3,12 @@
 	/* TODO: extract border radius */
 	/* font-family: Ginto, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; */
 
+
 	/* Global */
 	--border-radius: 5px;
 	--font-family: "Arial", sans-serif;
 	--font-size: 16px;
+
 
 	/* Colors */
 	--color-transparent: rgba(0, 0, 0, 0);
@@ -20,7 +22,12 @@
 	--color-text-10: hsl(0, 0%, 11%);
 	--color-error: hsl(349, 100%, 48%);
 
-	/* Component specific */
+
+	/* Item icon */
+	--item-icon-size: 7.5vw;
+
+
+	/* ------- Component specific ------- */
 	--form-input-margin: 0 0 5px 0;
 	--form-input-label-margin: 0 0 4px 5px;
 	--form-input-label-font-size: 15px;
@@ -35,6 +42,7 @@
 	--form-input-warning-font-size: 13px;
 	--form-input-warning-color: var(--color-error);
 	--form-input-warning-margin: 4px 5px 0 5px;
+
 
 	--auth-form-padding: 20px;
 	--auth-form-background-color: var(--color-primary-10);
@@ -53,18 +61,20 @@
 	--auth-form-submit-button-hover-background-color: hsl(220, 88%, 55%);
 	--auth-form-nav-link-color: hsla(220, 89%, 46%, 0.85);
 
+
 	--modal-overlay-z-index: 20000;
 	--modal-overlay-background-color: rgba(0, 0, 0, 0.52);
 	--modal-min-width: 30vw;
 	--modal-min-height: 30vh;
-	--modal-max-width: 80vw;
-	--modal-max-height: 80vh;
+	--modal-max-width: 65vw;
+	--modal-max-height: 65vh;
 	--modal-title-font-size: 1.4rem;
 	--modal-top-bar-background-color: var(--color-primary-40);
 	--modal-top-bar-min-height: 5vh;
 	--modal-close-button-height: 6vh;
 	--modal-close-button-img-size: 65%;
 	--modal-content-background-color: var(--color-primary-20);
+	--modal-content-max-height: 50vh;
 	--modal-action-container-height: 7vh;
 	--modal-action-container-background-color: var(--color-primary-30);
 	--modal-action-container-padding: 0 10px;
@@ -74,6 +84,17 @@
 	--modal-action-button-border-radius: var(--border-radius);
 	--modal-action-button-background-color: hsl(0, 0%, 70%);
 	--modal-action-button-hover-background-color: hsl(0, 0%, 55%);
+	/* Modal content component: Item */
+	--modal-content-item-visual-section-width: 12vw;
+	--modal-content-item-visual-section-gap: 0.9vh;
+	--modal-content-item-amount-owned-font-size: 0.9rem;
+	--modal-content-item-amount-owned-font-style: italic;
+	--modal-content-item-detail-section-width: 23vw;
+	--modal-content-item-detail-section-height: 26vh;
+	--modal-content-item-detail-section-padding-top: 4%;
+	--modal-content-item-item-name-font-weight: bold;
+	--modal-content-item-item-name-font-size: 1.15rem;
+	--modal-content-item-item-name-margin-bottom: 1.1vh;
 
 	--resource-badge-width: 160px;
 	--resource-badge-height: 32px;
@@ -86,11 +107,13 @@
 	--resource-badge-amount-font-size: 15px;
 	--resource-badge-amount-margin: 0 5px;
 
+
 	--top-bar-min-height: 8vh;
 	--top-bar-max-height: 11vh;
 	--top-bar-background-color: var(--color-primary-20);
 	--top-bar-group-gap: 7px;
 	--top-bar-padding: 0 0.7vw;
+
 
 	--back-button-size: 42px;
 	--back-button-border-radius: 7px;
@@ -104,6 +127,7 @@
 	--nav-button-background-color: var(--color-primary-30);
 	--nav-button-hover-background-color: var(--color-primary-40);
 
+
 	--shop-category-height: 10vh;
 	--shop-category-gap: 9%;
 	--shop-category-padding: 0 5% 0 7%;
@@ -112,12 +136,11 @@
 	--shop-category-icon-size: 70%;
 	--shop-category-text-margin: 0;
 
+
 	--shop-item-width: 15vw;
 	--shop-item-aspect-ratio: 1 / 1.42;
 	--shop-item-border-radius: var(--border-radius);
 	--shop-item-background-color: var(--color-primary-30);
-	--shop-item-icon-width: 50%;
-	--shop-item-icon-aspect-ratio: 1 / 1;
 	--shop-item-icon-margin: 15% auto 0;
 	--shop-item-name-margin: 10% 0 10%;
 	--shop-item-price-container-margin: auto auto 20%;
@@ -126,7 +149,8 @@
 	--shop-item-price-icon-aspect-ratio: 1 / 1;
 	--shop-item-price-text-margin: 0;
 
-	/* Page specific */
+
+	/* ------- Page specific ------- */
 	--shop-page-left-bar-width: 17vw;
 	--shop-page-item-section-width: 83vw;
 	--shop-page-left-bar-background-color: beige;
@@ -135,11 +159,14 @@
 	--shop-page-item-section-gap: 3%;
 	--shop-page-item-section-padding: 3%;
 
+
 	--sign-in-page-border-radius: var(--border-radius);
 	--sign-in-page-submit-button-border-radius: var(--border-radius);
 
+
 	--sign-up-page-border-radius: var(--border-radius);
 	--sign-up-page-submit-button-border-radius: var(--border-radius);
+
 
 	/* --------------- */
 	font-family: var(--font-family);
