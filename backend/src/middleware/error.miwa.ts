@@ -8,11 +8,13 @@ const errorHandler: ErrorRequestHandler = (err, _, res, __) => {
 	// TODO:
 	// res 2xx have dot while error message doesn't. Pick one.
 	// Check for correct status code.
-	if (err instanceof CustomError.InvalidOrMissingAuthToken)
+	if (err instanceof CustomError.InvalidOrMissingAuthToken ||
+		err instanceof CustomError.AuthorizationError
+	)
 		res.status(401).json({ message: err.message });
 	else if (err instanceof CustomError.SigninError)
 		res.status(401).json({ message: err.message });
-	else if (err instanceof CustomError.InvalidItemTypeError)
+	else if (err instanceof CustomError.InvalidDataError)
 		res.status(400).json({ message: err.message });
 	else if (err instanceof CustomError.MissingFileError)
 		res.status(415).json({ message: err.message });

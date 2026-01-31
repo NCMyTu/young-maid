@@ -42,10 +42,15 @@ export class UnsupportedFileTypeError extends Error {
 	}
 }
 
-export class InvalidItemTypeError extends Error {
-	constructor(type: unknown) {
-		super(`Invalid item type: ${String(type)}`);
-		this.name = "InvalidItemTypeError";
+export class InvalidDataError extends Error {
+	constructor(field?: string, value?: string) {
+		const suffix = field
+			? value !== undefined
+				? `: ${field} = ${value}`
+				: `: ${field}`
+			: "";
+		super(`Invalid data/field${suffix}`);
+		this.name = "InvalidDataError";
 		Error.captureStackTrace?.(this, this.constructor);
 	}
 }

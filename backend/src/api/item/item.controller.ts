@@ -2,13 +2,13 @@ import type { RequestHandler } from "express";
 import type { CreateShopItemResult, DbShopItemFlatten } from "./item.type.js";
 import { createShopItem, getShopItemsByType, isValidItemType } from "./item.service.js";
 import { deleteFile } from "@/util/util.js";
-import { InvalidItemTypeError, MissingFileError } from "@/util/error.js";
+import { InvalidDataError, MissingFileError } from "@/util/error.js";
 
 const getShopItemsController: RequestHandler = async (req, res) => {
 	const { type } = req.query;
 
 	if (!isValidItemType(type))
-		throw new InvalidItemTypeError(type);
+		throw new InvalidDataError("type", type?.toString());
 
 	const items: DbShopItemFlatten[] = await getShopItemsByType(type);
 	res.status(200).json({ items });
