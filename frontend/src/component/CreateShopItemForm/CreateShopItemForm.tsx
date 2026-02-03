@@ -5,7 +5,12 @@ import SubmitButton from "@/component/SubmitButton/SubmitButton";
 import itemIconPlaceholder from "/asset/placeholder.png";
 import { ENDPOINTS } from "@/config/endpoints";
 
+type PseudoStackable = "" | "true" | "false";
+
 function CreateShopItemForm(): React.JSX.Element {
+	const [stackable, setStackable] = useState<PseudoStackable>("");
+	const [quantity, setQuantity] = useState<number | "">("");
+
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
 	useEffect(() => {
@@ -14,6 +19,13 @@ function CreateShopItemForm(): React.JSX.Element {
 				URL.revokeObjectURL(previewUrl);
 		}
 	}, [previewUrl]);
+
+	useEffect(() => {
+		if (stackable === "true")
+			setQuantity((q) => (q === "" || q < 1 ? 1 : q));
+		else if (stackable === "false") // Be explicit
+			setQuantity("");
+	}, [stackable]);
 
 	const createItem = async (formData: FormData) => {
 		const res: Response = await fetch(ENDPOINTS.ADMIN.POST.shopItem, {
@@ -67,8 +79,8 @@ function CreateShopItemForm(): React.JSX.Element {
 
 			{/* type */}
 			<label htmlFor="form-item-type">Choose item type</label>
-			<select required id="form-item-type" name="type">
-				<option value="" disabled selected hidden>Select</option>
+			<select required id="form-item-type" name="type" defaultValue="">
+				<option value="" disabled hidden>Select</option>
 				<option value="card-back">Card Back</option>
 				<option value="card-face">Card Face</option>
 				<option value="table-cloth">Table Cloth</option>
@@ -80,13 +92,49 @@ function CreateShopItemForm(): React.JSX.Element {
 			{/* description */}
 			<input type="text" name="description" placeholder="item-description" />
 
+			{/* stackable */}
+			<label htmlFor="form-item-stackable">Choose item stackable</label>
+			<select
+				required
+				id="form-item-stackable"
+				name="stackable"
+				value={stackable}
+				onChange={(e) => { setStackable(e.target.value as PseudoStackable) }}
+			>
+				<option value="" disabled hidden>Select</option>
+				<option value="true">Stackable</option>
+				<option value="false">Unstackable</option>
+			</select>
+
 			{/* currency */}
 			<label htmlFor="form-item-currency">Choose item currency</label>
-			<select required id="form-item-currency" name="currency">
-				<option value="" disabled selected hidden>Select</option>
+			<select required id="form-item-currency" name="currency" defaultValue="">
+				<option value="" disabled hidden>Select</option>
 				<option value="gold">Gold</option>
 				<option value="gem">Gem</option>
 			</select>
+
+			{/* quantity */}
+			<input
+				// required={}
+				type="number"
+				name="quantity"
+				min={1}
+				placeholder="item-quantity, digits only"
+				value={quantity}
+				required={stackable === "true"}
+				disabled={stackable !== "true"}
+				onKeyDown={(e) => e.key === '-' && e.preventDefault()}
+				onChange={(e) => {
+					const v = e.target.value;
+					if (v === "") {
+						setQuantity("");
+						return;
+					}
+					setQuantity(Number(v));
+				}}
+				onBlur={() => (quantity === "" || quantity < 1) && setQuantity(1)}
+			/>
 
 			{/* price */}
 			<input
@@ -108,16 +156,8 @@ function CreateShopItemForm(): React.JSX.Element {
 			{/* status */}
 			<label htmlFor="form-item-status">Choose item status</label>
 			<select required id="form-item-status" name="status">
-				<option value="available" selected>Available (default)</option>
+				<option value="available">Available (default)</option>
 				<option value="unavailable">Unavailable</option>
-			</select>
-
-			{/* stackable */}
-			<label htmlFor="form-item-stackable">Choose item stackable</label>
-			<select required id="form-item-stackable" name="stackable">
-				<option value="" disabled selected hidden>Select</option>
-				<option value="true">Stackable</option>
-				<option value="false">Unstackable</option>
 			</select>
 
 			<SubmitButton text="Create" />

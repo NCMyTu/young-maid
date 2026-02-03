@@ -19,7 +19,7 @@ const TAGLINE_MAX_LENGTH = 6;
 const userSchema = new mongoose.Schema<DbUser, Model<DbUser>, DbUserMethods>({
 	username: {
 		type: String,
-		required: [true, "Username is required."],
+		required: true,
 		trim: true,
 		unique: true,
 		minLength: [USERNAME_MIN_LENGTH, `Username must be at least ${USERNAME_MIN_LENGTH} characters long.`],
@@ -28,12 +28,12 @@ const userSchema = new mongoose.Schema<DbUser, Model<DbUser>, DbUserMethods>({
 	},
 	password: {
 		type: String,
-		required: [true, "Password is required."],
+		required: true,
 		minLength: [PASSWORD_MIN_LENGTH, `Password must be at least ${PASSWORD_MIN_LENGTH} characters long.`]
 	},
 	email: {
 		type: String,
-		required: [true, "Email is required."],
+		required: true,
 		trim: true,
 		unique: true,
 		validate: [validator.isEmail, "Email address is not valid."]
@@ -54,8 +54,8 @@ const userSchema = new mongoose.Schema<DbUser, Model<DbUser>, DbUserMethods>({
 	tagLine: {
 		type: String,
 		default: "YM",
-		set: (s: string) => (s.trim() === "" ? "YM" : s),
 		trim: true,
+		set: (s: string) => (s.trim() === "" ? "YM" : s),
 		uppercase: true,
 		minLength: [TAGLINE_MIN_LENGTH, `Tag line must be at least ${TAGLINE_MIN_LENGTH} characters long.`],
 		maxLength: [TAGLINE_MAX_LENGTH, `Tag line must be at most ${TAGLINE_MAX_LENGTH} characters.`],
@@ -71,6 +71,7 @@ const userSchema = new mongoose.Schema<DbUser, Model<DbUser>, DbUserMethods>({
 	}
 }, {
 	timestamps: true,
+	optimisticConcurrency: true,
 
 	methods: {
 		async comparePassword(against: string): Promise<boolean> {

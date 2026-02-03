@@ -72,7 +72,11 @@ const verifyTokenController: RequestHandler = async (req, res) => {
 	if (!token || typeof token !== "string")
 		throw new InvalidOrMissingAuthToken();
 
-	const { id, role } = verifyUserJwtToken(token);
+	const { sub: id, role } = verifyUserJwtToken(token);
+
+	if (!id)
+		throw new InvalidOrMissingAuthToken();
+
 	const user = await getUserInfo(id);
 
 	if (!user || user.role !== role)

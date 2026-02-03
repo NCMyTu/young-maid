@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 import { ShopItem, Item } from "./item.model.js";
 import { ITEM_TYPES } from "./item.type.js";
 import type {
-	DbShopItemFlatten,
 	CreateShopItemInput,
 	CreateShopItemResult,
+	DbShopItemFlatten,
 	ItemType,
 } from "./item.type.js";
 
@@ -35,7 +35,7 @@ const getShopItemsByType = async (type?: ItemType): Promise<DbShopItemFlatten[]>
 	]).exec();
 
 	const shopItems: DbShopItemFlatten[] = queried.map(item => ({
-		id: item._id.toString(),
+		id: item._id.toString() as string,
 		type: item.baseItem.type,
 		name: item.baseItem.name,
 		description: item.baseItem.description,
@@ -54,11 +54,12 @@ const createShopItem = async ({
 	type,
 	name,
 	description,
+	icon,
+	stackable,
 	currency,
 	price,
-	icon,
-	status,
-	stackable
+	quantity,
+	status
 }: CreateShopItemInput): Promise<CreateShopItemResult> => {
 	const session = await mongoose.startSession();
 
@@ -78,6 +79,7 @@ const createShopItem = async ({
 				baseItem: item._id,
 				currency,
 				price,
+				quantity,
 				status
 			});
 			await shopItem.save({ session });
@@ -88,10 +90,11 @@ const createShopItem = async ({
 				name: item.name,
 				description: item.description,
 				icon: item.icon,
+				stackable: item.stackable,
 				currency: shopItem.currency,
 				price: shopItem.price,
-				status: shopItem.status,
-				stackable: item.stackable
+				quantity: shopItem.quantity,
+				status: shopItem.status
 			};
 		});
 
@@ -104,7 +107,7 @@ const createShopItem = async ({
 };
 
 export {
-	isValidItemType,
 	createShopItem,
-	getShopItemsByType
+	getShopItemsByType,
+	isValidItemType
 };

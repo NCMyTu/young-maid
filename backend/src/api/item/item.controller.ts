@@ -1,6 +1,10 @@
 import type { RequestHandler } from "express";
 import type { CreateShopItemResult, DbShopItemFlatten } from "./item.type.js";
-import { createShopItem, getShopItemsByType, isValidItemType } from "./item.service.js";
+import {
+	createShopItem,
+	getShopItemsByType,
+	isValidItemType
+} from "./item.service.js";
 import { deleteFile } from "@/util/util.js";
 import { InvalidDataError, MissingFileError } from "@/util/error.js";
 
@@ -31,11 +35,14 @@ const createShopItemAdminController: RequestHandler = async (req, res) => {
 		// so it can return the correct HTTP status codes.
 		const { type, name, description, currency, status } = req.body;
 		const price = Number(req.body.price); // Mongoose will handle NaN.
+		const quantity = Number(req.body.quantity);
 		const icon = req.file.path;
 		const stackable = req.body.stackable === "true";
 
-		const itemData = {
-			type, name, description, currency, status, icon, price, stackable
+		const itemData = stackable ? {
+			type, name, description, icon, stackable, currency, price, quantity, status,
+		} : {
+			type, name, description, icon, stackable, currency, price, status,
 		};
 
 		const shopItem: CreateShopItemResult = await createShopItem(itemData);

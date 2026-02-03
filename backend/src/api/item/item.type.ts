@@ -30,6 +30,7 @@ type DbShopItem = {
 
 	currency: Currency;
 	price: number;
+	quantity?: number;
 	status: ShopItemStatus
 };
 
@@ -45,7 +46,7 @@ type DbInventoryItem = {
 };
 
 type DbShopItemFlatten = Pick<DbShopItem,
-	"id" | "createdAt" | "updatedAt" | "currency" | "price" | "status"
+	"id" | "createdAt" | "updatedAt" | "currency" | "price" | "status" | "quantity"
 > & Pick<DbItem,
 	"type" | "name" | "description" | "icon"
 >;
@@ -55,7 +56,7 @@ type ShopItemFilter = Pick<DbItem, "type">;
 type CreateShopItemInput = Pick<DbItem,
 	"type" | "name" | "description" | "icon" | "stackable"
 > & Pick<DbShopItem,
-	"currency" | "price" | "status"
+	"currency" | "price" | "quantity" | "status"
 >;
 
 type CreateShopItemResult = { id: string } & CreateShopItemInput;
