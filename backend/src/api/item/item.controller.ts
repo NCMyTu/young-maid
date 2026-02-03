@@ -1,10 +1,12 @@
 import type { RequestHandler } from "express";
 import type { CreateShopItemResult, DbShopItemFlatten } from "./item.type.js";
 import {
+	buyShopItem,
 	createShopItem,
 	getShopItemsByType,
 	isValidItemType
 } from "./item.service.js";
+import type { UpdatedUserCurrency } from "@/api/user/user.type.js";
 import { deleteFile } from "@/util/util.js";
 import { InvalidDataError, MissingFileError } from "@/util/error.js";
 
@@ -57,7 +59,14 @@ const createShopItemAdminController: RequestHandler = async (req, res) => {
 	}
 };
 
+const buyShopItemController: RequestHandler = async (req, res) => {
+	const { shopItemId, userId } = req.body;
+	const updatedUserCurrency: UpdatedUserCurrency = await buyShopItem(shopItemId, userId);
+	res.status(200).json({ message: "OK", updatedUserCurrency });
+};
+
 export {
+	buyShopItemController,
 	createShopItemAdminController,
 	getShopItemsController,
 	getShopItemsAdminController

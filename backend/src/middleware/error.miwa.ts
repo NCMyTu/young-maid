@@ -20,11 +20,16 @@ const errorHandler: ErrorRequestHandler = (err, _, res, __) => {
 		res.status(415).json({ message: err.message });
 	else if (err instanceof CustomError.UnsupportedFileTypeError)
 		res.status(415).json({ message: err.message });
-	else if (err instanceof mongoose.Error.ValidationError ||
-		err instanceof mongoose.Error.CastError ||
-		err instanceof mongoose.Error
-	)
+	else if (err instanceof CustomError.ResourceNotFoundError)
+		res.status(404).json({ message: err.message });
+	else if (err instanceof CustomError.PurchaseNotAllowedError)
+		res.status(400).json({ message: err.message })
+	else if (err instanceof mongoose.Error.ValidationError || err instanceof mongoose.Error.CastError)
 		res.status(400).json({ message: "Invalid input data" });
+	else if (err instanceof mongoose.Error)
+		res.status(400).json({ message: "Unexpected mongoose error" });
+	else if (err instanceof CustomError.InternalInconsistencyError)
+		res.status(500).json({ message: "Internal inconsistency" });
 	else
 		res.status(500).json({ message: "Unexpected error" });
 }

@@ -33,6 +33,8 @@ type SigninUserResult = Pick<
 	}
 };
 
+type UpdatedUserCurrency = Pick<DbUser, "id" | "gold" | "gem">;
+
 interface UserJwtPayload extends JwtPayload {
 	sub: string, // user.id
 	id: string,
@@ -46,5 +48,6 @@ export type {
 	CreateUserInput,
 	CreateUserResult,
 	SigninUserResult,
+	UpdatedUserCurrency,
 	UserJwtPayload
 };

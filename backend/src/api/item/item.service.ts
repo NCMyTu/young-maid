@@ -1,12 +1,15 @@
 import mongoose from "mongoose";
-import { ShopItem, Item } from "./item.model.js";
-import { ITEM_TYPES } from "./item.type.js";
+import { ShopItem, Item, InventoryItem } from "./item.model.js";
+import { type DbItem, ITEM_TYPES } from "./item.type.js";
 import type {
 	CreateShopItemInput,
 	CreateShopItemResult,
 	DbShopItemFlatten,
 	ItemType,
 } from "./item.type.js";
+import { User } from "@/api/user/user.model.js";
+import { InternalInconsistencyError, PurchaseNotAllowedError, ResourceNotFoundError } from "@/util/error.js";
+import type { UpdatedUserCurrency } from "@/api/user/user.type.js";
 
 // TODO: make this generic!
 const isValidItemType = (x: unknown): x is ItemType =>
@@ -85,7 +88,7 @@ const createShopItem = async ({
 			await shopItem.save({ session });
 
 			return {
-				id: shopItem._id.toString(),
+				id: shopItem.id as string,
 				type: item.type,
 				name: item.name,
 				description: item.description,
@@ -106,7 +109,106 @@ const createShopItem = async ({
 	}
 };
 
+const buyShopItemWithSession = async (
+	session: mongoose.mongo.ClientSession,
+	shopItemId: string,
+	userId: string
+): Promise<UpdatedUserCurrency> => {
+	// Validate shop item.
+	const shopItem = await ShopItem
+		.findById(shopItemId)
+		.session(session)
+		.populate<{ baseItem: DbItem }>("baseItem");
+
+	if (!shopItem)
+		throw new ResourceNotFoundError("shop item");
+	if (!shopItem.baseItem)
+		throw new ResourceNotFoundError("base item");
+
+	// Validate user.
+	const user = await User.findById(userId).session(session);
+	if (!user)
+		throw new ResourceNotFoundError("user");
+
+	const { currency, quantity, price } = shopItem;
+
+	if (user[currency] < price)
+		throw new PurchaseNotAllowedError(`Not enough ${currency}`);
+
+	const baseItem = shopItem.baseItem;
+	const stackable = baseItem.stackable;
+
+	// Update/Create inventory item.
+	const existedInventoryItem = await InventoryItem.findOne({
+		baseItem: baseItem.id,
+		user: user.id
+	}).session(session);
+
+	if (!stackable) {
+		if (existedInventoryItem) {
+			throw new PurchaseNotAllowedError(`Item is not stackable and already owned`);
+		} else {
+			const newInventoryItem = new InventoryItem({
+				baseItem: baseItem.id,
+				user: user.id
+			});
+			await newInventoryItem.save({ session });
+		}
+	} else {
+		if (!quantity || quantity < 1)
+			throw new InternalInconsistencyError(
+				`Stackable shop item (id: ${shopItemId}) must have quantity > 0`
+			);
+
+		if (existedInventoryItem) {
+			if (!existedInventoryItem.quantity || existedInventoryItem.quantity < 1)
+				throw new InternalInconsistencyError(
+					`Stackable inventory item (id: ${existedInventoryItem.id}) must have quantity > 0`
+				);
+
+			existedInventoryItem.quantity += quantity;
+			await existedInventoryItem.save({ session });
+		} else {
+			const newInventoryItem = new InventoryItem({
+				baseItem: baseItem.id,
+				user: user.id,
+				quantity: quantity
+			});
+			await newInventoryItem.save({ session });
+		}
+	}
+
+	user[currency] -= price;
+	await user.save({ session });
+
+	const updatedUserCurrency: UpdatedUserCurrency = {
+		id: user.id,
+		gold: user.gold,
+		gem: user.gem
+	};
+
+	return updatedUserCurrency;
+};
+
+const buyShopItem = async (shopItemId: string, userId: string) => {
+	const session = await mongoose.startSession();
+
+	try {
+		const updatedUserCurrency: UpdatedUserCurrency = await session.withTransaction(
+			async () => (
+				await buyShopItemWithSession(session, shopItemId, userId)
+			)
+		);
+		return updatedUserCurrency;
+	} catch (e) {
+		throw e;
+	} finally {
+		session.endSession();
+	}
+};
+
 export {
+	buyShopItem,
 	createShopItem,
 	getShopItemsByType,
 	isValidItemType

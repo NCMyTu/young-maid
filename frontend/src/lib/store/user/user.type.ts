@@ -8,10 +8,11 @@ interface UserData {
 }
 
 interface UserState extends UserData {
-	setUser: (user: UserData) => void;
+	setUser: (user: Partial<UserData>) => void;
 	clear: () => void
 }
 
 export type {
+	UserData,
 	UserState
 };

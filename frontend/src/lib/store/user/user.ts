@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import type { UserState } from "./user.type";
+import type { UserData, UserState } from "./user.type";
 
 const DEFAULT_ID = "";
 const DEFAULT_DISPLAY_NAME = "Guest";
@@ -19,7 +19,7 @@ const useUser = create<UserState>()(
 			gold: DEFAULT_GOLD,
 			gem: DEFAULT_GEM,
 
-			setUser: (user) => set(() => ({ ...user })),
+			setUser: (user: Partial<UserData>) => set(() => ({ ...user })),
 
 			clear: () =>
 				set({

@@ -5,6 +5,10 @@ export const ENDPOINTS = {
 		shopItems: `${API_BASE_URL}/api/items/shop`
 	},
 
+	POST: {
+		shopItems: `${API_BASE_URL}/api/items/shop`
+	},
+
 	ADMIN: {
 		GET: {
 			shopItems: `${API_BASE_URL}/admin/api/items/shop`

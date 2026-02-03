@@ -52,7 +52,8 @@ function ShopPage(): React.JSX.Element {
 	const user = useUser(useShallow((state) => ({
 		id: state.id,
 		gold: state.gold,
-		gem: state.gem
+		gem: state.gem,
+		setUser: state.setUser
 	})));
 
 	const onClickShopItem = (item: any) => {
@@ -72,12 +73,36 @@ function ShopPage(): React.JSX.Element {
 		})();
 	}, [selectedCategory]);
 
+	const buyItem = async () => {
+		const res = await fetch(ENDPOINTS.POST.shopItems, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			credentials: "include",
+			body: JSON.stringify({
+				shopItemId: selectedItem.id,
+				userId: user.id
+			})
+		});
+
+		const result = await res.json();
+
+		if (!res.ok) {
+			alert(`${res.status} ${result.message}`);
+			return;
+		}
+
+		const { id, gold, gem } = result.updatedUserCurrency;
+		user.setUser({ id, gold, gem });
+	};
+
 	return (<>
 		{selectedItem && <Modal
 			title="Info"
 			isOpen={isModalOpen}
 			onClose={onCloseModal}
-			onConfirm={() => alert("Implement item purchase")}
+			onConfirm={buyItem}
 			confirmText="Exchange"
 		>
 			<ModalContentItem

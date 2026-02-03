@@ -2,6 +2,7 @@ import express from "express";
 import type { Response } from "express";
 import { authenticateUser, authorizeUser } from "@/middleware/auth.miwa.js";
 import {
+	buyShopItemController,
 	createShopItemAdminController,
 	getShopItemsController,
 	getShopItemsAdminController
@@ -22,6 +23,7 @@ const routeNotFound = (_: any, res: Response) => {
 
 const router = express.Router();
 router.get("/shop", authenticateUser, getShopItemsController);
+router.post("/shop", authenticateUser, buyShopItemController);
 router.all(/(.*)/, routeNotFound);
 
 const adminRouter = express.Router();
