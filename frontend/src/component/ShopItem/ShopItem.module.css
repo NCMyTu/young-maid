@@ -10,6 +10,10 @@
 	cursor: default;
 }
 
+.disabled {
+	filter: brightness(35%);
+}
+
 .container .icon {
 	width: var(--item-icon-size);
 	aspect-ratio: 1 / 1;
@@ -27,21 +31,6 @@
 
 .container .name span{
 	display: inline-block;
-	/* animation: scrollText 7s linear infinite; */
-}
-
-@keyframes scrollText {
-	20% {
-		transform: translateX(0);
-	}
-
-	70% {
-		transform: translateX(-100%);
-	}
-
-	100% {
-		transform: translateX(-100%);
-	}
 }
 
 .container .priceContainer {

@@ -81,8 +81,7 @@ function ShopPage(): React.JSX.Element {
 			},
 			credentials: "include",
 			body: JSON.stringify({
-				shopItemId: selectedItem.id,
-				userId: user.id
+				shopItemId: selectedItem.id
 			})
 		});
 
@@ -139,6 +138,7 @@ function ShopPage(): React.JSX.Element {
 						onClick={() => onClickShopItem(item)}
 						name={item.name}
 						price={item.price}
+						isOwnershipLocked={item.isOwnershipLocked}
 						iconSrc={`${API_BASE_URL}/${item.icon}`}
 						currencySrc={item.currency === "gold" ? goldIcon : gemIcon}
 					/>

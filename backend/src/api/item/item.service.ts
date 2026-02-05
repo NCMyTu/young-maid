@@ -15,14 +15,9 @@ import type { UpdatedUserCurrency } from "@/api/user/user.type.js";
 const isValidItemType = (x: unknown): x is ItemType =>
 	typeof x === "string" && ITEM_TYPES.includes(x as ItemType);
 
-const getShopItemsByType = async (type?: ItemType): Promise<DbShopItemFlatten[]> => {
-	// const preItems = (await Item.find({ ...filter }).lean()).map((e: any) => e._id);
-	// const queried = await ShopItem.find({ baseItem: { $in: preItems }, status: "available" })
-	// 	.sort({ "createdAt": -1 }).populate<{ baseItem: DbItem }>("baseItem").lean();
-
-	// This is faster than the above, at least with 3 docs.
+const getShopItemsByType = async (userId?: string, type?: ItemType): Promise<DbShopItemFlatten[]> => {
 	const queried = await ShopItem.aggregate([
-		// Admin will need all statuses.
+		// Admin will need all statuses and no userId.
 		{ $match: { status: "available" } },
 		{
 			$lookup: {
@@ -34,10 +29,33 @@ const getShopItemsByType = async (type?: ItemType): Promise<DbShopItemFlatten[]>
 		},
 		{ $unwind: "$baseItem" },
 		...(type ? [{ $match: { "baseItem.type": type } }] : []),
+		{
+			$lookup: {
+				from: "inventoryitems",
+				localField: "baseItem._id",
+				foreignField: "baseItem",
+				pipeline: [
+					{ $match: { $expr: { $eq: ["$user", { $toObjectId: userId }] } } },
+					{ $limit: 1 }
+				],
+				as: "inventoryMatch",
+			}
+		},
+		{
+			$addFields: {
+				isOwnershipLocked: {
+					$and: [
+						{ $eq: ["$baseItem.stackable", false] },
+						{ $gt: [{ $size: "$inventoryMatch" }, 0] }
+					]
+				}
+			}
+		},
+		{ $unset: "inventoryMatch" },
 		{ $sort: { createdAt: -1 } }
 	]).exec();
 
-	const shopItems: DbShopItemFlatten[] = queried.map(item => ({
+	const shopItems: DbShopItemFlatten[] = queried.map((item: any): DbShopItemFlatten => ({
 		id: item._id.toString() as string,
 		type: item.baseItem.type,
 		name: item.baseItem.name,
@@ -47,7 +65,8 @@ const getShopItemsByType = async (type?: ItemType): Promise<DbShopItemFlatten[]>
 		price: item.price,
 		status: item.status,
 		createdAt: item.createdAt,
-		updatedAt: item.updatedAt
+		updatedAt: item.updatedAt,
+		isOwnershipLocked: item.isOwnershipLocked
 	}));
 
 	return shopItems;

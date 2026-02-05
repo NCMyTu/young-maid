@@ -49,7 +49,9 @@ type DbShopItemFlatten = Pick<DbShopItem,
 	"id" | "createdAt" | "updatedAt" | "currency" | "price" | "status" | "quantity"
 > & Pick<DbItem,
 	"type" | "name" | "description" | "icon"
->;
+> & {
+	isOwnershipLocked: boolean
+};
 
 type ShopItemFilter = Pick<DbItem, "type">;
 

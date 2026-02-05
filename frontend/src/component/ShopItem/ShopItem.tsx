@@ -8,13 +8,23 @@ function ShopItem({
 	price,
 	currencySrc,
 	iconSrc,
+	isOwnershipLocked,
 	onClick,
 	className
 }: IShopItemProps): React.JSX.Element {
 	return (
-		<div className={clsx("shop-item", styles.container, className)} onClick={onClick}>
+		<div
+			className={clsx(
+				"shop-item",
+				styles.container,
+				isOwnershipLocked && styles.disabled,
+				className
+			)}
+			onClick={!isOwnershipLocked ? onClick : undefined}
+		>
 			<img className={clsx(styles.icon)} src={iconSrc} />
 			<p className={clsx(styles.name)}>
+				{/* TODO: make this slide when name is too long. */}
 				<span>{name}</span>
 			</p>
 			<div className={clsx(styles.priceContainer)}>
