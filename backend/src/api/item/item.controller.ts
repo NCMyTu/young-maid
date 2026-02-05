@@ -9,14 +9,16 @@ import {
 import type { UpdatedUserCurrency } from "@/api/user/user.type.js";
 import { deleteFile } from "@/util/util.js";
 import { InvalidDataError, MissingFileError } from "@/util/error.js";
+import type { UserRequest } from "@/util/request.js";
 
 const getShopItemsController: RequestHandler = async (req, res) => {
+	const userId = (req as UserRequest).user.id;
 	const { type } = req.query;
 
 	if (!isValidItemType(type))
 		throw new InvalidDataError("type", type?.toString());
 
-	const items: DbShopItemFlatten[] = await getShopItemsByType(type);
+	const items: DbShopItemFlatten[] = await getShopItemsByType(userId, type);
 	res.status(200).json({ items });
 }
 
@@ -60,8 +62,10 @@ const createShopItemAdminController: RequestHandler = async (req, res) => {
 };
 
 const buyShopItemController: RequestHandler = async (req, res) => {
-	const { shopItemId, userId } = req.body;
-	const updatedUserCurrency: UpdatedUserCurrency = await buyShopItem(shopItemId, userId);
+	const updatedUserCurrency: UpdatedUserCurrency = await buyShopItem(
+		req.body.shopItemId as string,
+		(req as UserRequest).user.id
+	);
 	res.status(200).json({ message: "OK", updatedUserCurrency });
 };
 

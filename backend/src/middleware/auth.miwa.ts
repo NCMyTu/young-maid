@@ -1,20 +1,18 @@
-import type { NextFunction, Response, Request, RequestHandler } from "express";
+import type { NextFunction, Request, Response, RequestHandler } from "express";
 import { verifyUserJwtToken } from "@/api/user/user.service.js";
-import type { UserJwtPayload } from "@/api/user/user.type.js";
 import { AuthorizationError, InvalidOrMissingAuthToken } from "@/util/error.js";
+import type { UserRequest } from "@/util/request.js";
 
-interface UserRequest extends Request {
-	user?: UserJwtPayload;
-}
+const authenticateUser: RequestHandler = (req, _, next) => {
+	const userReq = req as UserRequest;
 
-const authenticateUser: RequestHandler = (req: UserRequest, _: Response, next: NextFunction) => {
-	const token = req.cookies.token;
+	const token = userReq.cookies.token;
 	if (!token)
 		throw new InvalidOrMissingAuthToken();
 
 	try {
-		req.user = verifyUserJwtToken(token);
-		req.user.id = req.user.sub;
+		userReq.user = verifyUserJwtToken(token);
+		userReq.user.id = userReq.user.sub;
 		next();
 	} catch {
 		throw new InvalidOrMissingAuthToken();
@@ -25,8 +23,8 @@ const authorizeUser = (roles: string[]): RequestHandler => {
 	if (roles.length === 0)
 		throw new Error("\"roles\" must not be empty. Add \"all\" to explicitly allow all users");
 
-	return (req: UserRequest, _: Response, next: NextFunction) => {
-		const userRole = req.user?.role;
+	return (req: Request, _: Response, next: NextFunction) => {
+		const userRole = (req as UserRequest).user.role;
 
 		if (!userRole)
 			throw new Error("User role is somehow missing in auth token");
