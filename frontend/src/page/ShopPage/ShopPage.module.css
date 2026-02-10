@@ -2,10 +2,10 @@
 	height: 100vh;
 	display: grid;
 	grid-template-rows: auto 1fr;
-	grid-template-columns: var(--shop-page-left-bar-width) var(--shop-page-item-section-width);
+	grid-template-columns: var(--shop-page-left-bar-width) auto;
 	grid-template-areas:
-	"topBar topBar"
-	"leftBar itemSection";
+		"topBar topBar"
+		"leftBar itemSection";
 }
 
 .container .topBar {
@@ -19,20 +19,15 @@
 	flex-direction: column;
 	gap: var(--shop-page-left-bar-gap);
 	padding: var(--shop-page-left-bar-padding);
-
 	overflow-y: scroll;
 	scrollbar-width: none;
 }
 
 .container .itemSection {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-items: flex-start;
-	justify-content: space-between;
-	gap: var(--shop-page-item-section-gap);
-	padding: var(--shop-page-item-section-padding);
-
-	overflow-y: scroll;
-	scrollbar-width: none;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	grid-auto-rows: var(--shop-page-grid-row-height);
+	place-items: center;
+	/* overflow-y: scroll;
+	scrollbar-width: none; */
 }

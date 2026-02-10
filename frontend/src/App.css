@@ -23,10 +23,6 @@
 	--color-error: hsl(349, 100%, 48%);
 
 
-	/* Item icon */
-	--item-icon-size: 7.5vw;
-
-
 	/* ------- Component specific ------- */
 	--form-input-margin: 0 0 5px 0;
 	--form-input-label-margin: 0 0 4px 5px;
@@ -95,6 +91,8 @@
 	--modal-content-item-item-name-font-weight: bold;
 	--modal-content-item-item-name-font-size: 1.15rem;
 	--modal-content-item-item-name-margin-bottom: 1.1vh;
+	--modal-content-item-icon-size: 9.2vw;
+
 
 	--resource-badge-width: 160px;
 	--resource-badge-height: 32px;
@@ -108,8 +106,7 @@
 	--resource-badge-amount-margin: 0 5px;
 
 
-	--top-bar-min-height: 8vh;
-	--top-bar-max-height: 11vh;
+	--top-bar-height: 9vh;
 	--top-bar-background-color: var(--color-primary-20);
 	--top-bar-group-gap: 7px;
 	--top-bar-padding: 0 0.7vw;
@@ -137,10 +134,12 @@
 	--shop-category-text-margin: 0;
 
 
-	--shop-item-width: 15vw;
-	--shop-item-aspect-ratio: 1 / 1.42;
-	--shop-item-border-radius: var(--border-radius);
+	--shop-item-width: 14vw;
+	--shop-item-aspect-ratio-width: 1;
+	--shop-item-aspect-ratio-height: 1.42;
+	--shop-item-padding: 10% 0 0;
 	--shop-item-background-color: var(--color-primary-30);
+	--shop-item-icon-size: 8vw;
 	--shop-item-icon-margin: 15% auto 0;
 	--shop-item-name-margin: 10% 0 10%;
 	--shop-item-price-container-margin: auto auto 20%;
@@ -152,12 +151,12 @@
 
 	/* ------- Page specific ------- */
 	--shop-page-left-bar-width: 17vw;
-	--shop-page-item-section-width: 83vw;
 	--shop-page-left-bar-background-color: beige;
 	--shop-page-left-bar-gap: 1.5vh;
 	--shop-page-left-bar-padding: 5vh 0;
-	--shop-page-item-section-gap: 3%;
-	--shop-page-item-section-padding: 3%;
+	--shop-page-grid-row-height: calc(1.14 *
+		var(--shop-item-width) * var(--shop-item-aspect-ratio-height) / var(--shop-item-aspect-ratio-width)
+	);
 
 
 	--sign-in-page-border-radius: var(--border-radius);

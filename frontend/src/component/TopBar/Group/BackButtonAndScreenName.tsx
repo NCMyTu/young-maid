@@ -9,15 +9,11 @@ function BackButtonAndScreenName({
 }: { screenName?: string }): React.JSX.Element {
 	const popScreen = useScreenStack((state) => state.pop);
 
-	const handleButtonOnClick = (_: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		popScreen();
-	}
-
 	return (
 		<div className={styles.div}>
 			<button
 				className={clsx("back-button", styles.button)}
-				onClick={handleButtonOnClick}
+				onClick={popScreen}
 			>
 				<img className={clsx(styles.icon)} src={icon} />
 			</button>

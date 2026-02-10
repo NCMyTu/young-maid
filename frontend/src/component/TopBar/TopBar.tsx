@@ -5,7 +5,7 @@ import type { ITopBarProps } from "./TopBar.type";
 
 function TopBar({ children, className }: ITopBarProps): React.JSX.Element {
 	return (
-		<div className={clsx("top-bar", styles.div, className)}>
+		<div className={clsx("top-bar", styles.container, className)}>
 			{children}
 		</div>
 	);

@@ -2,7 +2,7 @@
 	height: 100vh;
 	display: grid;
 	grid-template-rows: auto 1fr;
-	grid-template-columns: var(--shop-page-left-bar-width) var(--shop-page-item-section-width);
+	grid-template-columns: var(--shop-page-left-bar-width) 1fr;
 	grid-template-areas:
 		"topBar topBar"
 		"leftBar contentSection";
@@ -19,19 +19,6 @@
 	flex-direction: column;
 	gap: var(--shop-page-left-bar-gap);
 	padding: var(--shop-page-left-bar-padding);
-
-	overflow-y: scroll;
-	scrollbar-width: none;
-}
-
-.container .contentSection {
-	display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
-	align-items: flex-start;
-	justify-content: space-between;
-	gap: var(--shop-page-item-section-gap);
-	padding: var(--shop-page-item-section-padding);
 
 	overflow-y: scroll;
 	scrollbar-width: none;

@@ -37,6 +37,6 @@
 }
 
 .container .icon {
-	width: var(--item-icon-size);
+	width: var(--modal-content-item-icon-size);
 	aspect-ratio: 1 / 1;
 }
