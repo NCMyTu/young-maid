@@ -149,6 +149,10 @@
 	--shop-item-price-text-margin: 0;
 
 
+	--inventory-item-size: 8vw; /* Must be absolute */
+	--inventory-item-quantity-font-size: 1.2rem;
+
+
 	/* ------- Page specific ------- */
 	--shop-page-left-bar-width: 17vw;
 	--shop-page-left-bar-background-color: beige;

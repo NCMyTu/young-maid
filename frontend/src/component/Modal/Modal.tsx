@@ -12,13 +12,13 @@ function Modal({
 	confirmText = "Confirm",
 	children,
 	title
-}: IModalProps): React.JSX.Element {
+}: IModalProps): React.JSX.Element | null {
 	if (!isOpen)
-		return <></>;
+		return null;
 
 	const portal = document.getElementById("portal");
 	if (!portal)
-		return <></>;
+		return null;
 
 	return ReactDOM.createPortal(
 		<div

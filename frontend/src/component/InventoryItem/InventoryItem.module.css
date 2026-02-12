@@ -1,0 +1,21 @@
+.container {
+	border-radius: var(--border-radius);
+	position: relative;
+	display: inline-block;
+	border: 1px solid black;
+
+	img {
+		border-radius: var(--border-radius);
+		display: block; /* Must do this so the img fits the div */
+		width: var(--inventory-item-size);
+		aspect-ratio: 1 / 1;
+		object-fit: contain;
+	}
+}
+
+.quantity {
+	position: absolute;
+	bottom: 3%;
+	right: 3%;
+	font-size: var(--inventory-item-quantity-font-size);
+}
