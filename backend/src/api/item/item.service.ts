@@ -5,7 +5,8 @@ import type {
 	CreateShopItemInput,
 	CreateShopItemResult,
 	DbShopItemFlatten,
-	ItemType,
+	GetInventoryItemsResult,
+	ItemType
 } from "./item.type.js";
 import { User } from "@/api/user/user.model.js";
 import { InternalInconsistencyError, PurchaseNotAllowedError, ResourceNotFoundError } from "@/util/error.js";
@@ -15,10 +16,11 @@ import type { UpdatedUserCurrency } from "@/api/user/user.type.js";
 const isValidItemType = (x: unknown): x is ItemType =>
 	typeof x === "string" && ITEM_TYPES.includes(x as ItemType);
 
-const getShopItemsByType = async (userId?: string, type?: ItemType): Promise<DbShopItemFlatten[]> => {
+const getShopItems = async (userId?: string, type?: ItemType): Promise<DbShopItemFlatten[]> => {
 	const queried = await ShopItem.aggregate([
 		// Admin will need all statuses and no userId.
 		{ $match: { status: "available" } },
+		{ $sort: { createdAt: -1 } },
 		{
 			$lookup: {
 				from: "items",
@@ -51,8 +53,7 @@ const getShopItemsByType = async (userId?: string, type?: ItemType): Promise<DbS
 				}
 			}
 		},
-		{ $unset: "inventoryMatch" },
-		{ $sort: { createdAt: -1 } }
+		{ $unset: "inventoryMatch" }
 	]).exec();
 
 	const shopItems: DbShopItemFlatten[] = queried.map((item: any): DbShopItemFlatten => ({
@@ -70,6 +71,38 @@ const getShopItemsByType = async (userId?: string, type?: ItemType): Promise<DbS
 	}));
 
 	return shopItems;
+};
+
+const getInventoryItems = async (userId: string, type: ItemType): Promise<GetInventoryItemsResult[]> => {
+	const queried: GetInventoryItemsResult[] = await Item.aggregate([
+		{ $match: { type } },
+		{
+			$lookup: {
+				from: "inventoryitems",
+				localField: "_id",
+				foreignField: "baseItem",
+				pipeline: [
+					{ $match: { $expr: { $eq: ["$user", { $toObjectId: userId }] } } },
+				],
+				as: "match",
+			}
+		},
+		{ $unwind: "$match" },
+		{ $sort: { "match.createdAt": -1 } },
+		{
+			$project: {
+				_id: 0,
+				type: 1,
+				name: 1,
+				description: 1,
+				icon: 1,
+				inventoryId: "$match._id",
+				quantity: "$match.quantity",
+			}
+		}
+	]).exec() as GetInventoryItemsResult[];
+
+	return queried;
 };
 
 const createShopItem = async ({
@@ -229,6 +262,7 @@ const buyShopItem = async (shopItemId: string, userId: string) => {
 export {
 	buyShopItem,
 	createShopItem,
-	getShopItemsByType,
+	getInventoryItems,
+	getShopItems,
 	isValidItemType
 };

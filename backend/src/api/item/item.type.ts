@@ -63,6 +63,14 @@ type CreateShopItemInput = Pick<DbItem,
 
 type CreateShopItemResult = { id: string } & CreateShopItemInput;
 
+type GetInventoryItemsResult = {
+	inventoryItemId: string
+} & Pick<DbItem,
+	"type" | "name" | "description" | "icon"
+> & Pick<DbInventoryItem,
+	"quantity"
+>;
+
 export {
 	ITEM_TYPES,
 	CURRENCY,
@@ -79,5 +87,6 @@ export type {
 	ShopItemFilter,
 	DbShopItemFlatten,
 	CreateShopItemInput,
-	CreateShopItemResult
+	CreateShopItemResult,
+	GetInventoryItemsResult
 };

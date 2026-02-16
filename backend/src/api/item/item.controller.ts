@@ -1,9 +1,14 @@
 import type { RequestHandler } from "express";
-import type { CreateShopItemResult, DbShopItemFlatten } from "./item.type.js";
+import type {
+	CreateShopItemResult,
+	DbShopItemFlatten,
+	GetInventoryItemsResult
+} from "./item.type.js";
 import {
 	buyShopItem,
 	createShopItem,
-	getShopItemsByType,
+	getInventoryItems,
+	getShopItems,
 	isValidItemType
 } from "./item.service.js";
 import type { UpdatedUserCurrency } from "@/api/user/user.type.js";
@@ -18,13 +23,24 @@ const getShopItemsController: RequestHandler = async (req, res) => {
 	if (!isValidItemType(type))
 		throw new InvalidDataError("type", type?.toString());
 
-	const items: DbShopItemFlatten[] = await getShopItemsByType(userId, type);
+	const items: DbShopItemFlatten[] = await getShopItems(userId, type);
 	res.status(200).json({ items });
 }
 
 const getShopItemsAdminController: RequestHandler = async (_, res) => {
-	const items: DbShopItemFlatten[] = await getShopItemsByType();
+	const items: DbShopItemFlatten[] = await getShopItems();
 	res.status(200).json({ items });
+}
+
+const getInventoryItemsController: RequestHandler = async (req, res) => {
+	const userId = (req as UserRequest).user.id;
+	const { type } = req.query;
+
+	if (!isValidItemType(type))
+		throw new InvalidDataError("type", type?.toString());
+
+	const inventoryItems: GetInventoryItemsResult[] = await getInventoryItems(userId, type);
+	res.status(200).json({ inventoryItems });
 }
 
 const createShopItemAdminController: RequestHandler = async (req, res) => {
@@ -72,6 +88,7 @@ const buyShopItemController: RequestHandler = async (req, res) => {
 export {
 	buyShopItemController,
 	createShopItemAdminController,
+	getInventoryItemsController,
 	getShopItemsController,
 	getShopItemsAdminController
 };
