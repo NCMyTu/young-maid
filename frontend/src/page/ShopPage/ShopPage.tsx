@@ -17,16 +17,11 @@ import type { ShopPageItemCategories } from "./ShopPage.type";
 import Modal from "@/component/Modal/Modal";
 import { useModal } from "@/component/Modal/Modal.hook";
 import ModalContentItem from "@/component/Modal/Content/Item";
+import { ITEM_TYPE_LABELS, type ItemType } from "@/type/item.type";
 
 // TODO:
 // Type properly.
 // Implement drag-and-scroll.
-
-const SHOP_ITEM_CATEGORIES: ShopPageItemCategories[] = [
-	{ itemType: "card-back", name: "Card Back" },
-	{ itemType: "card-face", name: "Card Face" },
-	{ itemType: "table-cloth", name: "Table Cloth" }
-];
 
 const fetchShopItems = async (type: string) => {
 	const url = `${ENDPOINTS.GET.shopItems}/?type=${type}`;
@@ -45,7 +40,7 @@ const fetchShopItems = async (type: string) => {
 
 function ShopPage(): React.JSX.Element {
 	const [isModalOpen, openModal, closeModal] = useModal();
-	const [selectedCategory, setSelectedCategory] = useState(SHOP_ITEM_CATEGORIES[0]!);
+	const [selectedItemType, setSelectedItemType] = useState<ItemType>(Object.keys(ITEM_TYPE_LABELS)[0]! as ItemType);
 	//                                         ↓ uh oh...
 	const [shopItems, setShopItems] = useState<any[]>([]);
 	const [selectedItem, setSelectedItem] = useState<any | null>(null);
@@ -68,10 +63,10 @@ function ShopPage(): React.JSX.Element {
 
 	useEffect(() => {
 		(async () => {
-			const items = await fetchShopItems(selectedCategory.itemType);
+			const items = await fetchShopItems(selectedItemType);
 			setShopItems(items);
 		})();
-	}, [selectedCategory]);
+	}, [selectedItemType]);
 
 	const buyItem = async () => {
 		const res = await fetch(ENDPOINTS.POST.shopItems, {
@@ -120,13 +115,14 @@ function ShopPage(): React.JSX.Element {
 			</TopBar>
 
 			<div className={clsx("left-bar", styles.leftBar)}>
-				{SHOP_ITEM_CATEGORIES.map((category: ShopPageItemCategories) => (
+				{Object.entries(ITEM_TYPE_LABELS).map(([itemType, label]) => (
 					<ShopCategory
-						key={category.itemType}
-						name={`${category.name}`}
+						key={itemType}
+						name={label}
 						iconSrc={itemIcon}
-						isActive={category.itemType === selectedCategory.itemType}
-						onClick={() => setSelectedCategory(category)}
+						isActive={itemType === selectedItemType}
+						// Safe cast. Invalid itemType returns no data from backend.
+						onClick={() => setSelectedItemType(itemType as ItemType)}
 					/>
 				))}
 			</div>

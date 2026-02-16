@@ -8,38 +8,24 @@ import useUser from "@/lib/store/user/user";
 import InventoryItem from "@/component/InventoryItem/InventoryItem";
 import ItemDetail from "./ItemDetail/ItemDetail";
 import { API_BASE_URL, ENDPOINTS } from "@/config/endpoints";
+import { ITEM_TYPE_LABELS } from "@/type/item.type";
+import type { ItemType, InventoryItemResponse } from "@/type/item.type";
 
 // TODO: Cache the fetch result.
-
-type ItemType = "card-back" | "card-face" | "table-cloth";
-type InventoryItem = {
-	inventoryItemId: string;
-	type: ItemType;
-	name: string;
-	description: string;
-	icon: string;
-	quantity?: number;
-}
-
-const ITEM_TYPE_MAPPING: Readonly<Record<ItemType, string>> = {
-	"card-back": "Card Back",
-	"card-face": "Card Face",
-	"table-cloth": "Table Cloth"
-};
 
 const handleSelectOnClick = (
 	e: React.ChangeEvent<HTMLSelectElement>,
 	setItemType: React.Dispatch<React.SetStateAction<ItemType>>
 ): void => {
 	const value = e.target.value;
-	if (value in ITEM_TYPE_MAPPING)
+	if (value in ITEM_TYPE_LABELS)
 		setItemType(value as ItemType);
 }
 
 function InventoryPage(): React.JSX.Element {
-	const [itemType, setItemType] = useState<ItemType>(Object.keys(ITEM_TYPE_MAPPING)[0]! as ItemType);
-	const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
-	const [selectedInventoryItem, setSelectedInventoryItem] = useState<InventoryItem | null>(null);
+	const [itemType, setItemType] = useState<ItemType>(Object.keys(ITEM_TYPE_LABELS)[0]! as ItemType);
+	const [inventoryItems, setInventoryItems] = useState<InventoryItemResponse[]>([]);
+	const [selectedInventoryItem, setSelectedInventoryItem] = useState<InventoryItemResponse | null>(null);
 	const user = useUser(useShallow((state) => ({
 		id: state.id,
 		gold: state.gold,
@@ -55,7 +41,13 @@ function InventoryPage(): React.JSX.Element {
 				credentials: "include"
 			});
 
-			const inventoryItems: InventoryItem[] = (await res.json()).inventoryItems as InventoryItem[];
+			if (!res.ok)
+				console.log("Error fetching items...");
+
+			const inventoryItems: InventoryItemResponse[] = (
+				await res.json()
+			).inventoryItems as InventoryItemResponse[];
+
 			setInventoryItems(inventoryItems);
 			setSelectedInventoryItem(inventoryItems[0] ?? null);
 		};
@@ -75,7 +67,7 @@ function InventoryPage(): React.JSX.Element {
 					<img className={styles.itemIcon} src={`${API_BASE_URL}/${selectedInventoryItem.icon}`} />
 					<ItemDetail
 						name={selectedInventoryItem.name}
-						type={ITEM_TYPE_MAPPING[selectedInventoryItem.type]}
+						type={ITEM_TYPE_LABELS[selectedInventoryItem.type]}
 						description={selectedInventoryItem.description}
 						quantity={selectedInventoryItem.quantity}
 					/>
@@ -87,8 +79,8 @@ function InventoryPage(): React.JSX.Element {
 					value={itemType}
 					onChange={(e) => handleSelectOnClick(e, setItemType)}
 				>
-					{Object.entries(ITEM_TYPE_MAPPING).map(([type, label]) => (
-						<option key={type} value={type}>{label}</option>
+					{Object.entries(ITEM_TYPE_LABELS).map(([itemType, label]) => (
+						<option key={itemType} value={itemType}>{label}</option>
 					))}
 				</select>
 
