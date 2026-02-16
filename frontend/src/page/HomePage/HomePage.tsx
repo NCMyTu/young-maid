@@ -68,6 +68,10 @@ function HomePage(): React.JSX.Element {
 				Go to SHOP
 			</button>
 
+			<button onClick={() => pushScreen("inventory")}>
+				Go to INVENTORY
+			</button>
+
 			<button onClick={openModal}>
 				Open modal
 			</button>

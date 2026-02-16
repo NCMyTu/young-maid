@@ -4,13 +4,14 @@ import type { IInventoryItemProps } from "./InventoryItem.type";
 
 function InventoryItem({
 	icon,
-	quantity
+	quantity,
+	onClick
 }: IInventoryItemProps): React.JSX.Element | null {
 	if (quantity !== undefined && quantity <= 0)
 		return null;
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.container} onClick={onClick}>
 			<img src={icon} />
 			{quantity &&
 				<span className={styles.quantity}>{quantity}</span>

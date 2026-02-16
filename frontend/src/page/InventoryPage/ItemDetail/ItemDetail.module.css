@@ -1,0 +1,75 @@
+.container {
+	width: var(--inventory-page-primary-section-item-detail-width);
+}
+
+.header {
+	background-color: var(--inventory-page-primary-section-item-header-background-color);
+	padding: var(--inventory-page-primary-section-item-header-padding);
+	border-radius: var(--border-radius);
+	margin: var(--inventory-page-primary-section-item-header-margin);
+	position: relative;
+	display: flex;
+	transform: skew(calc(-1 * var(--inventory-page-primary-section-skew-degree)));
+}
+
+.type {
+	background-color: var(--inventory-page-primary-section-item-type-background-color);
+	border-radius: var(--border-radius);
+	margin: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	transform: skew(var(--inventory-page-primary-section-skew-degree)) translate(-40%, -70%) skew(-7deg);
+	font-size: var(--inventory-page-primary-section-item-type-font-size);
+	padding: var(--inventory-page-primary-section-item-type-padding);
+
+	span {
+		display: block;
+		transform: skew(7deg);
+	}
+}
+
+.name {
+	font-size: var(--inventory-page-primary-section-item-name-font-size);
+	height: var(--inventory-page-primary-section-item-name-height);
+	max-height: var(--inventory-page-primary-section-item-name-height);
+	margin: var(--inventory-page-primary-section-item-name-margin);
+	color: var(--inventory-page-primary-section-item-name-color);
+	padding: var(--inventory-page-primary-section-item-name-padding);
+	overflow-y: scroll;
+	scrollbar-width: none;
+
+	span {
+		display: block;
+		transform-origin: 100% 0%;
+		transform: skew(var(--inventory-page-primary-section-skew-degree));
+	}
+}
+
+.quantity {
+	background-color: var(--inventory-page-primary-section-item-quantity-background-color);
+	padding: var(--inventory-page-primary-section-item-quantity-padding);
+	display: flex;
+	flex-direction: column;
+	border-radius: var(--border-radius);
+	margin-left: auto;
+
+	span {
+		font-size: var(--inventory-page-primary-section-item-quantity-owned-font-size);
+		display: block;
+		color: var(--inventory-page-primary-section-item-quantity-span-owned-color);
+		transform: skew(var(--inventory-page-primary-section-skew-degree));
+	}
+
+	span:nth-child(2) {
+		font-size: var(--inventory-page-primary-section-item-quantity-quantity-font-size);
+		font-weight: bold;
+		color: var(--inventory-page-primary-section-item-quantity-span-quantity-color);
+		padding: var(--inventory-page-primary-section-item-quantity-span-quantity-padding);
+	}
+}
+
+.description {
+	font-size: var(--inventory-page-primary-section-item-description-font-size);
+	text-decoration: var(--inventory-page-primary-section-item-description-text-decoration);
+}

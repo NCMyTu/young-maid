@@ -1,0 +1,53 @@
+.container {
+	height: 100vh;
+	display: grid;
+	grid-template-columns: var(--inventory-page-primary-section-width) auto;
+	grid-template-rows: auto 1fr;
+	grid-template-areas:
+		"topBar topBar"
+		"primary secondary";
+	overflow: hidden;
+}
+
+.topBar {
+	grid-area: topBar;
+}
+
+.primary {
+	background-color: var(--color-primary-30);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	/* Somehow the div is scrollable  */
+	overflow: scroll;
+	scrollbar-width: none;
+}
+
+.itemIcon {
+	height: var(--inventory-page-primary-section-item-icon-height);
+	aspect-ratio: 1 / 1;
+	margin: var(--inventory-page-primary-section-item-icon-margin);
+}
+
+.secondary {
+	padding: var(--inventory-page-secondary-section-padding);
+	grid-area: secondary;
+	background-color: var(--color-primary-40);
+	overflow-y: auto;
+
+	display: grid;
+	grid-template-columns: repeat(auto-fill, var(--inventory-page-secondary-section-item-grid-size));
+	grid-template-rows: auto; /* For the select */
+	grid-auto-rows: var(--inventory-page-secondary-section-item-grid-size); /* For items */
+	place-items: center;
+	justify-content: center;
+	align-content: start;
+	gap: var(--inventory-page-secondary-section-gap);
+}
+
+.secondary select {
+	grid-column: 1 / -1;
+	width: 100%;
+	font-size: var(--inventory-page-secondary-section-select-item-font-size);
+	text-align: center;
+}

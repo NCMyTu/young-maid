@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import useScreenStack from "@/lib/store/screen-stack/screen-stack";
 import HomePage from "@/page/HomePage/HomePage";
+import InventoryPage from "@/page/InventoryPage/InventoryPage";
 import ShopPage from "@/page/ShopPage/ShopPage";
 import AdminPage from "@/page/AdminPage/AdminPage";
 import useUser from "@/lib/store/user/user";
@@ -40,6 +41,8 @@ function RootPage(): React.JSX.Element {
 				return <HomePage />;
 			case "shop":
 				return <ShopPage />;
+			case "inventory":
+				return <InventoryPage />;
 			case "admin":
 				return <AdminPage />;
 			default:

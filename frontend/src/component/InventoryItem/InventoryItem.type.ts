@@ -1,6 +1,7 @@
 interface IInventoryItemProps {
 	icon: string;
-	quantity?: number
+	quantity?: number;
+	onClick?: () => void
 }
 
 export type { IInventoryItemProps };

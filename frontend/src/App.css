@@ -171,6 +171,38 @@
 	--sign-up-page-submit-button-border-radius: var(--border-radius);
 
 
+	--inventory-page-primary-section-width: 60vw;
+	--inventory-page-primary-section-item-detail-width: 85%;
+	--inventory-page-primary-section-skew-degree: 5deg;
+	--inventory-page-primary-section-item-icon-height: 37%;
+	--inventory-page-primary-section-item-icon-margin: 1.5rem 0 2rem;
+	--inventory-page-primary-section-item-header-margin: 0 0 1.4rem 0;
+	--inventory-page-primary-section-item-header-padding: 0 0.7rem;
+	--inventory-page-primary-section-item-header-background-color: hsl(213, 33%, 36%);
+	--inventory-page-primary-section-item-type-font-size: 1.2rem;
+	--inventory-page-primary-section-item-type-padding: 0.3rem 0.6rem;
+	--inventory-page-primary-section-item-type-background-color: white;
+	--inventory-page-primary-section-item-name-font-size: 1.6rem;
+	--inventory-page-primary-section-item-name-height: calc(2 * var(--inventory-page-primary-section-item-name-font-size) * 1.2);
+	--inventory-page-primary-section-item-name-margin: calc(0.65 * var(--inventory-page-primary-section-item-type-font-size)) 0.65rem 0 0;
+	--inventory-page-primary-section-item-name-color: white;
+	--inventory-page-primary-section-item-name-padding: 0 0.3rem;
+	--inventory-page-primary-section-item-quantity-background-color: hsl(218, 48%, 17%);
+	--inventory-page-primary-section-item-quantity-padding: 0.5rem;
+	--inventory-page-primary-section-item-quantity-owned-font-size: 0.9rem;
+	--inventory-page-primary-section-item-quantity-quantity-font-size: 1.2rem;
+	--inventory-page-primary-section-item-quantity-span-owned-color: hsla(0, 0%, 100%, 0.822);
+	--inventory-page-primary-section-item-quantity-span-quantity-color: hsl(195, 97%, 73%);
+	--inventory-page-primary-section-item-description-font-size: 1.2rem;
+	--inventory-page-primary-section-item-description-text-decoration: underline solid hsl(0, 1%, 58%) 2px;
+	/* It's slightly off to the left, therefore this weird padding */
+	--inventory-page-primary-section-item-quantity-span-quantity-padding: 0 0 0 0.15rem;
+	--inventory-page-secondary-section-padding: 2vh 0;
+	--inventory-page-secondary-section-item-grid-size: calc(1.15 * var(--inventory-item-size));
+	--inventory-page-secondary-section-gap: 5px;
+	--inventory-page-secondary-section-select-item-font-size: 1.15rem;
+
+
 	/* --------------- */
 	font-family: var(--font-family);
 	font-size: var(--font-size);
