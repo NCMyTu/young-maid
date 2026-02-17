@@ -12,6 +12,8 @@ import {
 import { authenticateUser, authorizeUser } from "@/middleware/auth.miwa.js";
 import type { Response } from "express";
 
+// TODO: log user out if there are multiple sign in.
+
 // *** = to be implemented
 // TODO: remove access when user is deleted and token is still in use.
 

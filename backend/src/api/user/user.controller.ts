@@ -8,7 +8,7 @@ import {
 	getUserInfo
 } from "./user.service.js";
 import type { RequestHandler } from "express";
-import type { SigninUserResult } from "./user.type.js";
+import type { CreateUserResult, SigninUserResult } from "./user.type.js";
 
 const getAllUsersController: RequestHandler = async (_, res) => {
 	//  TODO:
@@ -21,7 +21,7 @@ const getAllUsersController: RequestHandler = async (_, res) => {
 const createUserController: RequestHandler = async (req, res) => {
 	const { username, password, email, displayName, tagLine } = req.body;
 	// May throw mongoose.Error.
-	const user = await createUser({ username, password, email, displayName, tagLine });
+	const user: CreateUserResult = await createUser({ username, password, email, displayName, tagLine });
 	res.status(201).json({ message: "User created successfully.", user });
 };
 
@@ -49,12 +49,14 @@ const signinUserController: RequestHandler = async (req, res) => {
 
 	res.status(200).json({
 		message: "Signin successful.",
-		id: userData.id,
-		displayName: userData.displayName,
-		tagLine: userData.tagLine,
-		gold: userData.gold,
-		gem: userData.gem,
-		role: userData.role
+		user: {
+			id: userData.id,
+			displayName: userData.displayName,
+			tagLine: userData.tagLine,
+			gold: userData.gold,
+			gem: userData.gem,
+			role: userData.role
+		}
 	});
 };
 

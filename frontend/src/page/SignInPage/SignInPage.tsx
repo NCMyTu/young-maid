@@ -6,15 +6,8 @@ import generateFormInputFields from "@/component/FormInput/FormInput.helper";
 import useUser from "@/lib/store/user/user";
 import SubmitButton from "@/component/SubmitButton/SubmitButton";
 import { ENDPOINTS } from "@/config/endpoints";
-
-interface UserResponse extends Response {
-	id: string,
-	displayName: string,
-	tagLine: string,
-	role: string,
-	gold: number,
-	gem: number
-};
+import type { UserSignInResponse } from "@/type/user.type";
+import { signIn, type SignInResult } from "./helper";
 
 function SignInPage(): React.JSX.Element {
 	const navigate = useNavigate();
@@ -52,27 +45,12 @@ function SignInPage(): React.JSX.Element {
 
 	const submitForm = async () => {
 		try {
-			// TODO: no need to set header and body, form action will handle it.
-			let res = await fetch(ENDPOINTS.AUTH.signIn, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				credentials: "include",
-				body: JSON.stringify({ username, password })
-			}) as UserResponse;
+			const signInResult: SignInResult = await signIn(username, password);
 
-			if (!res.ok) {
-				if (res.status === 401) // Peekaboo! Magin number!
-					setWarning("Incorrect username or password")
-				else
-					throw new Error();
-			}
-
-			res = await res.json();
-
-			const { id, displayName, tagLine, role, gold, gem } = res;
-			setUser({ id, displayName, tagLine, role, gold, gem });
+			if (!signInResult.success)
+				setWarning(signInResult.message);
+			else
+				setUser(signInResult.user);
 
 			navigate("/");
 		} catch {

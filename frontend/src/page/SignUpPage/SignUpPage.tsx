@@ -14,6 +14,7 @@ import { validateInput } from "@/component/FormInput/FormInput";
 import useUser from "@/lib/store/user/user";
 import SubmitButton from "@/component/SubmitButton/SubmitButton";
 import { ENDPOINTS } from "@/config/endpoints";
+import { signIn, type SignInResult } from "@/page/SignInPage/helper";
 
 // TODO:
 // HIGH PRIORITY: submit being blocked by tag line warning set from request errors.
@@ -84,37 +85,20 @@ function SignUpPage(): React.JSX.Element {
 				},
 				credentials: "include",
 				body: JSON.stringify(userData)
-			}) as any;
-
-			const result = await res.json();
-			console.log(result.message);
+			});
 
 			if (!res.ok) {
-				setTagLineWarning(result.message)
+				setTagLineWarning((await res.json()).message)
 				return;
 			}
 
-			// Sign in.
-			// TODO: extract this with the one in SignInPage into common function.
-			let resSignIn = await fetch(ENDPOINTS.AUTH.signIn, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				credentials: "include",
-				body: JSON.stringify({ username, password })
-			}) as any; // ughh...
+			const signInResult: SignInResult = await signIn(username, password);
 
-			if (!resSignIn.ok) {
-				if (resSignIn.status === 401) // Peekaboo! Magin number! Again!
-					setTagLineWarning("TODO: Set different warning based on different status code!")
-				else
-					throw new Error();
-			}
-			resSignIn = await resSignIn.json();
+			if (!signInResult.success)
+				setTagLineWarning("TODO: Set different warning based on different status code!")
+			else
+				setUser(signInResult.user);
 
-			const { id, displayName, tagLine, role } = resSignIn;
-			setUser({ id, displayName, tagLine, role });
 			navigate("/");
 		} catch (e) {
 			setTagLineWarning("Unexpected error. Try again later")
