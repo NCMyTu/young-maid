@@ -11,21 +11,24 @@ import { API_BASE_URL, ENDPOINTS } from "@/config/endpoints";
 import { ITEM_TYPE_LABELS } from "@/type/item.type";
 import type { ItemType, InventoryItemResponse } from "@/type/item.type";
 
-// TODO: Cache the fetch result.
-
 const handleSelectOnClick = (
 	e: React.ChangeEvent<HTMLSelectElement>,
-	setItemType: React.Dispatch<React.SetStateAction<ItemType>>
+	setItemType: React.Dispatch<React.SetStateAction<ItemType | "all">>
 ): void => {
 	const value = e.target.value;
-	if (value in ITEM_TYPE_LABELS)
+	if (value === "all")
+		setItemType("all");
+	else if (value in ITEM_TYPE_LABELS)
 		setItemType(value as ItemType);
+	else
+		return;
 }
 
 function InventoryPage(): React.JSX.Element {
-	const [itemType, setItemType] = useState<ItemType>(Object.keys(ITEM_TYPE_LABELS)[0]! as ItemType);
+	const [itemType, setItemType] = useState<ItemType | "all">("all");
 	const [inventoryItems, setInventoryItems] = useState<InventoryItemResponse[]>([]);
-	const [selectedInventoryItem, setSelectedInventoryItem] = useState<InventoryItemResponse | null>(null);
+	const [selectedInventoryItem, setSelectedInventoryItem] = useState<InventoryItemResponse | undefined>(undefined);
+
 	const user = useUser(useShallow((state) => ({
 		id: state.id,
 		gold: state.gold,
@@ -33,15 +36,15 @@ function InventoryPage(): React.JSX.Element {
 	})));
 
 	useEffect(() => {
-		// TODO: use AbortController
 		const fetchInventoryItem = async () => {
-			const url = `${ENDPOINTS.GET.inventoryItems}/?type=${itemType}`;
+			const url = ENDPOINTS.GET.inventoryItems; // Fetch all.
 			const res = await fetch(url, {
 				method: "GET",
 				credentials: "include"
 			});
 
 			if (!res.ok)
+				// TODO: error modal and pop screen.
 				console.log("Error fetching items...");
 
 			const inventoryItems: InventoryItemResponse[] = (
@@ -49,11 +52,19 @@ function InventoryPage(): React.JSX.Element {
 			).inventoryItems as InventoryItemResponse[];
 
 			setInventoryItems(inventoryItems);
-			setSelectedInventoryItem(inventoryItems[0] ?? null);
 		};
 
 		fetchInventoryItem();
-	}, [itemType]);
+	}, []);
+
+	const inventoryItemsToRender: InventoryItemResponse[] =
+		itemType === "all"
+			? inventoryItems
+			: inventoryItems.filter(item => item.type === itemType);
+
+	useEffect(() => {
+		setSelectedInventoryItem(inventoryItemsToRender[0]);
+	}, [inventoryItemsToRender]);
 
 	return (
 		<div className={styles.container} >
@@ -79,14 +90,15 @@ function InventoryPage(): React.JSX.Element {
 					value={itemType}
 					onChange={(e) => handleSelectOnClick(e, setItemType)}
 				>
+					<option value="all">All</option>
 					{Object.entries(ITEM_TYPE_LABELS).map(([itemType, label]) => (
 						<option key={itemType} value={itemType}>{label}</option>
 					))}
 				</select>
 
-				{inventoryItems.map((item, i) => (
+				{inventoryItemsToRender.map((item) => (
 					<InventoryItem
-						key={i}
+						key={item.inventoryItemId}
 						icon={`${API_BASE_URL}/${item.icon}`}
 						quantity={item.quantity}
 						onClick={() => setSelectedInventoryItem(item)}

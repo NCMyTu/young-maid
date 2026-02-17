@@ -73,9 +73,9 @@ const getShopItems = async (userId?: string, type?: ItemType): Promise<DbShopIte
 	return shopItems;
 };
 
-const getInventoryItems = async (userId: string, type: ItemType): Promise<GetInventoryItemsResult[]> => {
-	const queried: GetInventoryItemsResult[] = await Item.aggregate([
-		{ $match: { type } },
+const getInventoryItems = async (userId: string, type?: ItemType): Promise<GetInventoryItemsResult[]> => {
+	const inventoryItems: GetInventoryItemsResult[] = await Item.aggregate([
+		...(type ? [{ $match: { type } }] : []),
 		{
 			$lookup: {
 				from: "inventoryitems",
@@ -96,13 +96,13 @@ const getInventoryItems = async (userId: string, type: ItemType): Promise<GetInv
 				name: 1,
 				description: 1,
 				icon: 1,
-				inventoryId: "$match._id",
+				inventoryItemId: { $toString: "$match._id" },
 				quantity: "$match.quantity",
 			}
 		}
-	]).exec() as GetInventoryItemsResult[];
+	]).exec() as GetInventoryItemsResult[]; // Make sure this has correct fields before casting.
 
-	return queried;
+	return inventoryItems;
 };
 
 const createShopItem = async ({

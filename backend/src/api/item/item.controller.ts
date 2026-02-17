@@ -2,7 +2,8 @@ import type { RequestHandler } from "express";
 import type {
 	CreateShopItemResult,
 	DbShopItemFlatten,
-	GetInventoryItemsResult
+	GetInventoryItemsResult,
+	ItemType
 } from "./item.type.js";
 import {
 	buyShopItem,
@@ -17,7 +18,7 @@ import { InvalidDataError, MissingFileError } from "@/util/error.js";
 import type { UserRequest } from "@/util/request.js";
 
 const getShopItemsController: RequestHandler = async (req, res) => {
-	const userId = (req as UserRequest).user.id;
+	const userId: string = (req as UserRequest).user.id;
 	const { type } = req.query;
 
 	if (!isValidItemType(type))
@@ -33,11 +34,10 @@ const getShopItemsAdminController: RequestHandler = async (_, res) => {
 }
 
 const getInventoryItemsController: RequestHandler = async (req, res) => {
-	const userId = (req as UserRequest).user.id;
-	const { type } = req.query;
+	const userId: string = (req as UserRequest).user.id;
 
-	if (!isValidItemType(type))
-		throw new InvalidDataError("type", type?.toString());
+	const rawType = req.query.type?.toString();
+	const type: ItemType | undefined = isValidItemType(rawType) ? rawType : undefined;
 
 	const inventoryItems: GetInventoryItemsResult[] = await getInventoryItems(userId, type);
 	res.status(200).json({ inventoryItems });
