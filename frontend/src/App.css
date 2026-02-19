@@ -106,18 +106,27 @@
 	--resource-badge-amount-margin: 0 5px;
 
 
-	--top-bar-height: 9vh;
+	--top-bar-height: 10vh;
 	--top-bar-background-color: var(--color-primary-20);
 	--top-bar-group-gap: 7px;
-	--top-bar-padding: 0 0.7vw;
-
-
+	--top-bar-padding: 0 0.8vw;
+	/* back button and screen name */
 	--back-button-size: 42px;
 	--back-button-border-radius: 7px;
 	--back-button-background-color: var(--color-primary-50);
 	--back-button-hover-background-color: var(--color-primary-70);
-
 	--screen-name-font-size: 1.7rem;
+	/* user's avatar, display name and tag line */
+	--a-dn-tl-height: 9vh;
+	--a-dn-tl-background-color: hsla(0, 0%, 60%, 0.23);
+	--a-dn-tl-column-gap: 6px;
+	--a-dn-tl-max-width: 28.5vw;
+	--a-dn-tl-padding: 0 5px;
+	--a-dn-tl-avatar-size: 90%;
+	--a-dn-tl-display-name-font-size: 1.07rem;
+	--a-dn-tl-tag-line-font-size: 0.92rem;
+	--a-dn-tl-tag-line-color: hsl(0, 0%, 40%);
+
 
 	--nav-button-size: 32px;
 	--nav-button-border-radius: var(--border-radius);

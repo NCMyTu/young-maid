@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ShopItem.module.css";
 import clsx from "clsx";
-import type { IShopItemProps } from "./ShopItem.type";
+import type { ShopItemProps } from "./ShopItem.type";
 
 function ShopItem({
 	name,
@@ -12,7 +12,7 @@ function ShopItem({
 	quantity,
 	onClick,
 	className
-}: IShopItemProps): React.JSX.Element {
+}: ShopItemProps): React.JSX.Element {
 	return (
 		<div
 			className={clsx(

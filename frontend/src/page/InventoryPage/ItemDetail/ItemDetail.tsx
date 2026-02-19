@@ -2,19 +2,19 @@ import React from "react";
 import styles from "./ItemDetail.module.css";
 import clsx from "clsx";
 
-interface IItemDetailProps {
+type ItemDetailProps = {
 	name: string;
 	type: string;
 	description: string;
 	quantity?: number
-}
+};
 
 function ItemDetail({
 	name,
 	type,
 	description,
 	quantity
-}: IItemDetailProps): React.JSX.Element {
+}: ItemDetailProps): React.JSX.Element {
 	const hasQuantity = quantity !== undefined && quantity > 0;
 
 	return (

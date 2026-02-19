@@ -6,7 +6,7 @@ import GoldBadge from "@/component/ResourceBadge/GoldBadge";
 
 function ResourceBadges({ gold, gem }: { gold: number, gem: number }): React.JSX.Element {
 	return (
-		<div className={clsx("resource-badge-group", styles.div)}>
+		<div className={clsx("resource-badge-group", styles.container)}>
 			<GoldBadge amount={gold} />
 			<GemBadge amount={gem} />
 		</div>

@@ -1,7 +1,7 @@
-import type { IFormInputProps } from "./FormInput.type";
+import type { FormInputProps } from "./FormInput.type";
 import FormInput from "./FormInput";
 
-const generateFormInputFields = (fieldInfo: IFormInputProps[]) => (
+const generateFormInputFields = (fieldInfo: FormInputProps[]) => (
 	<>
 		{fieldInfo.map(({
 			divClassName,

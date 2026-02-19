@@ -10,7 +10,7 @@ function BackButtonAndScreenName({
 	const popScreen = useScreenStack((state) => state.pop);
 
 	return (
-		<div className={styles.div}>
+		<div className={styles.container}>
 			<button
 				className={clsx("back-button", styles.button)}
 				onClick={popScreen}

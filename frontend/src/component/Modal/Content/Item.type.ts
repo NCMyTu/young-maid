@@ -1,8 +1,8 @@
-interface IItemProps {
+type ItemProps = {
 	icon: string;
 	amountOwned: number;
 	name: string;
 	description: string
-}
+};
 
-export type { IItemProps };
+export type { ItemProps };

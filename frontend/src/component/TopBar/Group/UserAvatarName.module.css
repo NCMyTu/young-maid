@@ -1,0 +1,38 @@
+.container {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	grid-template-rows: 1fr 1fr;
+	column-gap: var(--a-dn-tl-column-gap);
+
+	background-color: var(--a-dn-tl-background-color);
+	align-items: center;
+	height: var(--a-dn-tl-height);
+	width: fit-content;
+	max-width: var(--a-dn-tl-max-width);
+	border-radius: var(--border-radius);
+	padding: var(--a-dn-tl-padding);
+}
+
+.avatar {
+	grid-row: 1 / 3;
+	height: var(--a-dn-tl-avatar-size);
+	aspect-ratio: 1 / 1;
+	object-fit: fill;
+	border-radius: var(--border-radius);
+}
+
+.displayName {
+	font-size: var(--a-dn-tl-display-name-font-size);
+	letter-spacing: 0.1px;
+	overflow: hidden;
+	white-space: nowrap;
+	cursor: default;
+}
+
+.tagLine {
+	font-size: var(--a-dn-tl-tag-line-font-size);
+	color: var(--a-dn-tl-tag-line-color);
+	letter-spacing: 0.1px;
+	text-transform: uppercase;
+	cursor: default;
+}

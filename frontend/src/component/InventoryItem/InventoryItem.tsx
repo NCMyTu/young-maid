@@ -1,12 +1,12 @@
 import React from "react";
 import styles from "./InventoryItem.module.css";
-import type { IInventoryItemProps } from "./InventoryItem.type";
+import type { InventoryItemProps } from "./InventoryItem.type";
 
 function InventoryItem({
 	icon,
 	quantity,
 	onClick
-}: IInventoryItemProps): React.JSX.Element | null {
+}: InventoryItemProps): React.JSX.Element | null {
 	if (quantity !== undefined && quantity <= 0)
 		return null;
 

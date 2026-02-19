@@ -1,10 +1,10 @@
-.div {
+.container {
 	display: flex;
 	align-items: center;
 	gap: var(--top-bar-group-gap);
 }
 
-.div .button {
+.container .button {
 	width: calc(1.5 * var(--back-button-size));
 	height: var(--back-button-size);
 	padding: 0;
@@ -14,16 +14,16 @@
 	transition: background-color 0.3s ease;
 }
 
-.div .button:hover {
+.container .button:hover {
 	background-color: var(--back-button-hover-background-color);
 }
 
-.div .button .icon {
+.container .button .icon {
 	width: calc(var(--back-button-size) - var(--back-button-border-radius) * 1);
 	height: calc(var(--back-button-size) - var(--back-button-border-radius) * 1);
 }
 
-.div .p {
+.container .p {
 	font-size: var(--screen-name-font-size);
 	text-transform: capitalize;
 	margin: 0 0 0 0.5vw;

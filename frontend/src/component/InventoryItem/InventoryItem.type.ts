@@ -1,7 +1,7 @@
-interface IInventoryItemProps {
+type InventoryItemProps = {
 	icon: string;
 	quantity?: number;
 	onClick?: () => void
-}
+};
 
-export type { IInventoryItemProps };
+export type { InventoryItemProps };

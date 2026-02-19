@@ -1,4 +1,4 @@
-.div {
+.container {
 	display: flex;
 	gap: var(--top-bar-group-gap);
 }

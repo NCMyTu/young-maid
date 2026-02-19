@@ -2,7 +2,7 @@
 .env
 *.http
 *.bat
-uploads/
+backend/upload*
 
 # Logs
 logs

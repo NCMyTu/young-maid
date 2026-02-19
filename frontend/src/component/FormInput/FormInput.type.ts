@@ -1,4 +1,4 @@
-interface IFormInputProps {
+type FormInputProps = {
 	divClassName?: string;
 	labelText: string;
 	inputId: string;
@@ -9,7 +9,7 @@ interface IFormInputProps {
 	value: string;
 	onChange: (value: string) => void;
 	warning?: string
-}
+};
 
 type ValidationRule = {
 	validateFunc: (s: string) => boolean;
@@ -17,6 +17,6 @@ type ValidationRule = {
 };
 
 export type {
-	IFormInputProps,
+	FormInputProps,
 	ValidationRule
 }

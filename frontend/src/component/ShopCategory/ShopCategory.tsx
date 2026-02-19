@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ShopCategory.module.css";
 import clsx from "clsx";
-import type { IShopCategoryProps } from "./ShopCategory.type";
+import type { ShopCategoryProps } from "./ShopCategory.type";
 
 function ShopCategory({
 	name,
@@ -9,7 +9,7 @@ function ShopCategory({
 	isActive,
 	onClick,
 	className
-}: IShopCategoryProps): React.JSX.Element {
+}: ShopCategoryProps): React.JSX.Element {
 	const containerClassName = clsx(
 		"shop-category",
 		styles.container,

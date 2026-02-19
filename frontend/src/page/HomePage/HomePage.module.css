@@ -1,0 +1,50 @@
+.container {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.primary {
+	position: relative;
+	flex: 1;
+}
+
+.playBtn {
+	width: 30vh;
+	aspect-ratio: 1 / 1;
+
+	position: absolute;
+	top: 50%;
+	right: 8%;
+	transform: translateY(-50%);
+
+	border: none;
+	background-color: hsl(240, 100%, 68%);
+	border-radius: var(--border-radius);
+	font-size: 3rem;
+}
+
+.pageNav {
+	position: absolute;
+	bottom: 0%;
+	left: 50%;
+	transform: translateX(-50%);
+
+	display: flex;
+	gap: 5px;
+	padding: 5px;
+
+	border-radius: var(--border-radius);
+	background-color: hsla(0, 0%, 60%, 0.23);
+	margin: 0 0 7px 0;
+
+	button {
+		border: none;
+		text-align: center;
+		height: 10vh;
+		aspect-ratio: 2.5 / 1;
+		background-color: hsl(220, 33%, 98%);
+		border-radius: var(--border-radius);
+		font-size: 2rem;
+	}
+}

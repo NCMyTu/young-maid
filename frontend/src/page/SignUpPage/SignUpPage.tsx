@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import "./SignUpPage.css";
-import type { IFormInputProps, ValidationRule } from "@/component/FormInput/FormInput.type";
+import type { FormInputProps, ValidationRule } from "@/component/FormInput/FormInput.type";
 import {
 	displayNameValidationRules,
 	emailValidationRules,
@@ -52,7 +52,7 @@ function SignUpPage(): React.JSX.Element {
 	const [tagLine, setTagLine] = useState("");
 	const [tagLineWarning, setTagLineWarning] = useState("");
 
-	const inputFieldInfo: IFormInputProps[] = [
+	const inputFieldInfo: FormInputProps[] = [
 		{ divClassName: divClassName, inputId: "username", labelText: "Username", inputType: "text", required: true, value: username, warning: usernameWarning, onChange: (value)=>setInputAndWarning(value, usernameValidationRules, setUsername, setUsernameWarning) },
 		{ divClassName: divClassName, inputId: "password", labelText: "Password", inputType: "password", required: true, value: password, warning: passwordWarning, onChange: (value) => setInputAndWarning(value, passwordValidationRules, setPassword, setPasswordWarning) },
 		{ divClassName: divClassName, inputId: "email", labelText: "Email", inputType: "text", required: true, value: email, warning: emailWarning, onChange: (value) => setInputAndWarning(value, emailValidationRules, setEmail, setEmailWarning) },

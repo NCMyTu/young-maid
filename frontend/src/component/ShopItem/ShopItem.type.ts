@@ -1,4 +1,4 @@
-interface IShopItemProps {
+type ShopItemProps = {
 	name: string;
 	price: number;
 	currencySrc: string;
@@ -8,6 +8,6 @@ interface IShopItemProps {
 	onClick: () => void;
 	// For styling purpose
 	className?: string
-}
+};
 
-export type { IShopItemProps };
+export type { ShopItemProps };

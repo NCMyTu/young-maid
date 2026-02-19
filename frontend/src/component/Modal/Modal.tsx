@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import clsx from "clsx";
 import styles from "./Modal.module.css";
-import type { IModalProps } from "./Modal.type";
+import type { ModalProps } from "./Modal.type";
 import closeIcon from "/asset/icon/x.svg";
 
 function Modal({
@@ -12,7 +12,7 @@ function Modal({
 	confirmText = "Confirm",
 	children,
 	title
-}: IModalProps): React.JSX.Element | null {
+}: ModalProps): React.JSX.Element | null {
 	if (!isOpen)
 		return null;
 

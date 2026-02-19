@@ -1,6 +1,6 @@
 import React from "react";
 import clsx from "clsx";
-import type { ValidationRule, IFormInputProps } from "./FormInput.type";
+import type { FormInputProps, ValidationRule } from "./FormInput.type";
 import styles from "./FormInput.module.css";
 
 /**
@@ -23,7 +23,7 @@ function FormInput({
 	onChange,
 	warning,
 	required,
-}: IFormInputProps): React.JSX.Element {
+}: FormInputProps): React.JSX.Element {
 	return (
 		<div className={clsx("form-container", styles.container, divClassName)}>
 			<label

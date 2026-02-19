@@ -1,6 +1,6 @@
 import React from "react";
 
-interface IModalProps {
+type ModalProps = {
 	isOpen: boolean;
 	title?: string;
 	onClose: () => void;
@@ -9,6 +9,6 @@ interface IModalProps {
 	children: React.ReactNode;
 	// For styling purpose
 	className?: string
-}
+};
 
-export type { IModalProps };
+export type { ModalProps };

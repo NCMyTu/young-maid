@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import "./SignInPage.css";
-import type { IFormInputProps } from "@/component/FormInput/FormInput.type";
+import type { FormInputProps } from "@/component/FormInput/FormInput.type";
 import generateFormInputFields from "@/component/FormInput/FormInput.helper";
 import useUser from "@/lib/store/user/user";
 import SubmitButton from "@/component/SubmitButton/SubmitButton";
-import { ENDPOINTS } from "@/config/endpoints";
-import type { UserSignInResponse } from "@/type/user.type";
 import { signIn, type SignInResult } from "./helper";
 
 function SignInPage(): React.JSX.Element {
@@ -17,7 +15,7 @@ function SignInPage(): React.JSX.Element {
 	const [password, setPassword] = useState("");
 	const [warning, setWarning] = useState("");
 
-	const inputFieldInfo: IFormInputProps[] = [
+	const inputFieldInfo: FormInputProps[] = [
 		{
 			divClassName: "signin-input",
 			inputId: "username",

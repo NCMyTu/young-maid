@@ -13,15 +13,12 @@ import gemIcon from "/asset/icon/gem.svg";
 import { API_BASE_URL, ENDPOINTS } from "@/config/endpoints";
 import useUser from "@/lib/store/user/user";
 import { useShallow } from "zustand/shallow";
-import type { ShopPageItemCategories } from "./ShopPage.type";
 import Modal from "@/component/Modal/Modal";
 import { useModal } from "@/component/Modal/Modal.hook";
 import ModalContentItem from "@/component/Modal/Content/Item";
 import { ITEM_TYPE_LABELS, type ItemType } from "@/type/item.type";
 
-// TODO:
-// Type properly.
-// Implement drag-and-scroll.
+// TODO: Type properly.
 
 const fetchShopItems = async (type: string) => {
 	const url = `${ENDPOINTS.GET.shopItems}/?type=${type}`;
@@ -50,16 +47,6 @@ function ShopPage(): React.JSX.Element {
 		gem: state.gem,
 		setUser: state.setUser
 	})));
-
-	const onClickShopItem = (item: any) => {
-		setSelectedItem(item);
-		openModal();
-	};
-
-	const onCloseModal = () => {
-		setSelectedItem(null);
-		closeModal();
-	};
 
 	useEffect(() => {
 		(async () => {
@@ -95,7 +82,10 @@ function ShopPage(): React.JSX.Element {
 		{selectedItem && <Modal
 			title="Info"
 			isOpen={isModalOpen}
-			onClose={onCloseModal}
+			onClose={() => {
+				setSelectedItem(null);
+				closeModal();
+			}}
 			onConfirm={buyItem}
 			confirmText="Exchange"
 		>
@@ -103,7 +93,7 @@ function ShopPage(): React.JSX.Element {
 				name={selectedItem.name}
 				description={selectedItem.description}
 				icon={`${API_BASE_URL}/${selectedItem.icon}`}
-				amountOwned={0}
+				amountOwned={selectedItem.quantity} // currently undefined
 			/>
 		</Modal>}
 
@@ -131,7 +121,10 @@ function ShopPage(): React.JSX.Element {
 				{shopItems.map((item: any) => (
 					<ShopItem
 						key={item.id}
-						onClick={() => onClickShopItem(item)}
+						onClick={() => {
+							setSelectedItem(item);
+							openModal();
+						}}
 						name={item.name}
 						price={item.price}
 						isOwnershipLocked={item.isOwnershipLocked}

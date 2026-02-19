@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ResourceBadge.module.css";
 import clsx from "clsx";
-import type { IResourceBadgeProps } from "./ResourceBadge.type";
+import type { ResourceBadgeProps } from "./ResourceBadge.type";
 import defaultAddIcon from "/asset/icon/plus.svg";
 
 const handleOnClick = (_: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -13,7 +13,7 @@ const handleOnClick = (_: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 
 function ResourceBadge({
 	amount, maxAmount, iconSrc, resourceName, addIconSrc
-}: IResourceBadgeProps): React.JSX.Element {
+}: ResourceBadgeProps): React.JSX.Element {
 	const addIcon = addIconSrc || defaultAddIcon;
 	const resourceText = maxAmount ? `${amount}/${maxAmount}` : amount;
 

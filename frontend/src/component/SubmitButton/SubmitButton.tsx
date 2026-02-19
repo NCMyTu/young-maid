@@ -1,9 +1,9 @@
 import React from "react";
 import { useFormStatus } from "react-dom";
 import clsx from "clsx";
-import type { ISubmitButtonProps } from "./SubmitButton.type";
+import type { SubmitButtonProps } from "./SubmitButton.type";
 
-function SubmitButton({ text, id, className, onClick }: ISubmitButtonProps): React.JSX.Element {
+function SubmitButton({ text, id, className, onClick }: SubmitButtonProps): React.JSX.Element {
 	// useFormStatus only works here instead of in a bigger function.
 	// weid...
 	const { pending } = useFormStatus();

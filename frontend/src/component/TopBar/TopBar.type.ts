@@ -1,7 +1,7 @@
-interface ITopBarProps {
+type TopBarProps = {
 	children?: React.ReactNode;
 	// For styling purpose
 	className?: string
-}
+};
 
-export type { ITopBarProps };
+export type { TopBarProps };

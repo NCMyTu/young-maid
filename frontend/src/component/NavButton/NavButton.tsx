@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import styles from "./NavButton.module.css";
-import type { INavButtonProps } from "./NavButton.type";
+import type { NavButtonProps } from "./NavButton.type";
 
 const handleOnClick = (_: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 	// TODO: implement modal popup
@@ -10,7 +10,7 @@ const handleOnClick = (_: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 
 function NavButton({
 	buttonName, iconSrc
-}: INavButtonProps): React.JSX.Element {
+}: NavButtonProps): React.JSX.Element {
 	return (
 		<button
 			className={clsx(`nav-button-${buttonName}`, styles.button)}
