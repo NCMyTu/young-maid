@@ -21,7 +21,7 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "20mb" }));
 app.use(cookieParser());
-app.use("/uploads", express.static("uploads"));
+app.use("/upload", express.static("upload"));
 
 // Routes.
 app.use("/api/users", userRouter);

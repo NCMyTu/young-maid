@@ -1,6 +1,7 @@
 import type { Request } from "express";
 import multer from "multer";
-import mime from "mime";
+import fs from "fs";
+import { v7 as uuid_v7 } from "uuid";
 
 const ALLOWED_MIME_TYPES = [
 	"image/jpeg",
@@ -28,17 +29,35 @@ const limits = {
 };
 
 const storage: multer.StorageEngine = multer.diskStorage({
-	destination: "uploads",
+	destination: (
+		_: Request,
+		file: Express.Multer.File,
+		callback: (error: Error | null, destination: string) => void) => {
+		let path = "upload/";
+
+		if (file.fieldname === "item-icon")
+			path = path.concat("item");
+		else if (file.fieldname === "avatar")
+			path = path.concat("avatar");
+		else
+			// TODO: create an error type.
+			return callback(new Error("Invalid file upload fieldname"), "");
+
+		try {
+			fs.mkdirSync(path, { recursive: true });
+			callback(null, path);
+		} catch (e) {
+			callback(e as Error, "");
+		}
+	},
 
 	filename: (
 		_: Request,
-		file: Express.Multer.File,
+		__: Express.Multer.File,
 		callback: (error: Error | null, filename: string) => void
 	) => {
-		const suffix = `${Date.now()}_${Math.round(Math.random() * 1E9)}`;
-		const ext: string | null = mime.getExtension(file.mimetype);
-		const fileName = `${file.fieldname}_${suffix}.${ext}`;
-		callback(null, fileName);
+		// There will be a middleware to fully validate and rename the file.
+		callback(null, uuid_v7());
 	}
 });
 
