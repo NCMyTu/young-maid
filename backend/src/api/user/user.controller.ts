@@ -38,24 +38,26 @@ const signinUserController: RequestHandler = async (req, res) => {
 	const durationSeconds = Number(maxAgeMinutes) * 60;
 
 	// May throw SigninError.
-	const userData: SigninUserResult = await signinUser(req.body.username, req.body.password, durationSeconds);
+	const user: SigninUserResult = await signinUser(req.body.username, req.body.password, durationSeconds);
 
-	res.cookie("token", userData.auth.token, {
+	res.cookie("token", user.auth.token, {
 		httpOnly: true,
 		sameSite: "strict",
 		secure: false, // TODO: true if over https.
 		maxAge: 1000 * durationSeconds
 	});
 
+	// TODO: only send status since frontend will call verify.
 	res.status(200).json({
 		message: "Signin successful.",
 		user: {
-			id: userData.id,
-			displayName: userData.displayName,
-			tagLine: userData.tagLine,
-			gold: userData.gold,
-			gem: userData.gem,
-			role: userData.role
+			id: user.id,
+			displayName: user.displayName,
+			tagLine: user.tagLine,
+			avatar: user.avatar,
+			gold: user.gold,
+			gem: user.gem,
+			role: user.role
 		}
 	});
 };

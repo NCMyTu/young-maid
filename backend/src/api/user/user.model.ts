@@ -12,7 +12,7 @@ const USERNAME_MIN_LENGTH = 6;
 const USERNAME_MAX_LENGTH = 330;
 const PASSWORD_MIN_LENGTH = 6;
 const DISPLAY_NAME_MIN_LENGTH = 3;
-const DISPLAY_NAME_MAX_LENGTH = 35;
+const DISPLAY_NAME_MAX_LENGTH = 30;
 const TAGLINE_MIN_LENGTH = 2;
 const TAGLINE_MAX_LENGTH = 6;
 
@@ -43,6 +43,10 @@ const userSchema = new mongoose.Schema<DbUser, Model<DbUser>, DbUserMethods>({
 		enum: ["user", "admin"],
 		trim: true,
 		default: "user"
+	},
+	avatar: {
+		type: String,
+		default: "upload/avatar/default.png"
 	},
 	displayName: {
 		type: String,

@@ -9,7 +9,7 @@ import { ENDPOINTS } from "@/config/endpoints";
 
 function RootPage(): React.JSX.Element {
 	const setUser = useUser((state) => state.setUser);
-	const clear = useUser((state) => state.clear);
+	const clearUser = useUser((state) => state.clear);
 
 	useEffect(() => {
 		(async () => {
@@ -26,9 +26,9 @@ function RootPage(): React.JSX.Element {
 				if (data?.user)
 					setUser(data.user);
 				else
-					throw new Error("Backend didn't include user info or somehow json failed")
+					throw new Error("Backend didn't include user info or somehow json failed");
 			} catch (e) {
-				clear();
+				clearUser();
 			}
 		})();
 	}, []);

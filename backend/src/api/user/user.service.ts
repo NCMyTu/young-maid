@@ -17,18 +17,18 @@ const createUser = async (createUserInput: CreateUserInput): Promise<CreateUserR
 	if (missingFields)
 		throw new Error(`Missing required field(s): ${missingFields}`);
 
-	const newUser: HydratedDocument<DbUser> = new User({
+	const tempUser: HydratedDocument<DbUser> = new User({
 		username, password, email, displayName, tagLine
 	});
-
-	const savedUser = await newUser.save();
+	const user = await tempUser.save();
 
 	return {
-		id: savedUser.id,
-		displayName: savedUser.displayName,
-		tagLine: savedUser.tagLine,
-		role: savedUser.role,
-		createdAt: savedUser.createdAt
+		id: user.id,
+		displayName: user.displayName,
+		tagLine: user.tagLine,
+		role: user.role,
+		avatar: user.avatar,
+		createdAt: user.createdAt
 	};
 };
 
@@ -61,6 +61,7 @@ const signinUser = async (
 		displayName: user.displayName,
 		tagLine: user.tagLine,
 		role: user.role,
+		avatar: user.avatar,
 		gold: user.gold,
 		gem: user.gem
 	};
@@ -88,16 +89,14 @@ const verifyUserJwtToken = (token: string): UserJwtPayload => {
 };
 
 const getUserInfo = async (userId: string): Promise<Partial<DbUser> | null> => {
-	const user: HydratedDocument<DbUser> | null = await User.findById(userId, "id displayName tagLine role gold gem");
+	const user: HydratedDocument<DbUser> | null = await User.findById(userId, "id displayName tagLine role avatar gold gem");
 
-	if (!user)
-		return null;
-
-	return {
+	return !user ? null : {
 		id: user.id,
 		displayName: user.displayName,
 		tagLine: user.tagLine,
 		role: user.role,
+		avatar: user.avatar,
 		gold: user.gold,
 		gem: user.gem
 	};

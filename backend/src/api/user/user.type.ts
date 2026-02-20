@@ -11,6 +11,7 @@ interface DbUser {
 	password: string;
 	email: string;
 	role: UserRole;
+	avatar: string;
 	displayName: string;
 	tagLine: string;
 	gold: number;
@@ -22,11 +23,11 @@ interface DbUserMethods {
 }
 
 type CreateUserInput = Pick<DbUser, "username" | "password" | "email" | "displayName" | "tagLine">;
-type CreateUserResult = Pick<DbUser, "id" | "displayName" | "tagLine" | "role" | "createdAt">;
+type CreateUserResult = Pick<DbUser, "id" | "displayName" | "tagLine" | "role" | "avatar" | "createdAt">;
 
 type SigninUserResult = Pick<
 	DbUser,
-	"id" | "displayName" | "tagLine" | "role" | "gold" | "gem"
+	"id" | "displayName" | "tagLine" | "role" | "avatar" | "gold" | "gem"
 > & {
 	auth: {
 		token: string

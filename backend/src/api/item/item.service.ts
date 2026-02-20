@@ -17,6 +17,7 @@ const isValidItemType = (x: unknown): x is ItemType =>
 	typeof x === "string" && ITEM_TYPES.includes(x as ItemType);
 
 const getShopItems = async (userId?: string, type?: ItemType): Promise<DbShopItemFlatten[]> => {
+	// TODO: add user-owned quantity.
 	const queried = await ShopItem.aggregate([
 		// Admin will need all statuses and no userId.
 		{ $match: { status: "available" } },

@@ -3,6 +3,7 @@ interface UserData {
 	displayName: string;
 	tagLine: string;
 	role: string;
+	avatar: string;
 	gold: number;
 	gem: number
 }
