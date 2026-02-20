@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import styles from "./HomePage.module.css";
 import { useNavigate } from "react-router";
 import { useShallow } from "zustand/shallow";
 import useScreenStack from "@/lib/store/screen-stack/screen-stack";
@@ -6,82 +7,94 @@ import useUser from "@/lib/store/user/user";
 import { ENDPOINTS } from "@/config/endpoints";
 import Modal from "@/component/Modal/Modal";
 import { useModal } from "@/component/Modal/Modal.hook";
+import TopBar from "@/component/TopBar/TopBar";
+import ResourceBadges from "@/component/TopBar/Group/ResourceBadges";
+import UserAvatarName from "@/component/TopBar/Group/UserAvatarName";
+import UserActions from "@/component/TopBar/Group/UserActions";
+
+// TODO: setting
 
 function HomePage(): React.JSX.Element {
 	const pushScreen = useScreenStack((state) => state.push);
-	const user = useUser(useShallow((state) => ({
-		id: state.id,
-		displayName: state.displayName,
-		tagLine: state.tagLine,
-		role: state.role,
-		gold: state.gold,
-		gem: state.gem
-	})));
+	const user = useUser(useShallow((state) => ({ ...state })));
 	const clearUser = useUser((state) => state.clear);
 	const navigate = useNavigate();
+
 	const [isModalOpen, openModal, closeModal] = useModal(false);
+	const [modalContent, setModalContent] = useState<React.ReactNode>(undefined);
+	const [modalOnConfirm, setModalOnConfirm] = useState<(() => void) | undefined>(undefined);
 
 	const signout = async () => {
-		try {
-			let res = await fetch(ENDPOINTS.AUTH.signOut, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				credentials: "include"
-			});
+		let res = await fetch(ENDPOINTS.AUTH.signOut, {
+			method: "POST",
+			credentials: "include"
+		});
 
-			if (!res.ok)
-				return;
+		if (!res.ok)
+			return;
 
-			clearUser();
-			navigate("/");
-		} catch (e) {
-			console.log(e);
-		}
+		clearUser();
+		navigate("/");
 	};
 
-	return (
-		<>
-			<Modal
-				isOpen={isModalOpen}
-				onClose={closeModal}
-				onConfirm={closeModal}
-				title={"MODAL"}
-			>
-				<p>This is the modal's content</p>
-			</Modal>
+	const playBtnOnClick = () => {
+		alert("implement the game!!!")
+	};
 
-			<p style={{ margin: "10px auto", width: "fit-content", fontSize: "2rem" }}>HOME</p>
-			<p>id: {user.id}</p>
-			<p>displayName: {user.displayName}</p>
-			<p>tagLine: {user.tagLine}</p>
-			<p>role: {user.role}</p>
-			<p>gold: {user.gold}</p>
-			<p>gem: {user.gem}</p>
+	return (<>
+		<Modal
+			isOpen={isModalOpen}
+			onClose={() => {
+				setModalContent(undefined);
+				setModalOnConfirm(undefined);
+				closeModal();
+			}}
+			onConfirm={modalOnConfirm}
+			title={"Warning"}
+		>
+			{modalContent}
+		</Modal>
 
-			<button onClick={signout}>
-				Sign out
-			</button>
+		<div className={styles.container} >
+			<TopBar className={styles.topBar}>
+				<UserAvatarName
+					avatar={user.avatar}
+					displayName={user.displayName}
+					tagLine={user.tagLine}
+				/>
 
-			<button onClick={() => pushScreen("shop")}>
-				Go to SHOP
-			</button>
+				<ResourceBadges gold={user.gold} gem={user.gem} />
 
-			<button onClick={() => pushScreen("inventory")}>
-				Go to INVENTORY
-			</button>
+				<UserActions
+					settingOnClick={() => openModal()}
+					signOutOnClick={() => {
+						setModalContent(<span>You will be signed out. Are you sure?</span>)
+						setModalOnConfirm(() => signout)
+						openModal();
+					}}
+				/>
+			</TopBar>
 
-			<button onClick={openModal}>
-				Open modal
-			</button>
+			<div className={styles.primary}>
+				<button className={styles.playBtn} onClick={playBtnOnClick}>PLAY</button>
 
-			{user.role === "admin" &&
-				<button onClick={() => pushScreen("admin")}>
-					Admin panel
-				</button>
-			}
-		</>
+				<div className={styles.pageNav}>
+					<button onClick={() => pushScreen("shop")}>
+						SHOP
+					</button>
+
+					<button onClick={() => pushScreen("inventory")}>
+						INVENTORY
+					</button>
+
+					{user.role === "admin" &&
+						<button onClick={() => pushScreen("admin")}>
+							ADMIN
+						</button>
+					}
+				</div>
+			</div>
+		</div></>
 	);
 }
 

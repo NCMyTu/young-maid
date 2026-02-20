@@ -10,9 +10,8 @@
 }
 
 .modal {
-	z-index: calc(var(--modal-overlay-z-index) + 1);;
+	z-index: calc(var(--modal-overlay-z-index) + 1);
 	min-width: var(--modal-min-width);
-	min-height: var(--modal-min-height);
 	max-width: var(--modal-max-width);
 	max-height: var(--modal-max-height);
 	position: fixed;
@@ -72,6 +71,7 @@
 	flex-direction: column;
 	background-color: var(--modal-content-background-color);
 	max-height: var(--modal-content-max-height);
+	padding: 10px;
 }
 
 .actionContainer {
