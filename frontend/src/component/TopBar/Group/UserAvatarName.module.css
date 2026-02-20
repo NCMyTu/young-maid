@@ -15,7 +15,7 @@
 
 .avatar {
 	grid-row: 1 / 3;
-	height: var(--a-dn-tl-avatar-size);
+	height: var(--a-dn-tl-avatar-height);
 	aspect-ratio: 1 / 1;
 	object-fit: fill;
 	border-radius: var(--border-radius);

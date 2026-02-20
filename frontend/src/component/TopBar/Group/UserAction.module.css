@@ -1,0 +1,22 @@
+.container {
+	border-radius: var(--border-radius);
+	height: var(--user-actions-height);
+	display: flex;
+	align-items: center;
+	gap: var(--user-actions-gap);
+}
+
+.container button {
+	background-color: var(--user-actions-background-color);
+	height: var(--user-actions-button-height);
+	aspect-ratio: 1 / 1;
+	border-radius: var(--border-radius);
+	padding: 0px;
+	border: none;
+}
+
+.container button img {
+	width: 95%;
+	aspect-ratio: 1 / 1;
+	object-fit: fill;
+}
