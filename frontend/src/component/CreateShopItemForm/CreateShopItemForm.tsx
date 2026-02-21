@@ -124,7 +124,7 @@ function CreateShopItemForm(): React.JSX.Element {
 				value={quantity}
 				required={stackable === "true"}
 				disabled={stackable !== "true"}
-				onKeyDown={(e) => e.key === '-' && e.preventDefault()}
+				onKeyDown={(e) => e.key === "-" && e.preventDefault()}
 				onChange={(e) => {
 					const v = e.target.value;
 					if (v === "") {
@@ -144,7 +144,7 @@ function CreateShopItemForm(): React.JSX.Element {
 				min={0}
 				placeholder="item-price, digits only"
 				onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
-					e.key === '-' && e.preventDefault()
+					e.key === "-" && e.preventDefault()
 				}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					const v = Number(e.target.value);

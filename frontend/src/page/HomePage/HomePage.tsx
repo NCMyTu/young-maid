@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./HomePage.module.css";
 import { useNavigate } from "react-router";
 import { useShallow } from "zustand/shallow";
@@ -11,8 +11,18 @@ import TopBar from "@/component/TopBar/TopBar";
 import ResourceBadges from "@/component/TopBar/Group/ResourceBadges";
 import UserAvatarName from "@/component/TopBar/Group/UserAvatarName";
 import UserActions from "@/component/TopBar/Group/UserActions";
+import { socket } from "@/lib/socket";
 
 // TODO: setting
+
+const signout = async () => {
+	let res = await fetch(ENDPOINTS.AUTH.signOut, {
+		method: "POST",
+		credentials: "include"
+	});
+	if (!res.ok)
+		alert("Something went wrong while trying to sign you out.")
+};
 
 function HomePage(): React.JSX.Element {
 	const pushScreen = useScreenStack((state) => state.push);
@@ -24,22 +34,27 @@ function HomePage(): React.JSX.Element {
 	const [modalContent, setModalContent] = useState<React.ReactNode>(undefined);
 	const [modalOnConfirm, setModalOnConfirm] = useState<(() => void) | undefined>(undefined);
 
-	const signout = async () => {
-		let res = await fetch(ENDPOINTS.AUTH.signOut, {
-			method: "POST",
-			credentials: "include"
-		});
+	const [isInQueue, setIsInQueue] = useState(false);
+	const [queueSize, setQueueSize] = useState(0);
 
-		if (!res.ok)
-			return;
+	useEffect(() => {
+		if (!socket.connected)
+			socket.connect();
 
-		clearUser();
-		navigate("/");
-	};
+		const handleQueueSize = (queueSize: number) => setQueueSize(queueSize);
+		socket.on("queueSize", handleQueueSize);
 
-	const playBtnOnClick = () => {
-		alert("implement the game!!!")
-	};
+		const handlePlayerState = (data: { isInQueue: boolean, queueSize: number }) => {
+			setIsInQueue(data.isInQueue);
+			setQueueSize(data.queueSize);
+		}
+		socket.on("playerState", handlePlayerState);
+
+		return () => {
+			socket.off("queueSize", handleQueueSize);
+			socket.off("playerState", handlePlayerState);
+		};
+	}, []);
 
 	return (<>
 		<Modal
@@ -69,14 +84,25 @@ function HomePage(): React.JSX.Element {
 					settingOnClick={() => openModal()}
 					signOutOnClick={() => {
 						setModalContent(<span>You will be signed out. Are you sure?</span>)
-						setModalOnConfirm(() => signout)
+						setModalOnConfirm(() => async () => {
+							await signout();
+							clearUser();
+							navigate("/");
+						})
 						openModal();
 					}}
 				/>
 			</TopBar>
 
 			<div className={styles.primary}>
-				<button className={styles.playBtn} onClick={playBtnOnClick}>PLAY</button>
+				<button
+					className={styles.playBtn}
+					onClick={() => {
+						socket.emit("interactWithQueue");
+					}}
+				>
+					{`${isInQueue ? "QUEUEING" : "PLAY"}\n(${queueSize} in queue)`}
+				</button>
 
 				<div className={styles.pageNav}>
 					<button onClick={() => pushScreen("shop")}>
