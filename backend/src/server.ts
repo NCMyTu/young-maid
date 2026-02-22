@@ -30,24 +30,25 @@ const io = new Server(server, {
 	}
 });
 
-// Setup.
+// Setup
 // TODO: implement rate limit.
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "20mb" }));
 app.use(cookieParser());
 app.use("/upload", express.static("upload"));
 
-// Routes.
+// Routes
 app.use("/api/users", userRouter);
 app.use("/api/items", itemRouter);
 app.use("/admin/api/items", itemAdminRouter);
 
+// Socket
 beginSocket(io);
 
-// Handling errors.
+// Handling errors
 app.use(errorHandler);
 
-// Start server.
+// Start server
 const PORT = Number(process.env.PORT) || 5001;
 
 async function startServer() {

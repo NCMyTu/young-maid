@@ -42,11 +42,9 @@ const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEvent
 		console.log("rooms:", maestro.rooms, "\n--------");
 	}, 5000);
 
-	// ----------------------------------
-	// -----------            -----------
-	// ----------------------------------
-
 	io.use(socketAuth);
+
+	// --------------------------
 
 	setInterval(() => {
 		io.emit("queueSize", maestro.getQueueSize());
@@ -64,7 +62,6 @@ const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEvent
 
 		io.to(res.roomId).emit("matchFound");
 	}, 300);
-
 
 	io.on("connection", (socket: Socket) => {
 		const playerId = socket.data.userId as PlayerId;

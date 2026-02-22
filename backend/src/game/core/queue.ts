@@ -1,4 +1,5 @@
 import type { PlayerId } from "@/game/type.js";
+import { shuffleInPlace } from "@/game/util.js";
 
 export default class PlayerQueue {
 	queue: Set<PlayerId>;
@@ -46,12 +47,7 @@ export default class PlayerQueue {
 			return [selected];
 		}
 
-		// Fisher–Yates shuffle
-		for (let i = sampleFrom.length - 1; i >= 1; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			// Ughh Typescript bitching...
-			[sampleFrom[i]!, sampleFrom[j]!] = [sampleFrom[j]!, sampleFrom[i]!];
-		}
+		shuffleInPlace(sampleFrom);
 
 		const selected: PlayerId[] = sampleFrom.slice(0, n);
 
