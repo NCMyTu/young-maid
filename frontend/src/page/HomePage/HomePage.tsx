@@ -15,6 +15,8 @@ import { socket } from "@/lib/socket";
 
 // TODO: setting
 
+type PlayerState = "idle" | "inQueue" | "inGame";
+
 const signout = async () => {
 	let res = await fetch(ENDPOINTS.AUTH.signOut, {
 		method: "POST",
@@ -34,7 +36,7 @@ function HomePage(): React.JSX.Element {
 	const [modalContent, setModalContent] = useState<React.ReactNode>(undefined);
 	const [modalOnConfirm, setModalOnConfirm] = useState<(() => void) | undefined>(undefined);
 
-	const [isInQueue, setIsInQueue] = useState(false);
+	const [playerState, setPlayerState] = useState<PlayerState>("idle");
 	const [queueSize, setQueueSize] = useState(0);
 
 	useEffect(() => {
@@ -44,15 +46,20 @@ function HomePage(): React.JSX.Element {
 		const handleQueueSize = (queueSize: number) => setQueueSize(queueSize);
 		socket.on("queueSize", handleQueueSize);
 
-		const handlePlayerState = (data: { isInQueue: boolean, queueSize: number }) => {
-			setIsInQueue(data.isInQueue);
-			setQueueSize(data.queueSize);
-		}
+		const handlePlayerState = ((playerState: PlayerState) => {
+			console.log("playerState:", playerState);
+			setPlayerState(playerState);
+		});
 		socket.on("playerState", handlePlayerState);
+
+		// TODO: display match found!
+		const handleMatchFound = () => console.log("MATCH FOUND!!!");
+		socket.on("matchFound", handleMatchFound);
 
 		return () => {
 			socket.off("queueSize", handleQueueSize);
 			socket.off("playerState", handlePlayerState);
+			socket.off("matchFound", handleMatchFound);
 		};
 	}, []);
 
@@ -101,7 +108,7 @@ function HomePage(): React.JSX.Element {
 						socket.emit("interactWithQueue");
 					}}
 				>
-					{`${isInQueue ? "QUEUEING" : "PLAY"}\n(${queueSize} in queue)`}
+					{`${playerState === "inQueue" ? "QUEUEING" : "PLAY"}\n(${queueSize} in queue)`}
 				</button>
 
 				<div className={styles.pageNav}>

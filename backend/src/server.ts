@@ -42,7 +42,7 @@ app.use("/api/users", userRouter);
 app.use("/api/items", itemRouter);
 app.use("/admin/api/items", itemAdminRouter);
 
-beginSocket(io, jwtSecret)
+beginSocket(io);
 
 // Handling errors.
 app.use(errorHandler);
