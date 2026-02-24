@@ -61,6 +61,7 @@ const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEvent
 		});
 
 		io.to(res.roomId).emit("matchFound");
+		// TODO: sent player data (name, avatar...)
 	}, 300);
 
 	io.on("connection", (socket: Socket) => {

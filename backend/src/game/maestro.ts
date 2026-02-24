@@ -34,7 +34,7 @@ export default class Maestro {
 		return this.queue.remove(playerId);
 	}
 
-	/** Return true if player successfully interact with the queue
+	/** Returns true if player successfully interact with the queue
 	 * (either join or leave the queue), false otherwise.
 	 */
 	handlePlayerInteractWithQueue(playerId: PlayerId): boolean {
@@ -48,6 +48,10 @@ export default class Maestro {
 		return true;
 	}
 
+	/** Selects N_PLAYERS_PER_ROOM random players,
+	 * creates a `GameRoom` instance,
+	 * and updates internal state.
+	 */
 	makeMatch(): { roomId: RoomId, players: PlayerId[] } | undefined {
 		const players: PlayerId[] = this.queue.getRandomPlayers(N_PLAYERS_PER_ROOM);
 		if (players.length < N_PLAYERS_PER_ROOM)

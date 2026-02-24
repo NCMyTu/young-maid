@@ -27,8 +27,8 @@ export default class PlayerQueue {
 		return this.queue.delete(playerId)
 	}
 
-	/** Return an array of `PlayerId`,
-	 * return an empty array if somehow fails.
+	/** Returns an array of `PlayerId`,
+	 * returns an empty array if somehow fails.
 	 */
 	getRandomPlayers(n: number): PlayerId[] {
 		// TODO: this doesn't account for how long player will have to wait in queue.
