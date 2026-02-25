@@ -8,13 +8,13 @@ const N_PLAYERS_PER_ROOM = 2;
 
 export default class Maestro {
 	queue: PlayerQueue;
-	rooms: Map<RoomId, GameRoom>;
-	playerToRoom: Map<PlayerId, RoomId>;
+	roomIdToRoom: Map<RoomId, GameRoom>;
+	playerIdToRoom: Map<PlayerId, RoomId>;
 
 	constructor() {
 		this.queue = new PlayerQueue();
-		this.rooms = new Map<RoomId, GameRoom>();
-		this.playerToRoom = new Map<PlayerId, RoomId>();
+		this.roomIdToRoom = new Map<RoomId, GameRoom>();
+		this.playerIdToRoom = new Map<PlayerId, RoomId>();
 	}
 
 	getQueueSize(): number {
@@ -24,7 +24,7 @@ export default class Maestro {
 	getPlayerState(playerId: PlayerId): PlayerState {
 		if (this.queue.has(playerId))
 			return PlayerState.InQueue;
-		else if (this.playerToRoom.has(playerId))
+		else if (this.playerIdToRoom.has(playerId))
 			return PlayerState.InGame;
 		else
 			return PlayerState.Idle;
@@ -58,15 +58,15 @@ export default class Maestro {
 			return;
 
 		let roomId = uuid_v7();
-		while (this.rooms.has(roomId))
-			roomId = uuid_v7();
+		while (this.roomIdToRoom.has(roomId))
+			roomId = uuid_v7(); // Who knows...
 
 		const room = new GameRoom(roomId, players);
 
-		this.rooms.set(roomId, room);
+		this.roomIdToRoom.set(roomId, room);
 		players.forEach(playerId => {
 			this.queue.remove(playerId);
-			this.playerToRoom.set(playerId, roomId);
+			this.playerIdToRoom.set(playerId, roomId);
 		});
 
 		return { roomId, players };

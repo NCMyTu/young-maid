@@ -3,7 +3,8 @@ import cookie from "cookie";
 import jwt from "jsonwebtoken";
 import type { UserJwtPayload } from "@/api/user/user.type.js";
 import Maestro from "@/game/maestro.js";
-import type { PlayerId } from "@/game/type.js";
+import type { Card, PlayerId, RoomId } from "@/game/type.js";
+import type GameRoom from "@/game/core/room.js";
 
 const socketAuth = (
 	socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
@@ -34,13 +35,9 @@ const socketAuth = (
 };
 
 const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>) => {
+	const FPS = 4;
 	const maestro = new Maestro();
 	const playerIdToSocket = new Map<PlayerId, Socket>();
-
-	setInterval(() => {
-		console.log("--------\nqueue:", maestro.queue);
-		console.log("rooms:", maestro.rooms, "\n--------");
-	}, 5000);
 
 	io.use(socketAuth);
 
@@ -64,8 +61,20 @@ const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEvent
 		// TODO: sent player data (name, avatar...)
 	}, 300);
 
+	setInterval(() => {
+		maestro.roomIdToRoom.forEach((room) => {
+			room.update();
+
+			const event: any = room.getAndRemoveEvent();
+			if (!event)
+				return;
+
+			console.log("--------------------------\n", event);
+		})
+	}, 1000 / FPS);
+
 	io.on("connection", (socket: Socket) => {
-		const playerId = socket.data.userId as PlayerId;
+		const playerId: PlayerId = socket.data.userId as PlayerId;
 
 		playerIdToSocket.set(playerId, socket);
 
@@ -78,6 +87,18 @@ const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEvent
 			socket.emit("playerState", maestro.getPlayerState(playerId));
 			socket.emit("queueSize", maestro.getQueueSize());
 		});
+
+		socket.on("gameInput", (card: Card) => {
+			const roomId: RoomId | undefined = maestro.playerIdToRoom.get(playerId);
+			if (!roomId)
+				return;
+
+			const room: GameRoom | undefined = maestro.roomIdToRoom.get(roomId);
+			if (!room)
+				return;
+
+			room.applyInput({ playerId, card });
+		})
 
 		socket.on("disconnect", () => {
 			maestro.removePlayerFromQueue(playerId);
