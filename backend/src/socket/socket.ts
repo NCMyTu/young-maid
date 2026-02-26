@@ -37,11 +37,21 @@ const socketAuth = (
 const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>) => {
 	const FPS = 4;
 	const maestro = new Maestro();
-	const playerIdToSocket = new Map<PlayerId, Socket>();
 
 	io.use(socketAuth);
 
 	// --------------------------
+
+	// 	When a player connects:
+	// 	io.on("connection", (socket: Socket) => {
+	// 		const playerId: PlayerId = socket.data.userId as PlayerId;
+	// 		socket.join(playerId); // join a room named after playerId
+	// 		playerIdToSocket.set(playerId, socket);
+	// 	...
+	// });
+
+	// Then emit like this:
+	// io.to(event.playerId).emit("gameEvent", event.payload);
 
 	setInterval(() => {
 		io.emit("queueSize", maestro.getQueueSize());
@@ -53,12 +63,10 @@ const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEvent
 			return;
 
 		res.players.forEach(playerId => {
-			const socket = playerIdToSocket.get(playerId);
-			socket?.join(res.roomId);
+			io.to(playerId).emit("matchFound");
+			// TODO: sent player data (name, avatar...)
 		});
 
-		io.to(res.roomId).emit("matchFound");
-		// TODO: sent player data (name, avatar...)
 	}, 300);
 
 	setInterval(() => {
@@ -76,7 +84,7 @@ const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEvent
 	io.on("connection", (socket: Socket) => {
 		const playerId: PlayerId = socket.data.userId as PlayerId;
 
-		playerIdToSocket.set(playerId, socket);
+		socket.join(playerId);
 
 		socket.emit("playerState", maestro.getPlayerState(playerId));
 		socket.emit("queueSize", maestro.getQueueSize());
@@ -89,20 +97,11 @@ const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEvent
 		});
 
 		socket.on("gameInput", (card: Card) => {
-			const roomId: RoomId | undefined = maestro.playerIdToRoom.get(playerId);
-			if (!roomId)
-				return;
-
-			const room: GameRoom | undefined = maestro.roomIdToRoom.get(roomId);
-			if (!room)
-				return;
-
-			room.applyInput({ playerId, card });
+			maestro.handleInput(playerId, card);
 		})
 
 		socket.on("disconnect", () => {
 			maestro.removePlayerFromQueue(playerId);
-			playerIdToSocket.delete(playerId);
 		});
 	});
 };

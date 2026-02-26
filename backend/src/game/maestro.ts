@@ -2,7 +2,8 @@ import { v7 as uuid_v7 } from "uuid";
 
 import PlayerQueue from "./core/queue.js";
 import GameRoom from "./core/room.js";
-import { type PlayerId, PlayerState, type RoomId } from "./type.js";
+import { PlayerState } from "./type.js";
+import type { Card, PlayerId, RoomId } from "./type.js";
 
 const N_PLAYERS_PER_ROOM = 2;
 
@@ -70,5 +71,17 @@ export default class Maestro {
 		});
 
 		return { roomId, players };
+	}
+
+	handleInput(playerId: PlayerId, card: Card): void {
+		const roomId: RoomId | undefined = this.playerIdToRoom.get(playerId);
+		if (!roomId)
+			return;
+
+		const room: GameRoom | undefined = this.roomIdToRoom.get(roomId);
+		if (!room)
+			return;
+
+		room.applyInput({ playerId, card });
 	}
 }
