@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
+import { ENDPOINTS } from "@/config/endpoints";
 import useScreenStack from "@/lib/store/screen-stack/screen-stack";
+import useUser from "@/lib/store/user/user";
 import HomePage from "@/page/HomePage/HomePage";
 import InventoryPage from "@/page/InventoryPage/InventoryPage";
 import ShopPage from "@/page/ShopPage/ShopPage";
 import AdminPage from "@/page/AdminPage/AdminPage";
-import useUser from "@/lib/store/user/user";
-import { ENDPOINTS } from "@/config/endpoints";
+import GamePage from "@/page/GamePage/GamePage";
 
 function RootPage(): React.JSX.Element {
 	const setUser = useUser((state) => state.setUser);
@@ -45,6 +46,8 @@ function RootPage(): React.JSX.Element {
 				return <InventoryPage />;
 			case "admin":
 				return <AdminPage />;
+			case "game":
+				return <GamePage />;
 			default:
 				return <div>Whatcha doin here? GTFO!!!</div>;
 		}

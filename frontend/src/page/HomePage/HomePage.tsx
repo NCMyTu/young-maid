@@ -12,6 +12,7 @@ import ResourceBadges from "@/component/TopBar/Group/ResourceBadges";
 import UserAvatarName from "@/component/TopBar/Group/UserAvatarName";
 import UserActions from "@/component/TopBar/Group/UserActions";
 import { socket } from "@/lib/socket";
+import MatchFoundModal from "@/component/Modal/MatchFoundModal";
 
 // TODO: setting
 
@@ -33,6 +34,8 @@ function HomePage(): React.JSX.Element {
 	const navigate = useNavigate();
 
 	const [isModalOpen, openModal, closeModal] = useModal(false);
+	const [isMatchFoundModalOpen, openMatchFoundModal, closeMatchFoundModal] = useModal(false);
+
 	const [modalContent, setModalContent] = useState<React.ReactNode>(undefined);
 	const [modalOnConfirm, setModalOnConfirm] = useState<(() => void) | undefined>(undefined);
 
@@ -46,10 +49,7 @@ function HomePage(): React.JSX.Element {
 		const handleQueueSize = (queueSize: number) => setQueueSize(queueSize);
 		socket.on("queueSize", handleQueueSize);
 
-		const handlePlayerState = ((playerState: PlayerState) => {
-			console.log("playerState:", playerState);
-			setPlayerState(playerState);
-		});
+		const handlePlayerState = (playerState: PlayerState) => setPlayerState(playerState);
 		socket.on("playerState", handlePlayerState);
 
 		// TODO: display match found!
@@ -76,6 +76,10 @@ function HomePage(): React.JSX.Element {
 		>
 			{modalContent}
 		</Modal>
+
+		<MatchFoundModal
+			isOpen={isMatchFoundModalOpen}
+		/>
 
 		<div className={styles.container} >
 			<TopBar className={styles.topBar}>
@@ -125,6 +129,20 @@ function HomePage(): React.JSX.Element {
 							ADMIN
 						</button>
 					}
+
+					<button onClick={() => pushScreen("game")}>
+						-GAME-
+					</button>
+
+					<button onClick={() => {
+						openMatchFoundModal();
+						setTimeout(() => {
+							closeMatchFoundModal();
+							pushScreen("game");
+						}, 3000);
+					}}>
+						Match Found
+					</button>
 				</div>
 			</div>
 		</div></>

@@ -1,4 +1,4 @@
-type Screen = "home" | "shop" | "inventory" | "admin";
+type Screen = "home" | "shop" | "inventory" | "admin" | "game";
 
 interface ScreenStackState {
 	stack: Screen[];
