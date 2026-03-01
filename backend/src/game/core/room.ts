@@ -1,21 +1,26 @@
 import type {
-	PlayerId,
-	RoomId,
 	BoardState,
-	PublicBoardStateForPlayer,
-	Suit,
 	Card,
+	GameEvent,
+	GameInput,
+	PhaseHandler,
 	PlayerHand,
+	PlayerId,
 	PublicBoardState,
-	PhaseHandler
+	PublicBoardStateForPlayer,
+	RoomId,
+	Suit
 } from "@/game/type.js";
 import { RoomPhase } from "@/game/type.js";
-import { shuffleInPlace } from "@/game/util.js";
+import { isCard, isPlayerId, shuffleInPlace } from "@/game/util.js";
 
 // TODO: WRITE DOCS!!!!!!!!!
 
+const ALL_CARDS: readonly Card[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+
 const WAITING_ON_START_DURATION_SECONDS = 3;
 const WAITING_FOR_BIDS_DURATION_SECONDS = 10;
+const NETWORK_LATENCY_BUFFER_MS = 100;
 
 class GameRoom {
 	id: RoomId;
@@ -23,9 +28,9 @@ class GameRoom {
 
 	phase: RoomPhase;
 	boardState: BoardState;
-	timer?: number;
+	timerEnd?: number;
 	phaseHandlers: Record<RoomPhase, PhaseHandler>;
-	eventQueue: any[];
+	eventQueue: GameEvent[];
 
 	constructor(id: string, players: PlayerId[]) {
 		if (players.length > 3)
@@ -36,7 +41,7 @@ class GameRoom {
 
 		this.phase = RoomPhase.waitingOnStart;
 		this.boardState = this.getInitBoardState(players);
-		this.timer = undefined;
+		this.timerEnd = undefined;
 
 		this.phaseHandlers = this.createPhaseHandlers();
 		this.eventQueue = [];
@@ -165,7 +170,7 @@ class GameRoom {
 
 	getInitBoardState(players: PlayerId[]): BoardState {
 		const suits: Suit[] = ["club", "spade", "heart", "diamond"];
-		const cards: Card[] = Array.from({ length: 13 }, (_, i) => i + 1 as Card);
+		const cards: Card[] = [...ALL_CARDS];
 
 		shuffleInPlace(suits);
 
@@ -228,24 +233,24 @@ class GameRoom {
 	}
 
 	setTimer(ms: number): void {
-		this.timer = Date.now() + ms + 150; // Account for network delay
+		this.timerEnd = Date.now() + ms + NETWORK_LATENCY_BUFFER_MS;
 	}
 
 	clearTimer(): void {
-		this.timer = undefined;
+		this.timerEnd = undefined;
 	}
 
-	registerEvent(event: any): void {
+	registerEvent(event: GameEvent): void {
 		this.eventQueue.push(event);
 	}
 
-	getAndRemoveEvent(): any {
+	getAndRemoveEvent(): GameEvent | undefined {
 		return this.eventQueue.shift();
 	}
 
 	/** Returns result of `onEnter`
 	 */
-	transitionTo(phase: RoomPhase): any {
+	transitionTo(phase: RoomPhase): void {
 		this.clearTimer();
 
 		this.phase = phase;
@@ -264,24 +269,16 @@ class GameRoom {
 		).every(playerHand => playerHand.cardToBid !== undefined);
 	}
 
-	validateInput(input: any): boolean {
-		// TODO: use type predicate instead of this.
-		if (typeof input.playerId !== "string")
-			return false;
-		if (typeof input.card !== "number" || input.card < 1 || input.card > 13)
-			return false;
-		return true;
+	validateInput({ playerId, card }: GameInput): boolean {
+		return isPlayerId(playerId) && isCard(card);
 	}
 
-	applyInput(input: any): boolean {
-		if (!this.validateInput(input))
+	applyInput({ playerId, card }: GameInput): boolean {
+		if (!this.validateInput({ playerId, card }))
 			return false;
 
 		if (this.phase !== RoomPhase.waitingForBids)
-			// return {type: "receivedInput", state: this.getPublicBoardState()}
 			return false;
-
-		const { playerId, card } = input;
 
 		const playerHand: PlayerHand | undefined = this.boardState.playerStates.get(playerId);
 		if (!playerHand || playerHand.cardToBid || !playerHand.cards.has(card))
@@ -291,17 +288,17 @@ class GameRoom {
 		playerHand.cards.delete(card);
 
 		this.registerEvent({
-			type: "playerInput",
+			type: "receivedPlayerInput",
 			state: this.getPublicBoardState()
 		});
 
 		return true;
 	}
 
-	update(): any {
+	update(): void {
 		const handler = this.phaseHandlers[this.phase];
 
-		if (this.timer && Date.now() > this.timer) {
+		if (this.timerEnd && Date.now() > this.timerEnd) {
 			this.clearTimer();
 			if (handler.onExpire)
 				handler.onExpire();
@@ -311,8 +308,7 @@ class GameRoom {
 			handler.onUpdate();
 	}
 
-	/** Remove a random card from face-down prizes
-	 * and add it to face-up prizes.
+	/** Remove a random card from face-down prizes and add it to face-up prizes.
 	 */
 	revealPrizes(): void  {
 		const remainingPrizes: Card[] = Array.from(this.boardState.prizesFaceDown);
@@ -335,11 +331,12 @@ class GameRoom {
 			if (playerHand.cardToBid !== undefined)
 				continue;
 
-			const remainingCards: Card[] = Array.from(playerHand.cards);
+			// Remaining cards
+			const rCards: Card[] = Array.from(playerHand.cards);
+			if (rCards.length === 0)
+				continue;
 
-			const newCardToBid: Card = remainingCards[
-				Math.floor(Math.random() * remainingCards.length)
-			]!;
+			const newCardToBid: Card = rCards[Math.floor(Math.random() * rCards.length)]!;
 
 			playerHand.cards.delete(newCardToBid);
 			playerHand.cardToBid = newCardToBid;
@@ -349,8 +346,7 @@ class GameRoom {
 	/** Returns `true` if there is an only winner with highest card, `false` otherwise.
 	 */
 	determineWinnerAndPoints(): boolean {
-		// Determine winner
-		let winner: { playerId: string, card: Card } | undefined = undefined;
+		let winner: { playerId: PlayerId, card: Card } | undefined;
 		let isDraw = false;
 
 		for (const [playerId, playerHand] of this.boardState.playerStates) {

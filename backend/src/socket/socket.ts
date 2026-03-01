@@ -3,8 +3,12 @@ import cookie from "cookie";
 import jwt from "jsonwebtoken";
 import type { UserJwtPayload } from "@/api/user/user.type.js";
 import Maestro from "@/game/maestro.js";
-import type { Card, PlayerId, RoomId } from "@/game/type.js";
-import type GameRoom from "@/game/core/room.js";
+import type {
+	Card,
+	GameEvent,
+	MakeMatchResult,
+	PlayerId
+} from "@/game/type.js";
 
 const socketAuth = (
 	socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
@@ -40,29 +44,16 @@ const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEvent
 
 	io.use(socketAuth);
 
-	// --------------------------
-
-	// 	When a player connects:
-	// 	io.on("connection", (socket: Socket) => {
-	// 		const playerId: PlayerId = socket.data.userId as PlayerId;
-	// 		socket.join(playerId); // join a room named after playerId
-	// 		playerIdToSocket.set(playerId, socket);
-	// 	...
-	// });
-
-	// Then emit like this:
-	// io.to(event.playerId).emit("gameEvent", event.payload);
-
 	setInterval(() => {
 		io.emit("queueSize", maestro.getQueueSize());
-	}, 3000);
+	}, 3500);
 
 	setInterval(() => {
-		const res = maestro.makeMatch();
-		if (!res)
+		const makeMatchResult: MakeMatchResult | undefined = maestro.makeMatch();
+		if (!makeMatchResult)
 			return;
 
-		res.players.forEach(playerId => {
+		makeMatchResult.players.forEach(playerId => {
 			io.to(playerId).emit("matchFound");
 			// TODO: sent player data (name, avatar...)
 		});
@@ -73,11 +64,9 @@ const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEvent
 		maestro.roomIdToRoom.forEach((room) => {
 			room.update();
 
-			const event: any = room.getAndRemoveEvent();
+			const event: GameEvent | undefined = room.getAndRemoveEvent();
 			if (!event)
 				return;
-
-			console.log("--------------------------\n", event);
 		})
 	}, 1000 / FPS);
 

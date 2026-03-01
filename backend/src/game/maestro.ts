@@ -3,7 +3,7 @@ import { v7 as uuid_v7 } from "uuid";
 import PlayerQueue from "./core/queue.js";
 import GameRoom from "./core/room.js";
 import { PlayerState } from "./type.js";
-import type { Card, PlayerId, RoomId } from "./type.js";
+import type { Card, MakeMatchResult, PlayerId, RoomId } from "./type.js";
 
 const N_PLAYERS_PER_ROOM = 2;
 
@@ -53,7 +53,7 @@ export default class Maestro {
 	 * creates a `GameRoom` instance,
 	 * and updates internal state.
 	 */
-	makeMatch(): { roomId: RoomId, players: PlayerId[] } | undefined {
+	makeMatch(): MakeMatchResult | undefined {
 		const players: PlayerId[] = this.queue.getRandomPlayers(N_PLAYERS_PER_ROOM);
 		if (players.length < N_PLAYERS_PER_ROOM)
 			return;

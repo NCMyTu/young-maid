@@ -1,3 +1,5 @@
+import type { Card, PlayerId } from "./type.js";
+
 /** Shuffle `arr` in-place */
 export const shuffleInPlace = <T>(arr: T[]): void => {
 	// Fisher–Yates shuffle
@@ -6,4 +8,11 @@ export const shuffleInPlace = <T>(arr: T[]): void => {
 		// Ughh Typescript bitching...
 		[arr[i]!, arr[j]!] = [arr[j]!, arr[i]!];
 	}
-}
+};
+
+export const isPlayerId = (x: unknown): x is PlayerId => typeof x === "string";
+export const isCard = (x: unknown): x is Card =>
+	typeof x === "number"
+	&& Number.isInteger(x)
+	&& x >= 1
+	&& x <= 13;

@@ -8,8 +8,13 @@ export enum PlayerState {
 	InGame = "inGame"
 }
 
+export type MakeMatchResult = {
+	roomId: string;
+	players: string[];
+};
+
 export type Suit = "club" | "spade" | "heart" | "diamond";
-// Starts from 1 so we can if (!card).
+// Starts from 1 so we can <if (!card)>.
 export type Card = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
 
 export type PlayerHand = {
@@ -58,7 +63,35 @@ export type PublicBoardState = Record<PlayerId, PublicBoardStateForPlayer>;
 
 export type PhaseHandler = {
 	durationMs?: number;
-	onEnter?: () => any;
-	onUpdate?: () => any;
-	onExpire?: () => any // Only exists if durationMs exists.
+	onEnter?: () => void;
+	onUpdate?: () => void;
+	onExpire?: () => void // Only exists if durationMs exists.
+};
+
+export type GameInput = {
+	playerId: PlayerId;
+	card: Card
+};
+
+export type GameEvent = {
+	type: "waitForBids" | "waitForBids_end"
+} | {
+	type:
+	"firstState"
+	| "revealPrizes"
+	| "revealBids"
+	| "cleanUpBidsAndPrizes"
+	| "resolveMissingInput"
+	| "receivedPlayerInput",
+	state: PublicBoardState
+} | {
+	type: "determineWinnerAndPoints",
+	isDraw: true,
+} | {
+	type: "determineWinnerAndPoints",
+	isDraw: false,
+	state: PublicBoardState
+} | {
+	type: "gameEnd",
+	winners: PlayerId[]
 };
