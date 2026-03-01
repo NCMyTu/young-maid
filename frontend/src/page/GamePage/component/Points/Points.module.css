@@ -1,0 +1,15 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	span:nth-of-type(1) {
+		font-size: 1.15rem;
+	}
+
+	span:nth-of-type(2) {
+		font-weight: bold;
+		font-size: 1.9rem;
+	}
+}

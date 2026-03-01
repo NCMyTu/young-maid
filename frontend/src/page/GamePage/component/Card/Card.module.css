@@ -1,0 +1,15 @@
+.container {
+	box-sizing: border-box;
+	height: 14vh;
+	aspect-ratio: 74 / 126;
+	border: 1px solid rgb(255, 62, 24);
+	overflow: hidden;
+	border-radius: var(--border-radius);
+	display: flex;
+	flex-direction: column;
+	transition: transform 0.1s ease;
+}
+
+.hover:hover {
+	transform: translateY(-20%);
+}
