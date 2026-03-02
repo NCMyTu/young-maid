@@ -7,10 +7,27 @@ import InventoryPage from "@/page/InventoryPage/InventoryPage";
 import ShopPage from "@/page/ShopPage/ShopPage";
 import AdminPage from "@/page/AdminPage/AdminPage";
 import GamePage from "@/page/GamePage/GamePage";
+import { socket } from "@/lib/socket";
 
 function RootPage(): React.JSX.Element {
 	const setUser = useUser((state) => state.setUser);
 	const clearUser = useUser((state) => state.clear);
+
+	useEffect(() => {
+		const process = (info: {
+			id: string;
+			displayName: string;
+			tagLine: string;
+			avatar: string;
+		}[]) => {
+			console.log(info);
+		};
+		socket.on("playerInfo", process);
+
+		return () => {
+			socket.off("playerInfo", process);
+		};
+	}, []);
 
 	useEffect(() => {
 		(async () => {

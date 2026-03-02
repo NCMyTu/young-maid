@@ -29,8 +29,13 @@ const deleteFile = async (path?: string) => {
 	}
 };
 
+const sleepForMs = (ms: number): Promise<unknown> => {
+	return new Promise(_ => setTimeout(_, ms));
+};
+
 export {
 	capitalize,
 	deleteFile,
-	getMissingFields
+	getMissingFields,
+	sleepForMs
 };

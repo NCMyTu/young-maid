@@ -4,6 +4,7 @@ import type { UserRole, DbUser, CreateUserInput, CreateUserResult, SigninUserRes
 import { User } from "./user.model.js";
 import jwt from "jsonwebtoken";
 import { SigninError } from "@/util/error.js";
+import type { PlayerId, PlayerInfo } from "@/game/type.js";
 
 const getAllUsers = async (): Promise<HydratedDocument<DbUser>[]> => {
 	return await User.find().sort({ "createdAt": -1 });
@@ -102,6 +103,27 @@ const getUserInfo = async (userId: string): Promise<Partial<DbUser> | null> => {
 	};
 }
 
+const getPlayerInfos = async (playerIds: PlayerId[]): Promise<{
+	id: string;
+	displayName: string;
+	tagLine: string;
+	avatar: string
+}[]> => {
+	const queried = await User.find(
+		{ _id: { $in: playerIds } },
+		"id displayName tagLine avatar"
+	).lean();
+
+	const res = queried.map(player => ({
+		id: player._id.toString(),
+		displayName: player.displayName,
+		tagLine: player.tagLine,
+		avatar: player.avatar
+	}));
+
+	return res;
+}
+
 export {
 	getAllUsers,
 	deleteAllUsers,
@@ -109,5 +131,6 @@ export {
 	signinUser,
 	verifyUser,
 	verifyUserJwtToken,
+	getPlayerInfos,
 	getUserInfo
 };

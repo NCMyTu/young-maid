@@ -54,10 +54,10 @@ export default class Maestro {
 	 * and updates internal state.
 	 */
 	makeMatch(): MakeMatchResult | undefined {
-		const players: PlayerId[] = this.queue.getRandomPlayers(N_PLAYERS_PER_ROOM);
-		if (players.length < N_PLAYERS_PER_ROOM)
+		if (this.queue.size < N_PLAYERS_PER_ROOM)
 			return;
 
+		const players: PlayerId[] = this.queue.getRandomPlayers(N_PLAYERS_PER_ROOM);
 		let roomId = uuid_v7();
 		while (this.roomIdToRoom.has(roomId))
 			roomId = uuid_v7(); // Who knows...

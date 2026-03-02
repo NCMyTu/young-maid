@@ -8,6 +8,12 @@ export enum PlayerState {
 	InGame = "inGame"
 }
 
+export type PlayerInfo = {
+	id: string;
+	displayName: string;
+	avatar: string
+};
+
 export type MakeMatchResult = {
 	roomId: string;
 	players: string[];

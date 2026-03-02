@@ -7,8 +7,11 @@ import type {
 	Card,
 	GameEvent,
 	MakeMatchResult,
-	PlayerId
+	PlayerId,
+	PlayerInfo
 } from "@/game/type.js";
+import { getPlayerInfos } from "@/api/user/user.service.js";
+import { sleepForMs } from "@/util/util.js";
 
 const socketAuth = (
 	socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>,
@@ -42,24 +45,56 @@ const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEvent
 	const FPS = 4;
 	const maestro = new Maestro();
 
+	const potentialMatchQueue: PlayerId[][] = [];
+
 	io.use(socketAuth);
 
 	setInterval(() => {
 		io.emit("queueSize", maestro.getQueueSize());
 	}, 3500);
 
+	// Make match
 	setInterval(() => {
 		const makeMatchResult: MakeMatchResult | undefined = maestro.makeMatch();
 		if (!makeMatchResult)
 			return;
 
+		potentialMatchQueue.push(makeMatchResult.players);
+
 		makeMatchResult.players.forEach(playerId => {
 			io.to(playerId).emit("matchFound");
-			// TODO: sent player data (name, avatar...)
 		});
-
 	}, 300);
 
+	// Find players' info
+	// Put it here to decouple async from match-making setInterval loop
+	async function matchWorker() {
+		while (true) {
+			const playerIds: PlayerId[] | undefined = potentialMatchQueue.shift();
+			if (!playerIds) {
+				await sleepForMs(150);
+				continue;
+			}
+
+			try {
+				const playerInfos: {
+					id: string;
+					displayName: string;
+					tagLine: string;
+					avatar: string
+				}[] = await getPlayerInfos(playerIds);
+
+				playerIds.forEach(playerId => {
+					io.to(playerId).emit("playerInfo", playerInfos);
+				});
+			} finally {
+				await sleepForMs(150);
+			}
+		}
+	}
+	matchWorker();
+
+	// Room update
 	setInterval(() => {
 		maestro.roomIdToRoom.forEach((room) => {
 			room.update();

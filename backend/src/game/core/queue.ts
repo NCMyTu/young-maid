@@ -27,15 +27,10 @@ export default class PlayerQueue {
 		return this.queue.delete(playerId)
 	}
 
-	/** Returns an array of `PlayerId`,
-	 * returns an empty array if somehow fails.
+	/** Returns an array of `PlayerId`
 	 */
 	getRandomPlayers(n: number): PlayerId[] {
 		// TODO: this doesn't account for how long player will have to wait in queue.
-
-		if (n <= 0 || n > this.size)
-			return [];
-
 		const sampleFrom: PlayerId[] = Array.from(this.queue);
 
 		// To avoid a full shuffling or i'm just overengineering.
