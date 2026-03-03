@@ -7,12 +7,18 @@ import PlayerInfo from "./component/PlayerInfo/PlayerInfo";
 import Points from "./component/Points/Points";
 import type { CardProps } from "./component/Card/Card.type";
 
+import usePlayerInfo from "@/lib/store/player-info/player-info";
 import { socket } from "@/lib/socket";
+import useUser from "@/lib/store/user/user";
+
+import { API_BASE_URL } from "@/config/endpoints";
 
 const Bid = (props: CardProps) => (<Card {...props} />);
 
 function GamePage(): React.JSX.Element {
 	const [events, setEvents] = useState<any[]>([]);
+	const idSelf = useUser((state) => state.id);
+	const playerInfo = usePlayerInfo((state) => state.info);
 
 	useEffect(() => {
 		const catchAll = (eventName: string, ...args: any[]) => {
@@ -41,12 +47,17 @@ function GamePage(): React.JSX.Element {
 			))}
 		</div>
 
-		<PlayerInfo
-			avatar=""
-			displayName="self"
-			tagLine="self"
-			className={styles.playerSelf}
-		/>
+		{playerInfo.map((info) => (
+			<PlayerInfo
+				key={info.id}
+				avatar={`${API_BASE_URL}/${info.avatar}`}
+				displayName={info.displayName}
+				tagLine={info.displayName}
+				className={info.id === idSelf ? styles.playerSelf : styles.playerOpponent}
+			/>
+		))
+		}
+
 		<Points
 			points={200}
 			className={styles.pointsSelf}
@@ -57,12 +68,6 @@ function GamePage(): React.JSX.Element {
 			className={clsx(styles.bid, styles.bidSelf)}
 		/>
 
-		<PlayerInfo
-			avatar=""
-			displayName="opponent"
-			tagLine="opponent"
-			className={styles.playerOpponent}
-		/>
 		<Points
 			points={111}
 			className={styles.pointsOpponent}

@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { ENDPOINTS } from "@/config/endpoints";
+import usePlayerInfo from "@/lib/store/player-info/player-info";
+import type { PlayerInfo } from "@/lib/store/player-info/player-info.type";
 import useScreenStack from "@/lib/store/screen-stack/screen-stack";
 import useUser from "@/lib/store/user/user";
 import HomePage from "@/page/HomePage/HomePage";
@@ -12,15 +14,11 @@ import { socket } from "@/lib/socket";
 function RootPage(): React.JSX.Element {
 	const setUser = useUser((state) => state.setUser);
 	const clearUser = useUser((state) => state.clear);
+	const setPlayerInfo = usePlayerInfo((state) => state.setPlayerInfo);
 
 	useEffect(() => {
-		const process = (info: {
-			id: string;
-			displayName: string;
-			tagLine: string;
-			avatar: string;
-		}[]) => {
-			console.log(info);
+		const process = (info: PlayerInfo[]) => {
+			setPlayerInfo(info);
 		};
 		socket.on("playerInfo", process);
 
