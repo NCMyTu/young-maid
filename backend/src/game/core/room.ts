@@ -18,8 +18,10 @@ import { isCard, isPlayerId, shuffleInPlace } from "@/game/util.js";
 
 const ALL_CARDS: readonly Card[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
-const WAITING_ON_START_DURATION_SECONDS = 3;
-const WAITING_FOR_BIDS_DURATION_SECONDS = 10;
+const WAITING_ON_START_DURATION_SEC = 3;
+const WAITING_FOR_BIDS_DURATION_SEC = 10;
+const REVEALING_BIDS_DURATION_SEC = 1;
+const DETERMINE_WINNER_AND_POINTS_DURATION_SEC = 2;
 const NETWORK_LATENCY_BUFFER_MS = 100;
 
 class GameRoom {
@@ -31,6 +33,8 @@ class GameRoom {
 	timerEnd?: number;
 	phaseHandlers: Record<RoomPhase, PhaseHandler>;
 	eventQueue: GameEvent[];
+
+	lastRoundWasDraw: boolean;
 
 	constructor(id: string, players: PlayerId[]) {
 		if (players.length > 3)
@@ -46,22 +50,24 @@ class GameRoom {
 		this.phaseHandlers = this.createPhaseHandlers();
 		this.eventQueue = [];
 
+		this.lastRoundWasDraw = false;
+
 		this.transitionTo(RoomPhase.waitingOnStart);
 	}
 
 	createPhaseHandlers(): Record<RoomPhase, PhaseHandler> {
 		return {
 			[RoomPhase.waitingOnStart]: {
-				durationMs: WAITING_ON_START_DURATION_SECONDS * 1000,
+				durationMs: WAITING_ON_START_DURATION_SEC * 1000,
 
-				onEnter: () => {
+				onEnter: () => {},
+
+				onExpire: () => {
 					this.registerEvent({
 						type: "firstState",
 						state: this.getPublicBoardState()
 					});
-				},
 
-				onExpire: () => {
 					this.transitionTo(RoomPhase.revealingPrizes);
 				}
 			},
@@ -78,7 +84,7 @@ class GameRoom {
 			},
 
 			[RoomPhase.waitingForBids]: {
-				durationMs: WAITING_FOR_BIDS_DURATION_SECONDS * 1000,
+				durationMs: WAITING_FOR_BIDS_DURATION_SEC * 1000,
 
 				onEnter: () => {
 					this.registerEvent({type: "waitForBids"})
@@ -98,33 +104,43 @@ class GameRoom {
 			},
 
 			[RoomPhase.revealingBids]: {
+				durationMs: REVEALING_BIDS_DURATION_SEC * 1000,
+
 				onEnter: () => {
 					this.registerEvent({
 						type: "revealBids",
-						state: this.getPublicBoardState()
+						state: this.getPublicBoardState(true)
 					});
+				},
+
+				onExpire: () => {
 					this.transitionTo(RoomPhase.determineWinnerAndPoints);
 				},
 			},
 
 			[RoomPhase.determineWinnerAndPoints]: {
+				durationMs: DETERMINE_WINNER_AND_POINTS_DURATION_SEC * 1000,
+
 				onEnter: () => {
 					const isDraw: boolean = !this.determineWinnerAndPoints();
 
 					if (isDraw)
 						this.registerEvent({
 							type: "determineWinnerAndPoints",
-							isDraw: true
+							isDraw: true,
+							state: this.getPublicBoardState(true)
 						});
 					else
 						this.registerEvent({
 							type: "determineWinnerAndPoints",
 							isDraw: false,
-							state: this.getPublicBoardState()
+							state: this.getPublicBoardState(true)
 						});
-
-					this.transitionTo(RoomPhase.cleaningUpBidsAndPrizes);
 				},
+
+				onExpire: () => {
+					this.transitionTo(RoomPhase.cleaningUpBidsAndPrizes);
+				}
 			},
 
 			[RoomPhase.cleaningUpBidsAndPrizes]: {
@@ -194,7 +210,7 @@ class GameRoom {
 		};
 	}
 
-	getPublicBoardStateFor(playerId: PlayerId): PublicBoardStateForPlayer {
+	getPublicBoardStateFor(playerId: PlayerId, revealBids = false): PublicBoardStateForPlayer {
 		const publicBoardStateForPlayer: PublicBoardStateForPlayer = {
 			suit: this.boardState.suit,
 			nPrizesFaceDown: this.boardState.prizesFaceDown.size,
@@ -206,7 +222,8 @@ class GameRoom {
 			if (playerId === _playerId)
 				publicBoardStateForPlayer.players[_playerId] = {
 					suit: playerHand.suit,
-					cardToBid: playerHand?.cardToBid,
+					hasBid: playerHand.cardToBid ? true : false,
+					cardToBid: playerHand.cardToBid,
 					point: playerHand.point,
 					visibility: "self",
 					cards: Array.from(playerHand.cards)
@@ -214,20 +231,21 @@ class GameRoom {
 			else
 				publicBoardStateForPlayer.players[_playerId] = {
 					suit: playerHand.suit,
-					cardToBid: playerHand.cardToBid,
+					hasBid: playerHand.cardToBid ? true : false,
+					cardToBid: revealBids ? playerHand.cardToBid : undefined,
 					point: playerHand.point,
 					visibility: "other",
-					nCards: playerHand.cards.size
+					nCards: playerHand.cards.size,
 				};
 		});
 
 		return publicBoardStateForPlayer;
 	}
 
-	getPublicBoardState(): PublicBoardState {
+	getPublicBoardState(revealBids = false): PublicBoardState {
 		const publicBoardState: PublicBoardState = {};
 		this.players.forEach(playerId => {
-			publicBoardState[playerId] = this.getPublicBoardStateFor(playerId);
+			publicBoardState[playerId] = this.getPublicBoardStateFor(playerId, revealBids);
 		});
 		return publicBoardState;
 	}
@@ -361,18 +379,23 @@ class GameRoom {
 			}
 		}
 
-		if (!winner || isDraw)
+		if (!winner || isDraw) {
+			this.lastRoundWasDraw = true;
 			return false;
+		}
 
 		const points: number = this.boardState.prizesFaceUp.reduce((acc, curr) => acc + curr, 0);
 		this.boardState.playerStates.get(winner.playerId)!.point += points;
 
+		this.lastRoundWasDraw = false;
 		return true;
 	}
 
 	cleanUpBidsAndPrizes(): void {
 		// Cleanup
-		this.boardState.prizesFaceUp = [];
+		if (!this.lastRoundWasDraw)
+			this.boardState.prizesFaceUp = [];
+
 		this.boardState.playerStates.forEach((playerHand, _) => {
 			playerHand.cardToBid = undefined;
 		});

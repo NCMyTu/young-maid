@@ -51,11 +51,12 @@ export type BoardState = {
 
 export type PublicPlayerHand = {
 	suit: Suit;
+	hasBid: boolean;
 	cardToBid?: Card;
 	point: number
 } & (
-		{ visibility: "self"; cards: Card[] }
-		| { visibility: "other"; nCards: number }
+	{ visibility: "self"; cards: Card[] }
+	| { visibility: "other"; nCards: number }
 );
 
 export type PublicBoardStateForPlayer = {
@@ -92,10 +93,7 @@ export type GameEvent = {
 	state: PublicBoardState
 } | {
 	type: "determineWinnerAndPoints",
-	isDraw: true,
-} | {
-	type: "determineWinnerAndPoints",
-	isDraw: false,
+	isDraw: boolean,
 	state: PublicBoardState
 } | {
 	type: "gameEnd",
