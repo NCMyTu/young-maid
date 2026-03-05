@@ -8,7 +8,6 @@ import type {
 	GameEvent,
 	MakeMatchResult,
 	PlayerId,
-	PlayerInfo
 } from "@/game/type.js";
 import { getPlayerInfos } from "@/api/user/user.service.js";
 import { sleepForMs } from "@/util/util.js";
@@ -102,6 +101,16 @@ const beginSocket = (io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEvent
 			const event: GameEvent | undefined = room.getAndRemoveEvent();
 			if (!event)
 				return;
+
+			console.log(JSON.stringify(event, null, 2));
+
+			room.players.forEach(pId => {
+				if ("state" in event) {
+					io.to(pId).emit("gameUpdate", { ...event, state: event.state[pId] });
+				} else {
+					io.to(pId).emit("gameUpdate", event);
+				}
+			});
 		})
 	}, 1000 / FPS);
 
