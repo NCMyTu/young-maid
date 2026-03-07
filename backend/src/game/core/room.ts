@@ -87,7 +87,7 @@ class GameRoom {
 				durationMs: WAITING_FOR_BIDS_DURATION_SEC * 1000,
 
 				onEnter: () => {
-					this.registerEvent({type: "waitForBids"})
+					this.registerEvent({ type: "waitForBids", timerEnd: this.timerEnd });
 				},
 
 				onExpire: () => {

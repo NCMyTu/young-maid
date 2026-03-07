@@ -1,3 +1,5 @@
+// NOTE: Keep this in sync with frontend/src/page/GamePage/type.ts
+
 export type PlayerId = string;
 
 export type RoomId = string;
@@ -81,7 +83,10 @@ export type GameInput = {
 };
 
 export type GameEvent = {
-	type: "waitForBids" | "waitForBids_end"
+	type: "waitForBids",
+	timerEnd: number | undefined
+} | {
+	type: "waitForBids_end"
 } | {
 	type:
 	"firstState"
