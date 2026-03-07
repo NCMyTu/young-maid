@@ -52,8 +52,13 @@ function HomePage(): React.JSX.Element {
 		const handlePlayerState = (playerState: PlayerState) => setPlayerState(playerState);
 		socket.on("playerState", handlePlayerState);
 
-		// TODO: display match found!
-		const handleMatchFound = () => console.log("MATCH FOUND!!!");
+		const handleMatchFound = () => {
+			openMatchFoundModal();
+			setTimeout(() => {
+				closeMatchFoundModal();
+				pushScreen("game");
+			}, 3000);
+		};
 		socket.on("matchFound", handleMatchFound);
 
 		return () => {
@@ -112,10 +117,11 @@ function HomePage(): React.JSX.Element {
 						socket.emit("interactWithQueue");
 					}}
 				>
-					{`${playerState === "inQueue" ? "QUEUEING" : "PLAY"}\n(${queueSize} in queue)`}
+					<span>{playerState === "inQueue" ? "QUEUEING" : "PLAY"}</span>
+					<span>{queueSize} in queue</span>
 				</button>
 
-				<div className={styles.pageNav}>
+				<div className={styles.nav}>
 					<button onClick={() => pushScreen("shop")}>
 						SHOP
 					</button>
@@ -129,20 +135,6 @@ function HomePage(): React.JSX.Element {
 							ADMIN
 						</button>
 					}
-
-					<button onClick={() => pushScreen("game")}>
-						-GAME-
-					</button>
-
-					<button onClick={() => {
-						openMatchFoundModal();
-						setTimeout(() => {
-							closeMatchFoundModal();
-							pushScreen("game");
-						}, 3000);
-					}}>
-						Match Found
-					</button>
 				</div>
 			</div>
 		</div></>

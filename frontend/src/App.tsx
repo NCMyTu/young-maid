@@ -5,10 +5,7 @@ import SignInPage from "@/page/SignInPage/SignInPage";
 import RootPage from "@/page/RootPage/RootPage";
 import { ENDPOINTS } from "./config/endpoints";
 
-// TODO:
-// cancel pending request when there's a new request
-// TODO:
-// destroy other modals when a modal is showing
+// TODO: cancel pending request when there's a new request
 
 const requireAuth = async () => {
 	try {

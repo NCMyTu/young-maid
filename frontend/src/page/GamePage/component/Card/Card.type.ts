@@ -3,6 +3,7 @@ type CardProps = {
 	value?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
 	isFaceDown?: boolean;
 	isHoverable?: boolean;
+	onClick?: () => void;
 	className?: string
 };
 

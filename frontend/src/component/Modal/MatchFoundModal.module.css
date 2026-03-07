@@ -1,5 +1,5 @@
 .overlay {
-	z-index: calc(var(--modal-overlay-z-index) + 1);
+	z-index: calc(var(--modal-overlay-z-index) + 100);
 	background-color: var(--modal-overlay-background-color);
 	position: fixed;
 	top: 0;
@@ -7,16 +7,11 @@
 	right: 0;
 	bottom: 0;
 	user-select: none;
-
-	display: flex;
+	display: grid;
+	place-items: center;
 }
 
 .overlay span {
-	background-color: var(--color-primary-10);
-	justify-items: center;
-	text-align: center;
-	width: 20vw;
-	height: 50vh;
-	margin: auto;
-	font-size: 3rem;
+	color: var(--modal-mf-color);
+	font-size: var(--modal-mf-font-size);
 }

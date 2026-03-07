@@ -1,0 +1,35 @@
+.overlay {
+	z-index: calc(var(--modal-overlay-z-index) + 1);
+	background-color: var(--modal-overlay-background-color);
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	user-select: none;
+	display: grid;
+	place-items: center;
+}
+
+.overlay span {
+	font-size: var(--modal-ge-font-size);
+	color: var(--modal-ge-color);
+}
+
+.overlay button {
+	position: absolute;
+	bottom: var(--modal-ge-button-pos-bottom);
+	right: var(--modal-ge-button-pos-right);
+
+	border-radius: var(--border-radius);
+	padding: var(--modal-ge-button-padding);
+	border: none;
+	font-size: var(--modal-ge-button-font-size);
+
+	background-color: var(--modal-ge-button-bg-color);
+	color: var(--modal-ge-color);
+}
+
+.overlay button:hover {
+	background-color: var(--modal-ge-button-hover-bg-color);
+}

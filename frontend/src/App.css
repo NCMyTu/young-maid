@@ -1,6 +1,5 @@
 :root {
 	/* TODO: use a monospace font */
-	/* TODO: extract border radius */
 	/* font-family: Ginto, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; */
 
 
@@ -91,6 +90,18 @@
 	--modal-content-item-item-name-font-size: 1.15rem;
 	--modal-content-item-item-name-margin-bottom: 1.1vh;
 	--modal-content-item-icon-size: 9.2vw;
+	/* Match Found modal */
+	--modal-mf-color: white;
+	--modal-mf-font-size: 4rem;
+	/* Game End modal */
+	--modal-ge-color: white;
+	--modal-ge-font-size: 4rem;
+	--modal-ge-button-pos-right: max(2%, 10px);
+	--modal-ge-button-pos-bottom: max(4%, 10px);
+	--modal-ge-button-bg-color: hsl(140, 54%, 52%);
+	--modal-ge-button-hover-bg-color: hsl(140, 54%, 42%);
+	--modal-ge-button-font-size: 1.5rem;
+	--modal-ge-button-padding: 0.8rem;
 
 
 	--resource-badge-width: 160px;
@@ -145,6 +156,7 @@
 	--shop-category-border-radius: var(--border-radius);
 	--shop-category-icon-size: 70%;
 	--shop-category-text-margin: 0;
+	--shop-category-active-border: 3px solid red;
 
 
 	--shop-item-width: 14vw;
@@ -166,7 +178,42 @@
 	--inventory-item-quantity-font-size: 1.2rem;
 
 
+	--card-height: 14vh;
+	--card-padding: 3px;
+	--card-aspect-ratio: 74 / 126;
+	--card-border: 1px solid rgb(255, 62, 24);
+	--card-text-decoration-thickness: 0.5px;
+	--card-text-underline-offset: 2px;
+	--card-suit-height: 45%;
+
+	--player-info-padding: 0 7px 3px;
+	--player-info-avatar-size: 70%;
+	--player-info-display-name-font-size: 1.3rem;
+	--player-info-display-name-margin: 0 0 2px 0;
+	--player-info-tag-line-font-size: 0.8rem;
+	--player-info-tag-line-letter-spacing: 0.02rem;
+
+	--points-text-font-size: 1.15rem;
+	--points-number-font-size: 1.9rem;
+
+	--timer-font-size: 2.7rem;
+
+
 	/* ------- Page specific ------- */
+	--home-page-play-btn-padding: 1rem 1.5rem;
+	--home-page-play-btn-bg-color: hsl(240, 100%, 68%);
+	--home-page-play-btn-font-size: 3rem;
+	--home-page-play-btn-sub-font-size: 2rem;
+	--home-page-nav-gap: 5px;
+	--home-page-nav-padding: 5px;
+	--home-page-nav-bg-color: hsla(0, 0%, 60%, 0.23);
+	--home-page-nav-margin: 0 0 7px 0;
+	--home-page-nav-btn-height: 10vh;
+	--home-page-nav-btn-aspect-ratio: 2.5 / 1;
+	--home-page-nav-btn-bg-color: hsl(220, 33%, 98%);
+	--home-page-nav-btn-font-size: 2rem;
+
+
 	--shop-page-left-bar-width: 17vw;
 	--shop-page-left-bar-background-color: beige;
 	--shop-page-left-bar-gap: 1.5vh;

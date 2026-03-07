@@ -4,7 +4,6 @@ import styles from "./NavButton.module.css";
 import type { NavButtonProps } from "./NavButton.type";
 
 const handleOnClick = (_: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-	// TODO: implement modal popup
 	alert("TODO: implement modal popup when clicking this button");
 };
 

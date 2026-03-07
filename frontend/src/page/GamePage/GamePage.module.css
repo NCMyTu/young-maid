@@ -83,3 +83,8 @@
 .prizes {
 	grid-row: 3;
 }
+
+.timer {
+	grid-row: 4;
+	grid-column: 16 / 18;
+}
