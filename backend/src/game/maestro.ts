@@ -84,4 +84,15 @@ export default class Maestro {
 
 		room.applyInput({ playerId, card });
 	}
+
+	destroyRoom(roomId: RoomId): boolean {
+		const room: GameRoom | undefined = this.roomIdToRoom.get(roomId);
+		if (!room)
+			return false;
+
+		for (const playerId of room.players)
+			this.playerIdToRoom.delete(playerId);
+
+		return this.roomIdToRoom.delete(roomId);
+	}
 }
