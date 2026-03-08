@@ -403,7 +403,6 @@ class GameRoom {
 	}
 
 	cleanUpBidsAndPrizes(): void {
-		// Cleanup
 		if (!this.lastRoundWasDraw)
 			this.boardState.prizesFaceUp = [];
 
