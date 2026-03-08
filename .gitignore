@@ -1,5 +1,5 @@
 [Dd]esktop.ini
-.env
+*.env
 *.http
 *.bat
 backend/upload*
