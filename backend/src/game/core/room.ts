@@ -173,6 +173,18 @@ class GameRoom {
 			},
 
 			[RoomPhase.resolvingMissingInput]: {
+				// BREAKING: This phase doesn't directly transition to RoomPhase.revealingBids,
+				// but the game still proceeds normally.
+				//
+				// Flow:
+				// - Timer expires -> resolvingMissingInput
+				// - resolveMissingInput() fills missing bids
+				// - waitingForBids.onUpdate() from the previous handler still runs
+				// - All bids submitted -> transitions to revealingBids
+				//
+				// Ideally this should be handled through explicit state transitions instead
+				// of relying on this side effect.
+				// Since it still "works", let's leave it like this for now 🙏
 				onEnter: () => {
 					this.resolveMissingInput();
 					this.registerEvent({
@@ -361,8 +373,7 @@ class GameRoom {
 		}
 	}
 
-	/** Returns `true` if there is an only winner with highest card, `false` otherwise.
-	 */
+	/** Returns `true` if there is an only winner with highest card, `false` otherwise. */
 	determineWinnerAndPoints(): boolean {
 		let winner: { playerId: PlayerId, card: Card } | undefined;
 		let isDraw = false;
