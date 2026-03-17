@@ -54,7 +54,7 @@ is too much work.
 
 So the game was switched to [Goofspiel](https://en.wikipedia.org/wiki/Goofspiel) instead. The name still stuck.
 ### Why not use a game framework like Phaser?
-Because ~~corporations~~ everyone loves __React__! __React__ is the best! Everything should be done in __React__!
+Because React is nice to work with.
 ### Why is it so ugly?
 - I don't have an eye for design.
 - The game is supposed to include textures and sound later, so the UI is minimal.
